@@ -27,7 +27,7 @@ const allColors = [
   { name: 'Lavender', slug: 'lavender' },
   { name: 'Sage', slug: 'sage' },
   { name: 'Stone', slug: 'stone' },
-  { name: 'Cream / Navy', slug: 'cream-navy' },
+  { name: 'Cream', slug: 'cream' },
   { name: 'Sand', slug: 'sand' },
   { name: 'Burgundy', slug: 'burgundy' },
   { name: 'Sky Blue', slug: 'sky' },

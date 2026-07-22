@@ -8,8 +8,8 @@ import { Footer } from '@/components/ui/footer';
 import { Button } from '@/components/ui/button';
 
 const sampleCart = [
-  { id: '1', name: 'Half-Collar Shirt', color: 'Black / White', size: 'L', price: 35000, quantity: 1, image: '/images/products/black-white-front.jpg' },
-  { id: '2', name: 'Half-Collar Shirt', color: 'Navy / White', size: 'M', price: 35000, quantity: 1, image: '/images/products/navy-white-front.jpg' },
+  { id: '1', name: 'Half-Collar Shirt', color: 'Black', size: 'L', price: 35000, quantity: 1, image: '/images/products/black-white-front.jpg' },
+  { id: '2', name: 'Half-Collar Shirt', color: 'Navy', size: 'M', price: 35000, quantity: 1, image: '/images/products/navy-white-front.jpg' },
 ];
 
 export default function CartPage() {

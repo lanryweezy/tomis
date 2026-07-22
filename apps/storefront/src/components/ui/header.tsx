@@ -138,7 +138,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   Shop by Colour
                 </h4>
                 <ul className="space-y-2.5">
-                  {['Black / White', 'Navy / White', 'Olive / Khaki', 'Pink / White', 'Brown / Cream'].map(item => (
+                  {['Black', 'Navy', 'Olive', 'Pink', 'Brown'].map(item => (
                     <li key={item}>
                       <Link href="/shop" className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors">
                         {item}
@@ -241,7 +241,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 Popular Searches
               </p>
               <div className="flex flex-wrap gap-2">
-                {['Half-collar', 'Black / White', 'Navy', 'New Arrivals', 'Best Sellers'].map(tag => (
+                {['Half-collar', 'Black', 'Navy', 'New Arrivals', 'Best Sellers'].map(tag => (
                   <span key={tag} className="px-4 py-2 border border-[var(--color-neutral-gray-200)] text-sm hover:border-[var(--color-neutral-ink)] cursor-pointer transition-colors">
                     {tag}
                   </span>

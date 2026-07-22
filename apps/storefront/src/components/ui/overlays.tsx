@@ -150,7 +150,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             Popular Searches
           </p>
           <div className="flex flex-wrap gap-2">
-            {['Half-collar', 'Black / White', 'Navy', 'New Arrivals', 'Best Sellers'].map(tag => (
+            {['Half-collar', 'Black', 'Navy', 'New Arrivals', 'Best Sellers'].map(tag => (
               <span key={tag} className="px-4 py-2 border border-[var(--color-neutral-gray-200)] text-sm hover:border-[var(--color-neutral-ink)] cursor-pointer transition-colors">
                 {tag}
               </span>

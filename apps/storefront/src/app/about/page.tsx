@@ -11,7 +11,7 @@ import { Divider } from '@astryxdesign/core/Divider';
 import { TopNav, TopNavHeading, TopNavItem } from '@astryxdesign/core/TopNav';
 
 const values = [
-  { title: 'The Half-Collar', description: 'Our signature design divides two worlds. One shirt. Two styles. Infinite confidence.' },
+  { title: 'The Half-Collar', description: 'Our signature mandarin collar design delivers clean lines and modern confidence. One silhouette, infinite possibilities.' },
   { title: 'Made in Lagos', description: 'Every Tomis shirt is crafted in Lagos, Nigeria. Supporting local artisans and African manufacturing.' },
   { title: 'Premium Cotton', description: '140 GSM premium cotton. Breathable, durable, and designed to get better with every wash.' },
   { title: 'Everyday Versatility', description: 'From boardroom to brunch, airport to dinner. One shirt that works everywhere you go.' },
@@ -84,7 +84,7 @@ export default function AboutPage() {
             <Text type="body" color="secondary" style={{ lineHeight: 1.7 }}>
               Tomis was born from a simple observation: modern men are overwhelmed by choice.
               They don&apos;t need more clothes. They need the right ones. Our signature half-collar shirt
-              is the physical manifestation of that idea. Two fits. One shirt. One signature.
+              is the physical manifestation of that idea. One shirt. One signature. One less decision every morning.
               One less decision every morning.
             </Text>
           </div>

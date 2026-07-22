@@ -115,7 +115,7 @@ function InteractiveHalfMoment() {
       <div style={{ position: 'absolute', inset: 0, display: 'flex' }}>
         <div style={{ flex: 1, backgroundColor: 'var(--color-background-inverted)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '2rem' }}>
           <span className="font-display text-white" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', whiteSpace: 'nowrap' }}>
-            TWO COLOURS.
+            TWO STYLES.
           </span>
         </div>
         <div style={{ flex: 1, backgroundColor: 'var(--color-background-surface)', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '2rem' }}>
