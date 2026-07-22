@@ -62,8 +62,8 @@ function SplitScreenHero() {
     <section className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
       <div className="absolute inset-0">
         <img
-          src="/images/hero/hero-black-rooftop.jpg"
-          alt="Tomis Half-Collar Shirt on Lagos rooftop"
+          src="/images/hero/hero-white-office.jpg"
+          alt="Man wearing Tomis half-collar shirt in modern office"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(11,31,94,0.85) 0%, rgba(11,31,94,0.4) 50%, transparent 100%)' }} />

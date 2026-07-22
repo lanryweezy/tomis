@@ -91,9 +91,9 @@ export const products: Product[] = [
         inStock: true,
         stockLevel: 48,
         images: [
-          { id: 'img-bw-1', src: '/images/products/black-front.jpg', alt: 'Tomis Half-Collar Shirt Black Front', type: 'product' },
-          { id: 'img-bw-2', src: '/images/lifestyle/black-office.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Black in office', type: 'model' },
-          { id: 'img-bw-3', src: '/images/hero/hero-black-rooftop.jpg', alt: 'Tomis Half-Collar Shirt Black on Lagos rooftop', type: 'lifestyle' },
+          { id: 'img-bw-1', src: '/images/products/white-front.jpg', alt: 'Tomis Half-Collar Shirt White Front', type: 'product' },
+          { id: 'img-bw-2', src: '/images/lifestyle/white-office.jpg', alt: 'Model wearing Tomis Half-Collar Shirt White in office', type: 'model' },
+          { id: 'img-bw-3', src: '/images/lifestyle/white-architecture.jpg', alt: 'Model wearing Tomis Half-Collar Shirt White with architecture', type: 'lifestyle' },
         ],
       },
     ],
@@ -197,7 +197,7 @@ export const products: Product[] = [
         stockLevel: 24,
         images: [
           { id: 'img-ok-1', src: '/images/products/olive-front.jpg', alt: 'Tomis Half-Collar Shirt Olive Front', type: 'product' },
-          { id: 'img-ok-2', src: '/images/lifestyle/olive-cafe.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Olive in cafe', type: 'model' },
+          { id: 'img-ok-2', src: '/images/lifestyle/olive-glasses.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Olive with glasses', type: 'model' },
           { id: 'img-ok-3', src: '/images/lifestyle/olive-interior.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Olive in interior', type: 'lifestyle' },
         ],
       },
@@ -250,7 +250,7 @@ export const products: Product[] = [
         stockLevel: 30,
         images: [
           { id: 'img-pw-1', src: '/images/products/pink-front.jpg', alt: 'Tomis Half-Collar Shirt Pink Front', type: 'product' },
-          { id: 'img-pw-2', src: '/images/lifestyle/pink-interior.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Pink in interior', type: 'model' },
+          { id: 'img-pw-2', src: '/images/lifestyle/pink-office.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Pink in office', type: 'model' },
         ],
       },
     ],
@@ -665,8 +665,8 @@ export const products: Product[] = [
         inStock: true,
         stockLevel: 19,
         images: [
-          { id: 'img-burg-1', src: '/images/products/black-front.jpg', alt: 'Tomis Half-Collar Shirt Burgundy Cream Front', type: 'product' },
-          { id: 'img-burg-2', src: '/images/lifestyle/black-office.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Burgundy Cream', type: 'model' },
+          { id: 'img-burg-1', src: '/images/products/burgundy-front.jpg', alt: 'Tomis Half-Collar Shirt Burgundy Front', type: 'product' },
+          { id: 'img-burg-2', src: '/images/lifestyle/pink-office.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Burgundy', type: 'model' },
         ],
       },
     ],
@@ -717,8 +717,8 @@ export const products: Product[] = [
         inStock: true,
         stockLevel: 27,
         images: [
-          { id: 'img-sky-1', src: '/images/products/blue-stripe-front.jpg', alt: 'Tomis Half-Collar Shirt Sky Blue White Front', type: 'product' },
-          { id: 'img-sky-2', src: '/images/lifestyle/white-executive.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Sky Blue White', type: 'model' },
+          { id: 'img-sky-1', src: '/images/products/sky-front.jpg', alt: 'Tomis Half-Collar Shirt Sky Front', type: 'product' },
+          { id: 'img-sky-2', src: '/images/lifestyle/white-executive.jpg', alt: 'Model wearing Tomis Half-Collar Shirt Sky', type: 'model' },
         ],
       },
     ],
