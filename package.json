@@ -1,0 +1,21 @@
+{
+  "name": "tomis",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TOMIS — The Half-Collar Shirt. Digital flagship store.",
+  "scripts": {
+    "dev": "cd apps/storefront && npm run dev",
+    "build": "cd apps/storefront && npm run build",
+    "start": "cd apps/storefront && npm run start",
+    "lint": "cd apps/storefront && npm run lint",
+    "typecheck": "cd apps/storefront && npx tsc --noEmit",
+    "db:generate": "cd packages/database && npm run db:generate",
+    "db:migrate": "cd packages/database && npm run db:migrate",
+    "db:push": "cd packages/database && npm run db:push",
+    "db:studio": "cd packages/database && npm run db:studio"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

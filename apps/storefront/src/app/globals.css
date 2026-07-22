@@ -1,0 +1,92 @@
+@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+@import "@astryxdesign/theme-neutral/theme.css";
+@import "@astryxdesign/core/tailwind-theme.css";
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@theme {
+  --color-brand-navy: #0B1F5E;
+  --color-brand-blue: #1647B8;
+  --color-brand-electric: #285DFF;
+  --color-fashion-sand: #D8C7AF;
+  --color-fashion-olive: #7A8065;
+  --color-fashion-burgundy: #642C35;
+  --color-fashion-terracotta: #C67B5C;
+  --color-fashion-dusty-pink: #D4A5A5;
+  --color-fashion-lavender: #B8A9C9;
+  --color-fashion-cream: #F5F0E8;
+  --color-fashion-stone: #C4B8A8;
+  --color-fashion-sage: #9CAF88;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+}
+
+@layer components {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    background-color: var(--color-background-body);
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .tomis-hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+  }
+
+  .tomis-hero-left {
+    background-color: var(--color-brand-navy);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 3rem;
+  }
+
+  .tomis-hero-right {
+    background-color: var(--color-background-surface);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 3rem;
+  }
+
+  .tomis-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .tomis-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tomis-product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
