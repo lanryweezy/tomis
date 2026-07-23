@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 
 export default function NewInPage() {
   return (
     <div className="min-h-screen">
-      <Header />
       <main>
         <section className="bg-[var(--color-neutral-ink)] text-white py-20 md:py-28">
           <div className="max-w-[var(--max-wide-width)] mx-auto px-4 md:px-8 text-center">
@@ -34,7 +33,6 @@ export default function NewInPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

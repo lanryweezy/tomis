@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import TomisNav from '@/components/TomisNav';
+import TomisFooter from '@/components/TomisFooter';
 
 export const metadata: Metadata = {
   title: {
@@ -8,10 +10,7 @@ export const metadata: Metadata = {
   },
   description: 'The signature Tomis half-collar shirt. Designed for the life you actually live. Modern African smart casual.',
   keywords: ['tomis', 'half-collar', 'shirt', 'nigerian fashion', 'smart casual', 'lagos fashion', 'african fashion'],
-  authors: [{ name: 'Tomis' }],
-  creator: 'Tomis',
-  publisher: 'Tomis',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tomis.ng'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://tomis.fit'),
   openGraph: {
     type: 'website',
     locale: 'en_NG',
@@ -19,42 +18,16 @@ export const metadata: Metadata = {
     siteName: 'TOMIS',
     title: 'TOMIS — The Half-Collar Shirt',
     description: 'The signature Tomis half-collar shirt. Designed for the life you actually live.',
-    images: [
-      {
-        url: '/images/brand/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'TOMIS Half-Collar Shirt',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TOMIS — The Half-Collar Shirt',
     description: 'The signature Tomis half-collar shirt. Designed for the life you actually live.',
-    images: ['/images/brand/og-image.png'],
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -65,8 +38,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased">
-        {children}
+      <body style={{ margin: 0, fontFamily: "'Inter', system-ui, sans-serif", color: '#101114', backgroundColor: '#F7F7F4' }}>
+        <TomisNav />
+        <main>{children}</main>
+        <TomisFooter />
       </body>
     </html>
   );

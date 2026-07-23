@@ -8,17 +8,17 @@ import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid, GridSpan } from '@astryxdesign/core/Grid';
-import { Divider } from '@astryxdesign/core/Divider';
-import { Badge } from '@astryxdesign/core/Badge';
-import { Link as AstryxLink } from '@astryxdesign/core/Link';
-import { TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuItem } from '@astryxdesign/core/TopNav';
-import { MobileNav } from '@astryxdesign/core/MobileNav';
-import { IconButton } from '@astryxdesign/core/IconButton';
-import { Theme } from '@astryxdesign/core/theme';
-import { Thumbnail } from '@astryxdesign/core/Thumbnail';
+
+
+
+
+
+
+
+
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-import { Card } from '@astryxdesign/core/Card';
-import { Overlay } from '@astryxdesign/core/Overlay';
+
+
 import { products, formatPrice } from '@/data/products';
 
 const heroProducts = products.slice(0, 4);
@@ -30,32 +30,6 @@ const timeOfDay = [
   { time: '21:00', label: 'Dinner', description: 'Evening elegance, effortless.', image: '/images/lifestyle/black-office.jpg' },
   { time: 'Sunday', label: 'Leisure', description: 'Weekend ease, Tomis style.', image: '/images/lifestyle/olive-interior.jpg' },
 ];
-
-function TomisNav() {
-  return (
-    <TopNav>
-      <TopNavHeading>
-        <Link href="/" className="flex items-center">
-          <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
-        </Link>
-      </TopNavHeading>
-      <TopNavItem label="SHOP" href="/shop" />
-      <TopNavItem label="NEW IN" href="/new-in" />
-      <TopNavMegaMenu
-        label="COLLECTIONS"
-        items={
-          <>
-            <TopNavMegaMenuItem href="/shop" title="Half-Collar Shirts" description="Best sellers and new arrivals" />
-            <TopNavMegaMenuItem href="/shop" title="Shop by Colour" description="Find your signature look" />
-            <TopNavMegaMenuItem href="/collections" title="All Collections" description="Browse everything" />
-          </>
-        }
-      />
-      <TopNavItem label="ABOUT" href="/about" />
-      <TopNavItem label="JOURNAL" href="/journal" />
-    </TopNav>
-  );
-}
 
 function SplitScreenHero() {
   return (
@@ -240,9 +214,9 @@ function SignatureProduct() {
                   </button>
                 ))}
               </Stack>
-              <AstryxLink href="/support" style={{ fontSize: '0.75rem', marginTop: '0.5rem', display: 'inline-block' }}>
+              <Link href="/support" style={{ fontSize: '0.75rem', marginTop: '0.5rem', display: 'inline-block', color: 'var(--color-text-accent)' }}>
                 Size Guide
-              </AstryxLink>
+              </Link>
             </div>
 
             <Stack direction="horizontal" gap={3}>
@@ -250,7 +224,7 @@ function SignatureProduct() {
               <Button label="BUY NOW" variant="secondary" style={{ flex: 1 }} />
             </Stack>
 
-            <Divider />
+            <div style={{ borderTop: '1px solid var(--color-border, #E7E5E4)' }} />
 
             <Stack gap={3}>
               {[
@@ -422,79 +396,24 @@ function BrandStatement() {
         <p className="font-serif" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: 'var(--color-text-primary)', lineHeight: 1.3, fontStyle: 'italic' }}>
           &ldquo;The world is full of choices. Your closet doesn&apos;t have to be.&rdquo;
         </p>
-        <Divider style={{ width: '4rem', margin: '2rem auto' }} />
+        <div style={{ width: '4rem', height: '1px', backgroundColor: 'var(--color-text-accent, #1647B8)', margin: '2rem auto' }} />
         <Text type="label" color="secondary">The Tomis Philosophy</Text>
       </div>
     </Section>
   );
 }
 
-function TomisFooter() {
-  return (
-    <footer style={{ backgroundColor: 'var(--color-background-inverted)', color: 'white', padding: '4rem 0' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <Grid columns={4} gap={10}>
-          <Stack gap={4}>
-            <img src="/images/brand/logo-light.svg" alt="TOMIS" style={{ height: '1.5rem' }} />
-            <Text type="body" style={{ color: "white", opacity: 0.5, maxWidth: '16rem', lineHeight: 1.6 }}>
-              The signature half-collar shirt. Designed for the life you actually live.
-            </Text>
-          </Stack>
-
-          <Stack gap={4}>
-            <Text type="label" style={{ color: "white", letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>Shop</Text>
-            {['Half-Collar Shirts', 'New Arrivals', 'Best Sellers', 'All Products'].map(item => (
-              <AstryxLink key={item} href="/shop" style={{ color: "white", opacity: 0.5 }}>{item}</AstryxLink>
-            ))}
-          </Stack>
-
-          <Stack gap={4}>
-            <Text type="label" style={{ color: "white", letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>Company</Text>
-            {['Our Story', 'Journal', 'Careers', 'Sustainability'].map(item => (
-              <AstryxLink key={item} href="/about" style={{ color: "white", opacity: 0.5 }}>{item}</AstryxLink>
-            ))}
-          </Stack>
-
-          <Stack gap={4}>
-            <Text type="label" style={{ color: "white", letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>Support</Text>
-            {['Contact Us', 'FAQ', 'Shipping & Delivery', 'Returns & Exchanges', 'Size Guide'].map(item => (
-              <AstryxLink key={item} href="/support" style={{ color: "white", opacity: 0.5 }}>{item}</AstryxLink>
-            ))}
-          </Stack>
-        </Grid>
-
-        <Divider style={{ margin: '3rem 0', borderColor: 'rgba(255,255,255,0.1)' }} />
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text type="supporting" style={{ color: "white", opacity: 0.3 }}>
-            &copy; {new Date().getFullYear()} Tomis. All rights reserved.
-          </Text>
-          <Stack direction="horizontal" gap={6}>
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
-              <AstryxLink key={item} href="/legal" style={{ color: "white", opacity: 0.3, fontSize: '0.75rem' }}>{item}</AstryxLink>
-            ))}
-          </Stack>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export default function HomePage() {
   return (
-    <div style={{ minHeight: '100vh' }}>
-      <TomisNav />
-      <main>
-        <SplitScreenHero />
-        <InteractiveHalfMoment />
-        <SignatureProduct />
-        <ManyLives />
-        <ShopByColour />
-        <TomisUniform />
-        <EditorialSection />
-        <BrandStatement />
-      </main>
-      <TomisFooter />
-    </div>
+    <>
+      <SplitScreenHero />
+      <InteractiveHalfMoment />
+      <SignatureProduct />
+      <ManyLives />
+      <ShopByColour />
+      <TomisUniform />
+      <EditorialSection />
+      <BrandStatement />
+    </>
   );
 }

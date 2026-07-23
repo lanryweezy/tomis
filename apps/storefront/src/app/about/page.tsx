@@ -1,5 +1,4 @@
 'use client';
-
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@astryxdesign/core/Button';
@@ -8,35 +7,21 @@ import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
 import { Divider } from '@astryxdesign/core/Divider';
-import { TopNav, TopNavHeading, TopNavItem } from '@astryxdesign/core/TopNav';
-
 const values = [
   { title: 'The Half-Collar', description: 'Our signature mandarin collar design delivers clean lines and modern confidence. One silhouette, infinite possibilities.' },
   { title: 'Made in Lagos', description: 'Every Tomis shirt is crafted in Lagos, Nigeria. Supporting local artisans and African manufacturing.' },
   { title: 'Premium Cotton', description: '140 GSM premium cotton. Breathable, durable, and designed to get better with every wash.' },
   { title: 'Everyday Versatility', description: 'From boardroom to brunch, airport to dinner. One shirt that works everywhere you go.' },
 ];
-
 const milestones = [
   { year: '2024', event: 'The first Tomis half-collar shirt is designed in Lagos.' },
   { year: '2024', event: 'Prototype testing with 50 men across Lagos.' },
   { year: '2025', event: 'Tomis launches with 14 signature colourways.' },
   { year: '2025', event: 'The digital flagship store goes live.' },
 ];
-
 export default function AboutPage() {
   return (
-    <div style={{ minHeight: '100vh' }}>
-      <TopNav>
-        <TopNavHeading heading="TOMIS" headingHref="/" />
-        <TopNavItem label="SHOP" href="/shop" />
-        <TopNavItem label="NEW IN" href="/new-in" />
-        <TopNavItem label="COLLECTIONS" href="/collections" />
-        <TopNavItem label="ABOUT" href="/about" isSelected />
-        <TopNavItem label="JOURNAL" href="/journal" />
-      </TopNav>
-
-      <main>
+    <div>
         <section style={{ height: '70vh', backgroundColor: 'var(--color-background-inverted)', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, display: 'flex' }}>
             <div style={{ width: '50%', backgroundColor: 'var(--color-brand-navy)' }} />
@@ -71,7 +56,6 @@ export default function AboutPage() {
             </motion.p>
           </div>
         </section>
-
         <Section style={{ padding: '6rem 0' }}>
           <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
             <Text type="label" color="secondary" style={{ letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.625rem', marginBottom: '1rem', display: 'block' }}>
@@ -89,7 +73,6 @@ export default function AboutPage() {
             </Text>
           </div>
         </Section>
-
         <Section style={{ padding: '6rem 0', backgroundColor: 'var(--color-background-surface)' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
@@ -119,7 +102,6 @@ export default function AboutPage() {
             </Grid>
           </div>
         </Section>
-
         <Section style={{ padding: '6rem 0', backgroundColor: 'var(--color-background-inverted)' }}>
           <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '0 1rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
@@ -154,7 +136,6 @@ export default function AboutPage() {
             </Stack>
           </div>
         </Section>
-
         <Section style={{ padding: '6rem 0' }}>
           <div style={{ maxWidth: '40rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
             <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3rem)', color: 'var(--color-text-primary)', marginBottom: '1.5rem' }}>
@@ -168,13 +149,6 @@ export default function AboutPage() {
             </Link>
           </div>
         </Section>
-      </main>
-
-      <footer style={{ backgroundColor: 'var(--color-background-inverted)', color: 'white', padding: '3rem 0', textAlign: 'center' }}>
-        <Text type="supporting" style={{ color: 'rgba(255,255,255,0.3)' }}>
-          &copy; {new Date().getFullYear()} Tomis. All rights reserved.
-        </Text>
-      </footer>
     </div>
   );
 }

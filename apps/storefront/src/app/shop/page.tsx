@@ -1,21 +1,15 @@
 'use client';
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@astryxdesign/core/Button';
+import { Badge } from '@astryxdesign/core/Badge';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
-import { Divider } from '@astryxdesign/core/Divider';
-import { Badge } from '@astryxdesign/core/Badge';
-import { Selector } from '@astryxdesign/core/Selector';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-import { TopNav, TopNavHeading, TopNavItem } from '@astryxdesign/core/TopNav';
 import { products, formatPrice } from '@/data/products';
-import { Thumbnail } from '@astryxdesign/core/Thumbnail';
-
 const allColors = [
   { name: 'All', slug: 'all' },
   { name: 'Black', slug: 'black' },
@@ -32,13 +26,11 @@ const allColors = [
   { name: 'Burgundy', slug: 'burgundy' },
   { name: 'Sky Blue', slug: 'sky' },
 ];
-
 function ProductCard({ product }: { product: typeof products[0] }) {
   const [isHovered, setIsHovered] = useState(false);
   const variant = product.variants[0];
   const productImage = variant.images.find(i => i.type === 'product');
   const modelImage = variant.images.find(i => i.type === 'model');
-
   return (
     <Link href={`/products/${product.slug}`}>
       <ClickableCard
@@ -74,28 +66,15 @@ function ProductCard({ product }: { product: typeof products[0] }) {
     </Link>
   );
 }
-
 export default function ShopPage() {
   const [selectedColor, setSelectedColor] = useState('all');
-
   const filteredProducts = products.filter(p => {
     if (selectedColor === 'all') return true;
     return p.variants.some(v => v.colorSlug === selectedColor);
   });
-
   return (
-    <div style={{ minHeight: '100vh' }}>
-      <TopNav>
-        <TopNavHeading heading="TOMIS" headingHref="/" />
-        <TopNavItem label="SHOP" href="/shop" isSelected />
-        <TopNavItem label="NEW IN" href="/new-in" />
-        <TopNavItem label="COLLECTIONS" href="/collections" />
-        <TopNavItem label="ABOUT" href="/about" />
-        <TopNavItem label="JOURNAL" href="/journal" />
-      </TopNav>
-
-      <main>
-        <Section style={{ padding: '5rem 0', backgroundColor: 'var(--color-background-inverted)' }}>
+    <div>
+      <Section style={{ padding: '5rem 0', backgroundColor: 'var(--color-background-inverted)' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
             <Text type="label" style={{ color: "white", letterSpacing: '0.3em', textTransform: 'uppercase', opacity: 0.4, fontSize: '0.625rem' }}>
               The Collection
@@ -108,13 +87,11 @@ export default function ShopPage() {
             </Text>
           </div>
         </Section>
-
         <Section style={{ padding: '3rem 0' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
               <Text type="body" color="secondary">{filteredProducts.length} products</Text>
             </div>
-
             <div style={{ display: 'flex', gap: '2rem' }}>
               <aside style={{ width: '12rem', flexShrink: 0 }}>
                 <Text type="label" color="secondary" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem', marginBottom: '1rem', display: 'block' }}>
@@ -140,7 +117,6 @@ export default function ShopPage() {
                   ))}
                 </Stack>
               </aside>
-
               <div style={{ flex: 1 }}>
                 <Grid columns={{ minWidth: 280 }} gap={6}>
                   {filteredProducts.map(product => (
@@ -150,14 +126,7 @@ export default function ShopPage() {
               </div>
             </div>
           </div>
-        </Section>
-      </main>
-
-      <footer style={{ backgroundColor: 'var(--color-background-inverted)', color: 'white', padding: '3rem 0', textAlign: 'center' }}>
-        <Text type="supporting" style={{ color: "white", opacity: 0.3 }}>
-          &copy; {new Date().getFullYear()} Tomis. All rights reserved.
-        </Text>
-      </footer>
+      </Section>
     </div>
   );
 }

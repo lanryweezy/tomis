@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 import { Button } from '@/components/ui/button';
 
 export default function SupportPage() {
   return (
     <div className="min-h-screen">
-      <Header />
       <main className="max-w-3xl mx-auto px-4 md:px-8 py-16 md:py-24">
         <h1 className="font-display text-3xl md:text-4xl text-[var(--color-neutral-ink)] mb-8">
           Support
@@ -74,7 +73,6 @@ export default function SupportPage() {
           </section>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

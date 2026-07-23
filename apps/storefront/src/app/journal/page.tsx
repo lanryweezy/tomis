@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 
 const articles = [
   {
@@ -59,7 +59,6 @@ const articles = [
 export default function JournalPage() {
   return (
     <div className="min-h-screen">
-      <Header />
       <main>
         {/* Hero */}
         <section className="bg-[var(--color-neutral-ink)] text-white py-20 md:py-28">
@@ -145,7 +144,6 @@ export default function JournalPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }

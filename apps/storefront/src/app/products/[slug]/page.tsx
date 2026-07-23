@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -11,15 +10,12 @@ import { Grid } from '@astryxdesign/core/Grid';
 import { Divider } from '@astryxdesign/core/Divider';
 import { Badge } from '@astryxdesign/core/Badge';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-import { TopNav, TopNavHeading, TopNavItem } from '@astryxdesign/core/TopNav';
 import { Breadcrumbs, BreadcrumbItem } from '@astryxdesign/core/Breadcrumbs';
 import { Collapsible } from '@astryxdesign/core/Collapsible';
 import { products, getProductBySlug, formatPrice, getRelatedProducts } from '@/data/products';
-
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = getProductBySlug(slug);
-
   if (!product) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -30,30 +26,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
     );
   }
-
   return <ProductPageContent product={product} />;
 }
-
 function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeof getProductBySlug>> }) {
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
-
   const variant = product.variants[selectedColor];
   const relatedProducts = getRelatedProducts(product.id);
-
   return (
-    <div style={{ minHeight: '100vh' }}>
-      <TopNav>
-        <TopNavHeading heading="TOMIS" headingHref="/" />
-        <TopNavItem label="SHOP" href="/shop" isSelected />
-        <TopNavItem label="NEW IN" href="/new-in" />
-        <TopNavItem label="COLLECTIONS" href="/collections" />
-        <TopNavItem label="ABOUT" href="/about" />
-        <TopNavItem label="JOURNAL" href="/journal" />
-      </TopNav>
-
-      <main>
+    <div>
         <Section style={{ padding: '1rem 0' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <Breadcrumbs>
@@ -63,7 +45,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </Breadcrumbs>
           </div>
         </Section>
-
         <Section style={{ padding: '2rem 0 4rem' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <Grid columns={2} gap={10} style={{ alignItems: 'start' }}>
@@ -82,7 +63,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     />
                   </AnimatePresence>
                 </div>
-
                 <Stack direction="horizontal" gap={2} style={{ marginTop: '0.75rem' }}>
                   {variant.images.map((img, index) => (
                     <button
@@ -101,7 +81,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   ))}
                 </Stack>
               </div>
-
               <Stack gap={6}>
                 <div>
                   <Badge label={product.collection} />
@@ -126,9 +105,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     {product.shortDescription}
                   </Text>
                 </div>
-
                 <Divider />
-
                 <div>
                   <Text type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>
                     Colour: <span style={{ color: 'var(--color-text-primary)' }}>{variant.color}</span>
@@ -153,7 +130,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     ))}
                   </Stack>
                 </div>
-
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                     <Text type="label" color="secondary">Size</Text>
@@ -187,12 +163,10 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     ))}
                   </Stack>
                 </div>
-
                 <Stack direction="horizontal" gap={3}>
                   <Button label="ADD TO BAG" style={{ flex: 1 }} />
                   <Button label="BUY NOW" variant="secondary" style={{ flex: 1 }} />
                 </Stack>
-
                 <div style={{ backgroundColor: 'var(--color-background-muted)', padding: '1rem' }}>
                   <Stack gap={2}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
@@ -209,9 +183,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     </div>
                   </Stack>
                 </div>
-
                 <Divider />
-
                 <Stack gap={0}>
                   <Collapsible
                     trigger={<Text type="body" weight="medium">Product Details</Text>}
@@ -250,7 +222,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </Grid>
           </div>
         </Section>
-
         <Section style={{ padding: '4rem 0', backgroundColor: 'var(--color-background-muted)' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <Text type="label" color="secondary" style={{ textAlign: 'center', display: 'block', marginBottom: '3rem', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.625rem' }}>
@@ -266,7 +237,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </Grid>
           </div>
         </Section>
-
         {relatedProducts.length > 0 && (
           <Section style={{ padding: '4rem 0' }}>
             <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
@@ -290,13 +260,6 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </div>
           </Section>
         )}
-      </main>
-
-      <footer style={{ backgroundColor: 'var(--color-background-inverted)', color: 'white', padding: '3rem 0', textAlign: 'center' }}>
-        <Text type="supporting" style={{ color: "white", opacity: 0.3 }}>
-          &copy; {new Date().getFullYear()} Tomis. All rights reserved.
-        </Text>
-      </footer>
     </div>
   );
 }

@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 import { Button } from '@/components/ui/button';
 
 const sampleCart = [
@@ -34,7 +34,6 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
       <main className="max-w-[var(--max-wide-width)] mx-auto px-4 md:px-8 py-12 md:py-16">
         <h1 className="font-display text-3xl md:text-4xl text-[var(--color-neutral-ink)] mb-8">
           YOUR BAG
@@ -155,7 +154,6 @@ export default function CartPage() {
           </div>
         )}
       </main>
-      <Footer />
     </div>
   );
 }

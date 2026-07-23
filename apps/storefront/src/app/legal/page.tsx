@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 
 const legalPages = [
   { title: 'Terms of Service', content: 'These terms govern your use of the Tomis website and services.' },
@@ -16,7 +16,6 @@ const legalPages = [
 export default function LegalPage() {
   return (
     <div className="min-h-screen">
-      <Header />
       <main className="max-w-3xl mx-auto px-4 md:px-8 py-16 md:py-24">
         <h1 className="font-display text-3xl md:text-4xl text-[var(--color-neutral-ink)] mb-8">
           Legal
@@ -39,7 +38,6 @@ export default function LegalPage() {
           </Link>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

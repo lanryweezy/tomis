@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Header } from '@/components/ui/header';
-import { Footer } from '@/components/ui/footer';
+
+
 import { Button } from '@/components/ui/button';
 
 export default function AccountPage() {
@@ -13,7 +13,6 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
       <main className="max-w-md mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-8">
           <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-6 mx-auto mb-6" />
@@ -97,7 +96,6 @@ export default function AccountPage() {
           </Button>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }
