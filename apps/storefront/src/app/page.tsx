@@ -1,419 +1,229 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import Link from 'next/link';
-import { Button } from '@astryxdesign/core/Button';
-import { Text } from '@astryxdesign/core/Text';
-import { Section } from '@astryxdesign/core/Section';
-import { Stack } from '@astryxdesign/core/Stack';
-import { Grid, GridSpan } from '@astryxdesign/core/Grid';
-
-
-
-
-
-
-
-
-import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-
-
+import { motion } from 'framer-motion';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { products, formatPrice } from '@/data/products';
 
-const heroProducts = products.slice(0, 4);
+const fadeIn = { initial: { opacity: 0, y: 40 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '-50px' } as const, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } };
+const stagger = { initial: { opacity: 0, y: 30 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } as const };
 
-const timeOfDay = [
-  { time: '08:00', label: 'The Office', description: 'From boardroom to brainstorm.', image: '/images/lifestyle/white-executive.jpg' },
-  { time: '13:00', label: 'Lunch', description: 'The midday break, dressed right.', image: '/images/lifestyle/olive-cafe.jpg' },
-  { time: '18:00', label: 'After Work', description: 'From desk to dinner.', image: '/images/lifestyle/tan-waterfront.jpg' },
-  { time: '21:00', label: 'Dinner', description: 'Evening elegance, effortless.', image: '/images/lifestyle/black-office.jpg' },
-  { time: 'Sunday', label: 'Leisure', description: 'Weekend ease, Tomis style.', image: '/images/lifestyle/olive-interior.jpg' },
-];
-
-function SplitScreenHero() {
+function Hero() {
   return (
-    <section className="relative overflow-hidden" style={{ minHeight: '100vh' }}>
-      <div className="absolute inset-0">
-        <img
+    <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', backgroundColor: '#FAFAF9' }}>
+      <div style={{ position: 'absolute', right: 0, top: 0, width: '55%', height: '100%', overflow: 'hidden' }}>
+        <motion.img
           src="/images/hero/hero-white-office.jpg"
-          alt="Man wearing Tomis half-collar shirt in modern office"
-          className="w-full h-full object-cover"
+          alt="Man wearing Tomis half-collar shirt"
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(11,31,94,0.85) 0%, rgba(11,31,94,0.4) 50%, transparent 100%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #FAFAF9 0%, transparent 30%)' }} />
       </div>
 
-      <div className="relative z-10 h-full flex flex-col justify-center" style={{ padding: '0 3rem', maxWidth: '80rem', margin: '0 auto' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <Text type="large" style={{ color: 'rgba(255,255,255,0.6)', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.7rem' }}>
-            The Signature Collection
-          </Text>
-          <h1 className="font-display" style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', lineHeight: 0.9, marginTop: '1rem', color: 'white' }}>
-            HALF THE COLLAR.
-          </h1>
-          <h1 className="font-display" style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', lineHeight: 0.9, color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,0.5)' }}>
-            ALL THE CHARACTER.
-          </h1>
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', width: '100%' }}>
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }} style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#1647B8', marginBottom: '1.5rem' }}>
+          The Signature Collection
+        </motion.p>
+        <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="text-display" style={{ color: '#101114', maxWidth: '600px' }}>
+          HALF THE COLLAR.<br />
+          <span style={{ color: '#1647B8' }}>ALL THE CHARACTER.</span>
+        </motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 0.6 }} style={{ fontSize: '1.05rem', color: '#78716C', maxWidth: '440px', marginTop: '1.5rem', lineHeight: 1.7 }}>
+          The signature Tomis half-collar shirt. Designed to move effortlessly between work, leisure and everything in between.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.6 }} style={{ display: 'flex', gap: '1rem', marginTop: '2.5rem', flexWrap: 'wrap' }}>
+          <Link href="/shop" style={{ display: 'inline-flex', alignItems: 'center', height: '3.25rem', padding: '0 2rem', backgroundColor: '#101114', color: 'white', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.15em', textDecoration: 'none', transition: 'all 0.3s ease' }}>
+            SHOP NOW →
+          </Link>
+          <Link href="/about" style={{ display: 'inline-flex', alignItems: 'center', height: '3.25rem', padding: '0 2rem', border: '1px solid #D6D3D1', color: '#101114', fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.15em', textDecoration: 'none', transition: 'all 0.3s ease' }}>
+            DISCOVER TOMIS
+          </Link>
         </motion.div>
       </div>
 
-      <motion.div
-        className="absolute bottom-12 left-0 right-0 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
-      >
-        <Text type="body" style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '28rem', margin: '0 auto 2rem' }}>
-          The signature Tomis half-collar shirt. Designed to move effortlessly between work, leisure and everything in between.
-        </Text>
-        <Stack direction="horizontal" gap={3} style={{ justifyContent: 'center' }}>
-          <Link href="/shop">
-            <Button label="SHOP THE SIGNATURE" />
-          </Link>
-          <Link href="/about">
-            <Button label="DISCOVER TOMIS" variant="secondary" />
-          </Link>
-        </Stack>
+      {/* Scroll indicator */}
+      <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)' }}>
+        <div style={{ width: '1px', height: '48px', backgroundColor: '#D6D3D1', position: 'relative', overflow: 'hidden' }}>
+          <motion.div animate={{ y: ['-100%', '100%'] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: '100%', height: '50%', backgroundColor: '#101114' }} />
+        </div>
       </motion.div>
     </section>
   );
 }
 
-function InteractiveHalfMoment() {
+function MarqueeStrip() {
   return (
-    <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, display: 'flex' }}>
-        <div style={{ flex: 1, backgroundColor: 'var(--color-background-inverted)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '2rem' }}>
-          <span className="font-display text-white" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', whiteSpace: 'nowrap' }}>
-            TWO STYLES.
-          </span>
-        </div>
-        <div style={{ flex: 1, backgroundColor: 'var(--color-background-surface)', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '2rem' }}>
-          <span className="font-display" style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', whiteSpace: 'nowrap', color: 'var(--color-text-primary)' }}>
-            ONE IDENTITY.
-          </span>
+    <div style={{ overflow: 'hidden', padding: '1.5rem 0', borderTop: '1px solid rgba(0,0,0,0.06)', borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+      <div className="marquee">
+        <div className="marquee-content" style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8A29E' }}>
+          {['PREMIUM FABRICS', 'CLEAN DESIGN', 'FAST DELIVERY', 'MADE IN LAGOS', 'FREE RETURNS', 'SECURE PAYMENT'].map((item, i) => (
+            <span key={i} style={{ padding: '0 2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ width: '4px', height: '4px', backgroundColor: '#1647B8', borderRadius: '50%', display: 'inline-block' }} />
+              {item}
+            </span>
+          ))}
+          {['PREMIUM FABRICS', 'CLEAN DESIGN', 'FAST DELIVERY', 'MADE IN LAGOS', 'FREE RETURNS', 'SECURE PAYMENT'].map((item, i) => (
+            <span key={`dup-${i}`} style={{ padding: '0 2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ width: '4px', height: '4px', backgroundColor: '#1647B8', borderRadius: '50%', display: 'inline-block' }} />
+              {item}
+            </span>
+          ))}
         </div>
       </div>
-      <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
-        <h2 className="font-display" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: 'var(--color-text-primary)', marginBottom: '1rem' }}>
-          THE HALF-COLLAR.
-        </h2>
-        <Text type="label" color="secondary">Tomis Signature</Text>
+    </div>
+  );
+}
+
+function FeaturedProducts() {
+  const featured = products.slice(0, 4);
+  return (
+    <section className="section-editorial" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+      <motion.div {...fadeIn} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+        <div>
+          <p style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#1647B8', marginBottom: '0.5rem' }}>New Arrivals</p>
+          <h2 className="text-display" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>THE SIGNATURE</h2>
+        </div>
+        <Link href="/shop" className="link-underline" style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.1em', color: '#101114', textDecoration: 'none' }}>VIEW ALL →</Link>
+      </motion.div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'clamp(1rem, 3vw, 2rem)' }}>
+        {featured.map((product, index) => {
+          const variant = product.variants[0];
+          const img = variant.images.find(i => i.type === 'product');
+          return (
+            <motion.div key={product.id} {...stagger} transition={{ duration: 0.6, delay: index * 0.1 }}>
+              <Link href={`/products/${product.slug}`} className="card-lift" style={{ display: 'block', textDecoration: 'none' }}>
+                <div className="img-hover" style={{ aspectRatio: '3/4', backgroundColor: '#F5F5F4', marginBottom: '1rem' }}>
+                  <img src={img?.src || variant.images[0]?.src} alt={img?.alt || product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <p style={{ fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8A29E', marginBottom: '0.25rem' }}>{variant.color}</p>
+                <h3 style={{ fontSize: '0.85rem', fontWeight: 500, color: '#101114', marginBottom: '0.25rem' }}>{product.name}</h3>
+                <p style={{ fontSize: '0.85rem', color: '#101114' }}>{formatPrice(variant.price)}</p>
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );
 }
 
-function SignatureProduct() {
-  const [selectedColor, setSelectedColor] = useState(0);
-  const colors = [
-    { name: 'Black', code: '#101114', accent: '#FFFFFF' },
-    { name: 'Navy', code: '#0B1F5E', accent: '#FFFFFF' },
-    { name: 'Olive', code: '#7A8065', accent: '#C4B8A8' },
-    { name: 'Pink', code: '#D4A5A5', accent: '#FFFFFF' },
-    { name: 'Brown', code: '#8B6F47', accent: '#F5F0E8' },
+function EditorialHero() {
+  return (
+    <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '80vh', overflow: 'hidden' }}>
+      <motion.div initial={{ x: '-100%' }} whileInView={{ x: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} style={{ backgroundColor: '#0B1F5E', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem' }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2 className="font-display text-white" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 0.95 }}>
+            ONE SHIRT.<br />MANY LIVES.
+          </h2>
+        </div>
+      </motion.div>
+      <motion.div initial={{ x: '100%' }} whileInView={{ x: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} style={{ position: 'relative', overflow: 'hidden' }}>
+        <img src="/images/lifestyle/olive-glasses.jpg" alt="Tomis lifestyle" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </motion.div>
+    </section>
+  );
+}
+
+function ColourGrid() {
+  const colours = [
+    { name: 'BLACK', sub: 'The Essential', bg: '#101114' },
+    { name: 'NAVY', sub: 'The Classic', bg: '#0B1F5E' },
+    { name: 'OLIVE', sub: 'The Natural', bg: '#7A8065' },
+    { name: 'PINK', sub: 'The Unexpected', bg: '#D4A5A5' },
+    { name: 'BROWN', sub: 'The Warmth', bg: '#8B6F47' },
   ];
-
   return (
-    <Section style={{ padding: '6rem 0', backgroundColor: 'var(--color-background-surface)' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <Text type="label" color="secondary">The Tomis Signature</Text>
-          <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: 'var(--color-text-primary)', margin: '0.75rem 0' }}>
-            THE HALF-COLLAR SHIRT
-          </h2>
-          <Text type="body" color="secondary" style={{ maxWidth: '32rem', margin: '0 auto' }}>
-            A silhouette designed to make everyday dressing effortless.
-          </Text>
-        </div>
-
-        <Grid columns={2} gap={8} style={{ alignItems: 'center' }}>
-          <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', position: 'relative', overflow: 'hidden' }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedColor}
-                style={{ position: 'absolute', inset: 0, display: 'flex' }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div style={{ width: '50%', backgroundColor: colors[selectedColor].code }} />
-                <div style={{ width: '50%', backgroundColor: colors[selectedColor].accent }} />
-              </motion.div>
-            </AnimatePresence>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span className="font-display text-white" style={{ fontSize: '2.5rem', mixBlendMode: 'difference' }}>TOMIS</span>
-            </div>
-          </div>
-
-          <Stack gap={6}>
-            <div>
-              <Text type="label" color="secondary">Half-Collar Shirt</Text>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={selectedColor}
-                  style={{ fontSize: '1.5rem', fontWeight: 500, color: 'var(--color-text-primary)', margin: '0.5rem 0' }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  {colors[selectedColor].name}
-                </motion.p>
-              </AnimatePresence>
-              <p style={{ fontSize: '1.5rem', fontWeight: 500, color: 'var(--color-text-primary)' }}>
-                {formatPrice(35000)}
-              </p>
-            </div>
-
-            <div>
-              <Text type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>Colour</Text>
-              <Stack direction="horizontal" gap={3}>
-                {colors.map((color, index) => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColor(index)}
-                    style={{
-                      width: '2.5rem',
-                      height: '2.5rem',
-                      borderRadius: '50%',
-                      border: selectedColor === index ? '2px solid var(--color-text-primary)' : '2px solid transparent',
-                      background: `linear-gradient(135deg, ${color.code} 50%, ${color.accent} 50%)`,
-                      transform: selectedColor === index ? 'scale(1.1)' : 'scale(1)',
-                      transition: 'all 0.2s',
-                      cursor: 'pointer',
-                    }}
-                    aria-label={color.name}
-                  />
-                ))}
-              </Stack>
-            </div>
-
-            <div>
-              <Text type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>Size</Text>
-              <Stack direction="horizontal" gap={2}>
-                {['S', 'M', 'L', 'XL', 'XXL'].map(size => (
-                  <button
-                    key={size}
-                    style={{
-                      width: '3rem',
-                      height: '3rem',
-                      border: '1px solid var(--color-border)',
-                      background: 'transparent',
-                      fontSize: '0.875rem',
-                      fontWeight: 500,
-                      cursor: 'pointer',
-                      transition: 'border-color 0.2s',
-                    }}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </Stack>
-              <Link href="/support" style={{ fontSize: '0.75rem', marginTop: '0.5rem', display: 'inline-block', color: 'var(--color-text-accent)' }}>
-                Size Guide
-              </Link>
-            </div>
-
-            <Stack direction="horizontal" gap={3}>
-              <Button label="ADD TO BAG" style={{ flex: 1 }} />
-              <Button label="BUY NOW" variant="secondary" style={{ flex: 1 }} />
-            </Stack>
-
-            <div style={{ borderTop: '1px solid var(--color-border, #E7E5E4)' }} />
-
-            <Stack gap={3}>
-              {[
-                { label: 'Fabric', value: '100% Premium Cotton' },
-                { label: 'Fit', value: 'Relaxed. True to size.' },
-                { label: 'Made in', value: 'Lagos, Nigeria' },
-                { label: 'Delivery', value: 'Lagos 1–2 days' },
-              ].map(item => (
-                <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                  <Text type="supporting" color="secondary">{item.label}</Text>
-                  <Text type="body">{item.value}</Text>
-                </div>
-              ))}
-            </Stack>
-          </Stack>
-        </Grid>
-      </div>
-    </Section>
-  );
-}
-
-function ManyLives() {
-  return (
-    <Section style={{ padding: '6rem 0' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <Text type="label" color="secondary">One Shirt. Many Lives.</Text>
-          <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: 'var(--color-text-primary)' }}>
-            ONE SHIRT.<br />MORE PLACES THAN YOU EXPECTED.
-          </h2>
-        </div>
-
-        <Grid columns={5} gap={4}>
-          {timeOfDay.map((item) => (
-            <ClickableCard key={item.time} label={item.label} style={{ aspectRatio: '3/4', position: 'relative', overflow: 'hidden' }}>
-              <img src={item.image} alt={item.label} className="w-full h-full object-cover" />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)' }} />
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem' }}>
-                <Text type="label" style={{ color: "white", letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>
-                  {item.time}
-                </Text>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 500, color: 'white', margin: '0.25rem 0' }}>
-                  {item.label}
-                </h3>
-                <Text type="supporting" style={{ color: "white", fontSize: '0.75rem' }}>
-                  {item.description}
-                </Text>
+    <section className="section-editorial" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+      <motion.div {...fadeIn} style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <p style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A8A29E', marginBottom: '0.5rem' }}>Shop by Colour</p>
+        <h2 className="text-display" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>CHOOSE YOUR MOOD.</h2>
+      </motion.div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1px', backgroundColor: 'rgba(0,0,0,0.06)' }}>
+        {colours.map((c, i) => (
+          <motion.div key={c.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}>
+            <Link href="/shop" style={{ display: 'block', aspectRatio: '3/4', backgroundColor: c.bg, position: 'relative', textDecoration: 'none', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                <h3 className="font-display text-white" style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)', marginBottom: '0.25rem' }}>{c.name}</h3>
+                <p style={{ fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>{c.sub}</p>
               </div>
-            </ClickableCard>
-          ))}
-        </Grid>
-      </div>
-    </Section>
-  );
-}
-
-function ShopByColour() {
-  const colors = [
-    { name: 'BLACK', subtitle: 'The Essential', code: '#101114' },
-    { name: 'NAVY', subtitle: 'The Classic', code: '#0B1F5E' },
-    { name: 'OLIVE', subtitle: 'The Natural', code: '#7A8065' },
-    { name: 'PINK', subtitle: 'The Unexpected', code: '#D4A5A5' },
-    { name: 'BROWN', subtitle: 'The Warmth', code: '#8B6F47' },
-  ];
-
-  return (
-    <Section style={{ padding: '6rem 0', backgroundColor: 'var(--color-background-surface)' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <Text type="label" color="secondary">Shop by Colour</Text>
-          <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: 'var(--color-text-primary)' }}>
-            CHOOSE YOUR MOOD.
-          </h2>
-        </div>
-
-        <Grid columns={5} gap={4}>
-          {colors.map((color) => (
-            <Link key={color.name} href="/shop">
-              <ClickableCard label={color.name} style={{ aspectRatio: '3/4', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, backgroundColor: color.code }} />
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-                  <h3 className="font-display text-white" style={{ fontSize: '1.75rem', marginBottom: '0.25rem' }}>
-                    {color.name}
-                  </h3>
-                  <Text type="label" style={{ color: "white", letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.625rem' }}>
-                    {color.subtitle}
-                  </Text>
-                </div>
-              </ClickableCard>
             </Link>
-          ))}
-        </Grid>
+          </motion.div>
+        ))}
       </div>
-    </Section>
+    </section>
   );
 }
 
-function TomisUniform() {
+function Philosophy() {
   return (
-    <Section style={{ padding: '6rem 0', backgroundColor: 'var(--color-background-inverted)' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <Grid columns={2} gap={10} style={{ alignItems: 'center' }}>
-          <Stack gap={6}>
-            <Text type="label" style={{ color: "white", letterSpacing: '0.3em', textTransform: 'uppercase', opacity: 0.5, fontSize: '0.625rem' }}>
-              The Tomis Uniform
-            </Text>
-            <h2 className="font-display text-white" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', lineHeight: 0.95 }}>
-              FIND YOUR<br />TOMIS.
-            </h2>
-            <Text type="body" style={{ color: "white", maxWidth: '28rem', opacity: 0.6, lineHeight: 1.6 }}>
-              Some people have one. Some have five. Some never leave home without it. You don&apos;t need hundreds of clothes. You need the right ones.
-            </Text>
-            <Link href="/shop">
-              <Button label="EXPLORE THE COLLECTION" variant="secondary" />
-            </Link>
-          </Stack>
-
-          <Grid columns={2} gap={4}>
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} style={{ aspectRatio: '3/4', backgroundColor: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Text type="label" style={{ color: "white", opacity: 0.2 }}>DAY {i}</Text>
-              </div>
-            ))}
-          </Grid>
-        </Grid>
-      </div>
-    </Section>
-  );
-}
-
-function EditorialSection() {
-  return (
-    <Section style={{ padding: '6rem 0' }}>
-      <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <Text type="label" color="secondary">The Lookbook</Text>
-          <h2 className="font-display" style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', color: 'var(--color-text-primary)' }}>
-            TOMIS JOURNAL
-          </h2>
-        </div>
-
-        <Grid columns={3} gap={6}>
-          {[
-            { issue: 'ISSUE 01', title: 'LAGOS / 07:32', subtitle: 'Morning light, evening style.' },
-            { issue: 'ISSUE 02', title: 'THE WORKDAY', subtitle: 'From first meeting to last email.' },
-            { issue: 'ISSUE 03', title: 'AFTER HOURS', subtitle: 'When the day gets interesting.' },
-          ].map(item => (
-            <Link key={item.issue} href="/journal">
-              <ClickableCard label={item.title}>
-                <div style={{ aspectRatio: '4/5', backgroundColor: 'var(--color-background-muted)', marginBottom: '1rem' }} />
-                <Text type="label" color="accent">{item.issue}</Text>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: 500, color: 'var(--color-text-primary)', margin: '0.25rem 0' }}>
-                  {item.title}
-                </h3>
-                <Text type="supporting" color="secondary">{item.subtitle}</Text>
-              </ClickableCard>
-            </Link>
-          ))}
-        </Grid>
-      </div>
-    </Section>
-  );
-}
-
-function BrandStatement() {
-  return (
-    <Section style={{ padding: '8rem 0' }}>
-      <div style={{ maxWidth: '48rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
-        <p className="font-serif" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', color: 'var(--color-text-primary)', lineHeight: 1.3, fontStyle: 'italic' }}>
+    <section className="section-editorial" style={{ backgroundColor: '#101114', color: 'white' }}>
+      <motion.div {...fadeIn} style={{ maxWidth: '800px', margin: '0 auto', padding: '0 1.5rem', textAlign: 'center' }}>
+        <p className="font-serif" style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', lineHeight: 1.3, fontStyle: 'italic', color: 'rgba(255,255,255,0.9)' }}>
           &ldquo;The world is full of choices. Your closet doesn&apos;t have to be.&rdquo;
         </p>
-        <div style={{ width: '4rem', height: '1px', backgroundColor: 'var(--color-text-accent, #1647B8)', margin: '2rem auto' }} />
-        <Text type="label" color="secondary">The Tomis Philosophy</Text>
+        <div style={{ width: '3rem', height: '1px', backgroundColor: '#1647B8', margin: '2rem auto' }} />
+        <p style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>The Tomis Philosophy</p>
+      </motion.div>
+    </section>
+  );
+}
+
+function BentoGrid() {
+  return (
+    <section className="section-editorial" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gridTemplateRows: 'auto auto', gap: '1px', backgroundColor: 'rgba(0,0,0,0.06)' }}>
+        <motion.div {...fadeIn} style={{ gridRow: '1 / 3', backgroundColor: '#FAFAF9', padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <p style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#1647B8', marginBottom: '1rem' }}>Our Signature</p>
+          <h2 className="text-display" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1rem' }}>THE HALF-COLLAR</h2>
+          <p style={{ fontSize: '0.95rem', color: '#78716C', lineHeight: 1.7, maxWidth: '400px', marginBottom: '2rem' }}>
+            Our signature mandarin collar design delivers clean lines and modern confidence. One silhouette, infinite possibilities.
+          </p>
+          <Link href="/shop" style={{ display: 'inline-flex', alignItems: 'center', height: '3rem', padding: '0 1.5rem', backgroundColor: '#101114', color: 'white', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.15em', textDecoration: 'none', width: 'fit-content' }}>
+            SHOP HALF-COLLAR →
+          </Link>
+        </motion.div>
+        <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="img-hover" style={{ backgroundColor: '#F5F5F4', overflow: 'hidden' }}>
+          <img src="/images/products/olive-front.jpg" alt="Olive half-collar shirt" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </motion.div>
+        <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="img-hover" style={{ backgroundColor: '#F5F5F4', overflow: 'hidden' }}>
+          <img src="/images/lifestyle/white-office.jpg" alt="Tomis lifestyle" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </motion.div>
       </div>
-    </Section>
+    </section>
+  );
+}
+
+function CTA() {
+  return (
+    <section className="section-editorial" style={{ textAlign: 'center' }}>
+      <motion.div {...fadeIn}>
+        <h2 className="text-display" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', marginBottom: '1rem' }}>EXPERIENCE TOMIS</h2>
+        <p style={{ fontSize: '0.95rem', color: '#78716C', marginBottom: '2rem' }}>Discover the shirt that changes the way you dress.</p>
+        <Link href="/shop" style={{ display: 'inline-flex', alignItems: 'center', height: '3.25rem', padding: '0 2rem', backgroundColor: '#101114', color: 'white', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.15em', textDecoration: 'none' }}>
+          SHOP THE COLLECTION →
+        </Link>
+      </motion.div>
+    </section>
   );
 }
 
 export default function HomePage() {
+  useScrollReveal();
   return (
     <>
-      <SplitScreenHero />
-      <InteractiveHalfMoment />
-      <SignatureProduct />
-      <ManyLives />
-      <ShopByColour />
-      <TomisUniform />
-      <EditorialSection />
-      <BrandStatement />
+      <Hero />
+      <MarqueeStrip />
+      <FeaturedProducts />
+      <EditorialHero />
+      <ColourGrid />
+      <BentoGrid />
+      <Philosophy />
+      <CTA />
     </>
   );
 }
