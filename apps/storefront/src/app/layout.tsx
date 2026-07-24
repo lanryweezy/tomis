@@ -4,6 +4,7 @@ import TomisNav from '@/components/TomisNav';
 import TomisFooter from '@/components/TomisFooter';
 import BackToTop from '@/components/BackToTop';
 import PageTransition from '@/components/PageTransition';
+import { ToastProvider } from '@/components/ui/Toast';
 
 export const metadata: Metadata = {
   title: { default: 'TOMIS — The Half-Collar Shirt', template: '%s | TOMIS' },
@@ -24,12 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body>
-        <TomisNav />
-        <PageTransition>
-          <main>{children}</main>
-        </PageTransition>
-        <TomisFooter />
-        <BackToTop />
+        <ToastProvider>
+          <TomisNav />
+          <PageTransition>
+            <main>{children}</main>
+          </PageTransition>
+          <TomisFooter />
+          <BackToTop />
+        </ToastProvider>
       </body>
     </html>
   );
