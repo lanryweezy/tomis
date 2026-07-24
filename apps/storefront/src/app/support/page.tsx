@@ -34,7 +34,7 @@ export default function SupportPage() {
               {[
                 { q: 'What sizes do you offer?', a: 'We offer S, M, L, XL, and XXL. Our shirts have a relaxed fit and are true to size.' },
                 { q: 'How do I know my size?', a: 'Check our Size Guide for detailed measurements. If you\'re between sizes, we recommend sizing up.' },
-                { q: 'What is the half-collar?', a: 'Our signature design features two colours in one shirt, creating a distinctive collar silhouette.' },
+                { q: 'What is the half-collar?', a: 'Our signature mandarin collar design delivers a clean, modern silhouette. One colour, one collar, one confidence.' },
                 { q: 'How long does delivery take?', a: 'Lagos: 1–2 working days. Nationwide: 2–5 working days.' },
                 { q: 'Can I return or exchange?', a: 'Yes. Free returns within 14 days of delivery for unworn items with tags attached.' },
                 { q: 'How do I care for my Tomis shirt?', a: 'Machine wash cold with like colours. Tumble dry low. Iron on medium heat. Do not bleach or dry clean.' },
