@@ -6,6 +6,7 @@ import BackToTop from '@/components/BackToTop';
 import PageTransition from '@/components/PageTransition';
 import { ToastProvider } from '@/components/ui/Toast';
 import WhatsAppChat from '@/components/WhatsAppChat';
+import NewsletterPopup from '@/components/NewsletterPopup';
 
 export const metadata: Metadata = {
   title: { default: 'TOMIS — The Half-Collar Shirt', template: '%s | TOMIS' },
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <TomisFooter />
           <BackToTop />
           <WhatsAppChat />
+          <NewsletterPopup />
         </ToastProvider>
       </body>
     </html>
