@@ -142,11 +142,11 @@ function EditorialHero() {
 
 function ColourGrid() {
   const colours = [
-    { name: 'BLACK', sub: 'The Essential', bg: '#101114' },
-    { name: 'NAVY', sub: 'The Classic', bg: '#0B1F5E' },
-    { name: 'OLIVE', sub: 'The Natural', bg: '#7A8065' },
-    { name: 'PINK', sub: 'The Unexpected', bg: '#D4A5A5' },
-    { name: 'BROWN', sub: 'The Warmth', bg: '#8B6F47' },
+    { name: 'BLACK', sub: 'The Essential', bg: 'var(--color-neutral-ink, #101114)' },
+    { name: 'NAVY', sub: 'The Classic', bg: 'var(--color-brand-navy, #0B1F5E)' },
+    { name: 'OLIVE', sub: 'The Natural', bg: 'var(--color-fashion-olive, #7A8065)' },
+    { name: 'PINK', sub: 'The Unexpected', bg: 'var(--color-fashion-dusty-pink, #D4A5A5)' },
+    { name: 'BROWN', sub: 'The Warmth', bg: 'var(--color-fashion-sand, #8B6F47)' },
   ];
   return (
     <Section style={{ padding: 'clamp(4rem, 10vw, 8rem) 0' }}>
