@@ -95,7 +95,7 @@ export default function CartPage() {
 
                   <Link href="/checkout"><Button label="PROCEED TO CHECKOUT" width="100%" /></Link>
                   <Link href="/shop" style={{ display: 'block', textAlign: 'center', marginTop: '1rem' }}>
-                    <Text type="supporting" color="accent">Continue Shopping</Text>
+                    <Text type="supporting" color="accent">CONTINUE SHOPPING</Text>
                   </Link>
                 </div>
               </div>
