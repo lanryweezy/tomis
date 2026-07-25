@@ -37,7 +37,7 @@ export default function WhatsAppChat() {
                 <p style={{ fontSize: '0.8rem', color: '#303030' }}>Hi! How can we help you today?</p>
               </div>
               <a
-                href="https://wa.me/2348000000000?text=Hi%20Tomis!%20I%20need%20help%20with%20..."
+                href="https://wa.me/2349033967809?text=Hi%20Tomis!%20I%20need%20help%20with%20..."
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ display: 'block', textAlign: 'center', padding: '0.75rem', backgroundColor: '#25D366', color: 'white', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 600, textDecoration: 'none' }}

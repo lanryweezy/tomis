@@ -175,3 +175,19 @@
   [data-theme="dark"] .card-lift:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
   [data-theme="dark"] img { filter: brightness(0.9); }
 }
+
+  /* Desktop nav - show above 1024px */
+  @media (min-width: 1024px) {
+    .desktop-nav {
+      display: flex !important;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+
+  /* WhatsApp colors */
+  :root {
+    --whatsapp-green: #25D366;
+    --whatsapp-dark: #075E54;
+    --whatsapp-light: #DCF8C6;
+  }

@@ -9,6 +9,8 @@ import { ToastProvider } from '@/components/ui/Toast';
 import WhatsAppChat from '@/components/WhatsAppChat';
 import NewsletterPopup from '@/components/NewsletterPopup';
 import { MotionProvider } from '@/components/MotionProvider';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { CartProvider } from '@/hooks/useCart';
 
 export const metadata: Metadata = {
   title: { default: 'TOMIS — The Half-Collar Shirt', template: '%s | TOMIS' },
@@ -25,16 +27,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${cormorant.variable} ${dmSerif.variable}`}>
       <body>
         <MotionProvider>
-          <ToastProvider>
+          <CartProvider>
+            <ToastProvider>
             <TomisNav />
             <PageTransition>
-              <main>{children}</main>
+              <ErrorBoundary>
+                <main>{children}</main>
+              </ErrorBoundary>
             </PageTransition>
             <TomisFooter />
             <BackToTop />
             <WhatsAppChat />
             <NewsletterPopup />
           </ToastProvider>
+          </CartProvider>
         </MotionProvider>
       </body>
     </html>

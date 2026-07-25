@@ -10,6 +10,7 @@ import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
 import { Divider } from '@astryxdesign/core/Divider';
 import { Badge } from '@astryxdesign/core/Badge';
+import { useCart } from '@/hooks/useCart';
 
 type Step = 'address' | 'delivery' | 'payment' | 'confirmation';
 
@@ -51,13 +52,7 @@ export default function CheckoutPage() {
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
-
-  const cartItems = [
-    { id: '1', name: 'Half-Collar Shirt', color: 'Black', size: 'L', price: 35000, quantity: 1, image: '/images/products/black-front.jpg' },
-    { id: '2', name: 'Half-Collar Shirt', color: 'Navy', size: 'M', price: 35000, quantity: 1, image: '/images/products/navy-front.jpg' },
-  ];
-
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const { items: cartItems, subtotal } = useCart();
   const deliveryCost = deliveryOptions.find(d => d.id === selectedDelivery)?.price || 0;
   const freeShipping = subtotal >= 50000;
   const actualShipping = freeShipping ? 0 : deliveryCost;
@@ -160,27 +155,27 @@ export default function CheckoutPage() {
                       <Grid columns={2} gap={4}>
                         <div>
                           <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>First Name *</label>
-                          <input type="text" value={address.firstName} onChange={e => setAddress({ ...address, firstName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                         <div>
                           <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Last Name *</label>
-                          <input type="text" value={address.lastName} onChange={e => setAddress({ ...address, lastName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input type="text" value={address.lastName} required onChange={e => setAddress({ ...address, lastName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                       </Grid>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Email *</label>
-                        <input type="email" value={address.email} onChange={e => setAddress({ ...address, email: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input type="email" value={address.email} required onChange={e => setAddress({ ...address, email: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Phone *</label>
-                        <input type="tel" value={address.phone} onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input type="tel" value={address.phone} required onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
                         <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Address *</label>
-                        <input type="text" value={address.address1} onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input type="text" value={address.address1} required onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
@@ -190,11 +185,11 @@ export default function CheckoutPage() {
                       <Grid columns={2} gap={4}>
                         <div>
                           <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>City *</label>
-                          <input type="text" value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                         <div>
                           <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>State *</label>
-                          <select value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
+                          <select value={address.state} required onChange={e => setAddress({ ...address, state: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
                             <option value="">Select state</option>
                             {['Lagos', 'Abuja', 'Ogun', 'Oyo', 'Rivers', 'Kano', 'Edo', 'Delta', 'Anambra', 'Enugu'].map(s => (
                               <option key={s} value={s}>{s}</option>
@@ -313,7 +308,7 @@ export default function CheckoutPage() {
                 {step === 'confirmation' && (
                   <motion.div key="confirmation" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ gridColumn: '1 / -1' }}>
                     <Stack gap={6} style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
-                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', damping: 15, stiffness: 200 }} style={{ width: '5rem', height: '5rem', borderRadius: '50%', backgroundColor: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', damping: 15, stiffness: 200 }} style={{ width: '5rem', height: '5rem', borderRadius: '50%', backgroundColor: 'var(--color-success, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}>
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>
                       </motion.div>
 
