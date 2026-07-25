@@ -1,6 +1,5 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Center } from '@astryxdesign/core/Center';
 import { slideInLeft, slideInRight } from '@/lib/animations';

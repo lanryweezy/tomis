@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Text } from '@astryxdesign/core/Text';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
-import { Divider } from '@astryxdesign/core/Divider';
+
 import { Button } from '@astryxdesign/core/Button';
 
 export default function TomisFooter() {
@@ -39,7 +39,7 @@ export default function TomisFooter() {
           ))}
         </Grid>
 
-        <Divider style={{ margin: '2rem 0', borderColor: 'rgba(255,255,255,0.1)' }} />
+        <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.1)', margin: '2rem 0' }} />
 
         <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           <div>
@@ -52,7 +52,7 @@ export default function TomisFooter() {
           </Stack>
         </Stack>
 
-        <Divider style={{ margin: '1.5rem 0', borderColor: 'rgba(255,255,255,0.1)' }} />
+        <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.1)', margin: '1.5rem 0' }} />
 
         <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           <Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>&copy; {new Date().getFullYear()} Tomis. All rights reserved.</Text>

@@ -8,7 +8,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
-import { Divider } from '@astryxdesign/core/Divider';
+
 import { Badge } from '@astryxdesign/core/Badge';
 import { useCart } from '@/hooks/useCart';
 
@@ -363,7 +363,7 @@ export default function CheckoutPage() {
                     ))}
                   </Stack>
 
-                  <Divider style={{ margin: '1rem 0' }} />
+                  <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '1rem 0' }} />
 
                   <Stack gap={2}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -380,7 +380,7 @@ export default function CheckoutPage() {
                         <Text type="body" color="accent">-₦{promoDiscount.toLocaleString('en-NG')}</Text>
                       </div>
                     )}
-                    <Divider />
+                    <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '1rem 0' }} />
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Text type="body" weight="medium">Total</Text>
                       <Text type="body" weight="medium" style={{ fontSize: '1.125rem' }}>₦{total.toLocaleString('en-NG')}</Text>

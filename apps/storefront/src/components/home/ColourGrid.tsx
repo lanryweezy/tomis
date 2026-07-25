@@ -12,11 +12,11 @@ import { colourGrid } from '@/data/constants';
 
 export default function ColourGrid() {
   return (
-    <Section style={{ padding: 'clamp(4rem, 10vw, 8rem) 0' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+    <Section className="section-spacing">
+      <div className="container">
         <motion.div {...fadeIn} style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <Badge label="Shop by Colour" />
-          <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 0.9, letterSpacing: '-0.03em' }}>CHOOSE YOUR MOOD.</h2>
+          <span className="section-eyebrow">Shop by Colour</span>
+          <h2 className="section-title">CHOOSE YOUR MOOD.</h2>
         </motion.div>
         <Grid columns={5} gap={0}>
           {colourGrid.map((c, i) => (
