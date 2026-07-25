@@ -1,162 +1,112 @@
 'use client';
-import { useToast } from '@/components/ui/Toast';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-
-
-import { Button } from '@/components/ui/button';
-
-const sampleCart = [
-  { id: '1', name: 'Half-Collar Shirt', color: 'Black', size: 'L', price: 35000, quantity: 1, image: '/images/products/black-white-front.jpg' },
-  { id: '2', name: 'Half-Collar Shirt', color: 'Navy', size: 'M', price: 35000, quantity: 1, image: '/images/products/navy-white-front.jpg' },
-];
+import { Button } from '@astryxdesign/core/Button';
+import { Text } from '@astryxdesign/core/Text';
+import { Section } from '@astryxdesign/core/Section';
+import { Stack } from '@astryxdesign/core/Stack';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Divider } from '@astryxdesign/core/Divider';
+import { useCart } from '@/hooks/useCart';
+import { useToast } from '@/components/ui/Toast';
 
 export default function CartPage() {
-  const [cart, setCart] = useState(sampleCart);
+  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  const { toast } = useToast();
   const [promoCode, setPromoCode] = useState('');
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = subtotal >= 50000 ? 0 : 2500;
   const total = subtotal + shipping;
 
-  const updateQuantity = (id: string, delta: number) => {
-    setCart(prev => prev.map(item =>
-      item.id === id
-        ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-        : item
-    ));
-  };
-
-  const removeItem = (id: string) => {
-    setCart(prev => prev.filter(item => item.id !== id));
-  };
-
   return (
-    <div className="min-h-screen">
-      <main className="max-w-[var(--max-wide-width)] mx-auto px-4 md:px-8 py-12 md:py-16">
-        <h1 className="font-display text-3xl md:text-4xl text-[var(--color-neutral-ink)] mb-8">
-          YOUR BAG
-        </h1>
+    <div>
+      <Section style={{ padding: '2rem 0' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 1.5rem' }}>
+          <h1 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '2rem', marginBottom: '2rem' }}>Your Bag</h1>
 
-        {cart.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-lg text-[var(--color-neutral-gray-500)] mb-6">Your bag is empty</p>
-            <Link href="/shop">
-              <Button variant="primary" size="lg">CONTINUE SHOPPING</Button>
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
-            {/* Cart Items */}
-            <div className="lg:col-span-2">
-              <AnimatePresence>
-                {cart.map(item => (
-                  <motion.div
-                    key={item.id}
-                    layout
-                    exit={{ opacity: 0, height: 0 }}
-                    className="flex gap-4 md:gap-6 py-6 border-b border-[var(--color-neutral-gray-200)]"
-                  >
-                    <div className="w-24 h-32 md:w-32 md:h-40 bg-[var(--color-neutral-gray-50)] shrink-0">
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          {items.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+              <Text type="body" color="secondary" style={{ marginBottom: '1.5rem' }}>Your bag is empty</Text>
+              <Link href="/shop"><Button label="CONTINUE SHOPPING" /></Link>
+            </div>
+          ) : (
+            <Grid columns={2} gap={10}>
+              <Stack gap={0}>
+                {items.map(item => (
+                  <div key={item.id} style={{ display: 'flex', gap: '1rem', padding: '1.5rem 0', borderBottom: '1px solid var(--border)' }}>
+                    <div style={{ width: '5rem', height: '6rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0 }}>
+                      <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-2">
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div>
-                          <h3 className="text-sm font-medium text-[var(--color-neutral-ink)]">{item.name}</h3>
-                          <p className="text-xs text-[var(--color-neutral-gray-500)]">{item.color} / {item.size}</p>
+                          <Text type="body" weight="medium">{item.name}</Text>
+                          <Text type="supporting" color="secondary">{item.color} / {item.size}</Text>
                         </div>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] transition-colors"
-                          aria-label="Remove item"
-                        >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                            <path d="M6 6l12 12M6 18L18 6" />
-                          </svg>
-                        </button>
+                        <button onClick={() => removeItem(item.id)} aria-label="Remove item" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>✕</button>
                       </div>
-                      <div className="flex items-center justify-between mt-4">
-                        <div className="flex items-center border border-[var(--color-neutral-gray-200)]">
-                          <button
-                            onClick={() => updateQuantity(item.id, -1)}
-                            className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-neutral-gray-50)] transition-colors"
-                            aria-label="Decrease quantity"
-                          >
-                            −
-                          </button>
-                          <span className="w-8 h-8 flex items-center justify-center text-sm">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.id, 1)}
-                            className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-neutral-gray-50)] transition-colors"
-                            aria-label="Increase quantity"
-                          >
-                            +
-                          </button>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.75rem' }}>
+                        <div style={{ display: 'flex', border: '1px solid var(--border-strong)' }}>
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease quantity" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>−</button>
+                          <span style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem' }}>{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase quantity" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>+</button>
                         </div>
-                        <p className="text-sm font-medium">₦{(item.price * item.quantity).toLocaleString('en-NG')}</p>
+                        <Text type="body" weight="medium">{formatPrice(item.price * item.quantity)}</Text>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
-              </AnimatePresence>
-            </div>
+              </Stack>
 
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-[var(--color-neutral-gray-50)] p-6 sticky top-24">
-                <h2 className="text-sm font-medium tracking-[0.1em] uppercase mb-6">Order Summary</h2>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-[var(--color-neutral-gray-600)]">Subtotal</span>
-                    <span>₦{subtotal.toLocaleString('en-NG')}</span>
+              <div>
+                <div style={{ padding: '1.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--bg)', position: 'sticky', top: '6rem' }}>
+                  <Text type="label" color="secondary" style={{ marginBottom: '1rem', display: 'block' }}>Order Summary</Text>
+                  <Stack gap={2}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Text type="body" color="secondary">Subtotal</Text>
+                      <Text type="body">{formatPrice(subtotal)}</Text>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Text type="body" color="secondary">Shipping</Text>
+                      <Text type="body">{shipping === 0 ? 'FREE' : formatPrice(shipping)}</Text>
+                    </div>
+                    {shipping > 0 && (
+                      <Text type="supporting" color="accent">Free shipping on orders over ₦50,000</Text>
+                    )}
+                  </Stack>
+
+                  <Divider style={{ margin: '1rem 0' }} />
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <input type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                      <Button label="APPLY" variant="secondary" />
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-[var(--color-neutral-gray-600)]">Shipping</span>
-                    <span>{shipping === 0 ? 'FREE' : `₦${shipping.toLocaleString('en-NG')}`}</span>
+
+                  <Divider style={{ margin: '1rem 0' }} />
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <Text type="body" weight="medium">Total</Text>
+                    <Text type="body" weight="medium" style={{ fontSize: '1.125rem' }}>{formatPrice(total)}</Text>
                   </div>
-                  {shipping > 0 && (
-                    <p className="text-[10px] text-[var(--color-brand-blue)]">
-                      Free shipping on orders over ₦50,000
-                    </p>
-                  )}
+
+                  <Link href="/checkout"><Button label="PROCEED TO CHECKOUT" width="100%" /></Link>
+                  <Link href="/shop" style={{ display: 'block', textAlign: 'center', marginTop: '1rem' }}>
+                    <Text type="supporting" color="accent">Continue Shopping</Text>
+                  </Link>
                 </div>
-
-                {/* Promo Code */}
-                <div className="mt-6 pt-6 border-t border-[var(--color-neutral-gray-200)]">
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Promo code"
-                      value={promoCode}
-                      onChange={(e) => setPromoCode(e.target.value)}
-                      className="flex-1 px-3 py-2 border border-[var(--color-neutral-gray-200)] text-sm bg-white focus:outline-none focus:border-[var(--color-neutral-ink)]"
-                    />
-                    <Button variant="secondary" size="sm">APPLY</Button>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-[var(--color-neutral-gray-200)]">
-                  <div className="flex justify-between text-lg font-medium">
-                    <span>Total</span>
-                    <span>₦{total.toLocaleString('en-NG')}</span>
-                  </div>
-                </div>
-
-                <Button variant="primary" size="lg" fullWidth className="mt-6">
-                  PROCEED TO CHECKOUT
-                </Button>
-
-                <Link href="/shop" className="block text-center mt-4 text-xs text-[var(--color-brand-blue)] underline underline-offset-4 hover:text-[var(--color-brand-navy)]">
-                  Continue Shopping
-                </Link>
               </div>
-            </div>
-          </div>
-        )}
-      </main>
+            </Grid>
+          )}
+        </div>
+      </Section>
     </div>
   );
+}
+
+function formatPrice(price: number): string {
+  return `₦${price.toLocaleString('en-NG')}`;
 }

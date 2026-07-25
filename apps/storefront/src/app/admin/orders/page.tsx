@@ -87,7 +87,7 @@ export default function AdminOrders() {
           <Card style={{ padding: '1.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <Text type="body" weight="medium">Order {order.id}</Text>
-              <button onClick={() => setSelectedOrder(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-secondary, #78716C)' }}>✕</button>
+              <button onClick={() => setSelectedOrder(null)} aria-label="Close order details" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-secondary, #78716C)' }}>✕</button>
             </div>
 
             <Stack gap={4}>

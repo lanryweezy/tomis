@@ -9,14 +9,15 @@ import { Text } from '@astryxdesign/core/Text';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Divider } from '@astryxdesign/core/Divider';
 import { useTheme } from '@/hooks/useTheme';
+import { useCart } from '@/hooks/useCart';
 import { navItems } from '@/data/constants';
 
 export default function TomisNav() {
   const pathname = usePathname();
   const { theme, toggle } = useTheme();
+  const { itemCount: cartCount } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [cartCount] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -87,9 +88,6 @@ export default function TomisNav() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
               )}
             </button>
-            <Link href="/search" className="magnetic-btn" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label="Search">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-            </Link>
             <Link href="/account" className="magnetic-btn" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label="Account">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
             </Link>

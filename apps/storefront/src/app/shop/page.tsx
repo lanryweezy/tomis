@@ -96,7 +96,7 @@ export default function ShopPage() {
               <Text type="label" color="secondary" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem', marginBottom: '1rem', display: 'block' }}>Colour</Text>
               <Stack gap={2}>
                 {allColors.map(color => (
-                  <button key={color.slug} onClick={() => setSelectedColor(color.slug)} style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: '0.875rem', color: selectedColor === color.slug ? 'var(--accent)' : 'var(--text-secondary)', fontWeight: selectedColor === color.slug ? 500 : 400, transition: 'color 0.2s' }}>
+                  <button key={color.slug} onClick={() => setSelectedColor(color.slug)} aria-label={`Filter by ${color.name}`} style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: '0.875rem', color: selectedColor === color.slug ? 'var(--accent)' : 'var(--text-secondary)', fontWeight: selectedColor === color.slug ? 500 : 400, transition: 'color 0.2s' }}>
                     {color.name}
                   </button>
                 ))}

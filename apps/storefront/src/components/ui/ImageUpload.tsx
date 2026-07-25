@@ -120,7 +120,7 @@ export default function ImageUpload({ folder = 'products', onUpload, multiple = 
 
       {/* Error */}
       {error && (
-        <div style={{ padding: '0.75rem', backgroundColor: '#DC262615', color: '#DC2626', fontSize: '0.875rem' }}>
+        <div style={{ padding: '0.75rem', backgroundColor: 'var(--color-error-muted, #DC262615)', color: 'var(--color-error, #DC2626)', fontSize: '0.875rem' }}>
           {error}
         </div>
       )}

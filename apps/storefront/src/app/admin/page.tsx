@@ -23,10 +23,10 @@ const recentOrders = [
 ];
 
 const statusColors: Record<string, string> = {
-  'Paid': '#059669',
-  'Shipped': '#1647B8',
-  'Delivered': '#059669',
-  'Processing': '#D97706',
+  'Paid': 'var(--color-success, #059669)',
+  'Shipped': 'var(--color-info, #1647B8)',
+  'Delivered': 'var(--color-success, #059669)',
+  'Processing': 'var(--color-warning, #D97706)',
   'Pending': '#6B7280',
 };
 
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
                 <span style={{ fontSize: '1.5rem' }}>{stat.icon}</span>
               </div>
               <Text type="body" weight="medium" style={{ fontSize: '1.5rem' }}>{stat.value}</Text>
-              <Text type="supporting" style={{ color: stat.change.startsWith('+') ? '#059669' : stat.change.startsWith('-') ? '#DC2626' : 'var(--color-text-secondary, #78716C)' }}>
+              <Text type="supporting" style={{ color: stat.change.startsWith('+') ? 'var(--color-success, #059669)' : stat.change.startsWith('-') ? 'var(--color-error, #DC2626)' : 'var(--color-text-secondary, #78716C)' }}>
                 {stat.change} from last month
               </Text>
             </Stack>
