@@ -10,20 +10,7 @@ import { Grid } from '@astryxdesign/core/Grid';
 import { Divider } from '@astryxdesign/core/Divider';
 import { Badge } from '@astryxdesign/core/Badge';
 import { Center } from '@astryxdesign/core/Center';
-
-const values = [
-  { title: 'The Half-Collar', description: 'Our signature mandarin collar design delivers clean lines and modern confidence. One silhouette, infinite possibilities.' },
-  { title: 'Made in Lagos', description: 'Every Tomis shirt is crafted in Lagos, Nigeria. Supporting local artisans and African manufacturing.' },
-  { title: 'Premium Cotton', description: '140 GSM premium cotton. Breathable, durable, and designed to get better with every wash.' },
-  { title: 'Everyday Versatility', description: 'From boardroom to brunch, airport to dinner. One shirt that works everywhere you go.' },
-];
-
-const milestones = [
-  { year: '2024', event: 'The first Tomis half-collar shirt is designed in Lagos.' },
-  { year: '2024', event: 'Prototype testing with 50 men across Lagos.' },
-  { year: '2025', event: 'Tomis launches with 14 signature colours.' },
-  { year: '2025', event: 'The digital flagship store goes live.' },
-];
+import { values, milestones } from '@/data/constants';
 
 export default function AboutPage() {
   return (

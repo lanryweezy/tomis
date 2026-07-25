@@ -9,14 +9,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Divider } from '@astryxdesign/core/Divider';
 import { useTheme } from '@/hooks/useTheme';
-
-const navItems = [
-  { label: 'SHOP', href: '/shop' },
-  { label: 'NEW IN', href: '/new-in' },
-  { label: 'COLLECTIONS', href: '/collections' },
-  { label: 'ABOUT', href: '/about' },
-  { label: 'JOURNAL', href: '/journal' },
-];
+import { navItems } from '@/data/constants';
 
 export default function TomisNav() {
   const pathname = usePathname();
