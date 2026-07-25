@@ -83,6 +83,7 @@ export default function CartPage() {
                           <button
                             onClick={() => updateQuantity(item.id, -1)}
                             className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-neutral-gray-50)] transition-colors"
+                            aria-label="Decrease quantity"
                           >
                             −
                           </button>
@@ -90,6 +91,7 @@ export default function CartPage() {
                           <button
                             onClick={() => updateQuantity(item.id, 1)}
                             className="w-8 h-8 flex items-center justify-center hover:bg-[var(--color-neutral-gray-50)] transition-colors"
+                            aria-label="Increase quantity"
                           >
                             +
                           </button>
