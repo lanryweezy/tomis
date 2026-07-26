@@ -1,91 +1,80 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-
+import { motion } from 'framer-motion';
+import { Text } from '@astryxdesign/core/Text';
+import { Section } from '@astryxdesign/core/Section';
+import { Grid } from '@astryxdesign/core/Grid';
+import { Badge } from '@astryxdesign/core/Badge';
+import { Stack } from '@astryxdesign/core/Stack';
+import { ClickableCard } from '@astryxdesign/core/ClickableCard';
+import { fadeIn } from '@/lib/animations';
+import { products } from '@/data/products';
 
 const collections = [
   {
     name: 'Signature',
-    description: 'The original half-collar collection. 14 colourways, one iconic silhouette.',
+    description: 'The original half-collar collection. 14 colours, one iconic silhouette.',
     productCount: 14,
+    image: '/images/products/olive-front.jpg',
     href: '/shop',
   },
   {
     name: 'Essentials',
     description: 'Core colours that anchor every wardrobe. Black, Navy, White.',
     productCount: 6,
+    image: '/images/products/black-front.jpg',
     href: '/shop',
   },
   {
     name: 'Earth Tones',
     description: 'Warm, natural colours inspired by the Nigerian landscape.',
     productCount: 5,
+    image: '/images/products/brown-front.jpg',
     href: '/shop',
   },
   {
     name: 'Bold',
     description: 'Statement colours for those who dress to be noticed.',
     productCount: 4,
+    image: '/images/products/pink-front.jpg',
     href: '/shop',
   },
 ];
 
 export default function CollectionsPage() {
   return (
-    <div className="min-h-screen">
-      <main>
-        {/* Hero */}
-        <section className="bg-[var(--color-neutral-ink)] text-white py-20 md:py-28">
-          <div className="max-w-[var(--max-wide-width)] mx-auto px-4 md:px-8 text-center">
-            <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-white/40 mb-3">
-              Explore
-            </p>
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl mb-4">
-              COLLECTIONS
-            </h1>
-            <p className="text-sm text-white/60 max-w-md mx-auto">
-              Curated groupings of our half-collar shirts, organized by mood and style.
-            </p>
-          </div>
-        </section>
+    <div>
+      <Section variant="transparent" style={{ padding: '5rem 0', backgroundColor: 'var(--inverted)', color: 'var(--inverted-text)' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
+          <span className="section-eyebrow" style={{ color: 'var(--inverted-text-muted)' }}>Explore</span>
+          <h1 className="section-title" style={{ color: 'white' }}>COLLECTIONS</h1>
+          <Text type="body" style={{ color: 'var(--inverted-text-muted)' }}>Curated groupings of our half-collar shirts, organized by mood and style.</Text>
+        </div>
+      </Section>
 
-        {/* Collections Grid */}
-        <section className="py-16 md:py-24">
-          <div className="max-w-[var(--max-wide-width)] mx-auto px-4 md:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {collections.map((collection, index) => (
-                <motion.div
-                  key={collection.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Link href={collection.href} className="group block">
-                    <div className="aspect-[16/9] bg-[var(--color-neutral-gray-100)] mb-4 overflow-hidden">
-                      <motion.div
-                        className="w-full h-full bg-[var(--color-neutral-gray-200)]"
-                        whileHover={{ scale: 1.03 }}
-                        transition={{ duration: 0.4 }}
-                      />
+      <Section variant="transparent" className="section-spacing">
+        <div className="container">
+          <Grid columns={2} gap={6}>
+            {collections.map((collection, index) => (
+              <motion.div key={collection.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}>
+                <Link href={collection.href} style={{ textDecoration: 'none' }}>
+                  <ClickableCard label={collection.name}>
+                    <div style={{ aspectRatio: '16/9', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem' }}>
+                      <img src={collection.image} alt={`${collection.name} collection`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
-                    <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-brand-blue)] mb-1">
-                      {collection.productCount} PRODUCTS
-                    </p>
-                    <h2 className="text-2xl font-medium text-[var(--color-neutral-ink)] mb-2 group-hover:text-[var(--color-brand-blue)] transition-colors">
+                    <Badge label={`${collection.productCount} PRODUCTS`} />
+                    <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.5rem', marginTop: '0.5rem', color: 'var(--text-primary)' }}>
                       {collection.name}
                     </h2>
-                    <p className="text-sm text-[var(--color-neutral-gray-500)]">
-                      {collection.description}
-                    </p>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
+                    <Text type="body" color="secondary">{collection.description}</Text>
+                  </ClickableCard>
+                </Link>
+              </motion.div>
+            ))}
+          </Grid>
+        </div>
+      </Section>
     </div>
   );
 }

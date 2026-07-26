@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Text } from '@astryxdesign/core/Text';
@@ -13,15 +12,15 @@ import { products, formatPrice } from '@/data/products';
 export default function FeaturedProducts() {
   const featured = products.slice(0, 4);
   return (
-    <Section style={{ padding: 'clamp(4rem, 10vw, 8rem) 0' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+    <Section variant="transparent" className="section-spacing">
+      <div className="container">
         <motion.div {...fadeIn}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <Stack gap={1}>
-              <Badge label="New Arrivals" />
-              <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', lineHeight: 0.9, letterSpacing: '-0.03em' }}>THE SIGNATURE</h2>
+              <span className="section-eyebrow">New Arrivals</span>
+              <h2 className="section-title">THE SIGNATURE</h2>
             </Stack>
-            <Link href="/shop" className="link-underline" style={{ fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.1em', color: 'var(--text-primary)', textDecoration: 'none' }}>VIEW ALL →</Link>
+            <Link href="/shop" className="btn-text">VIEW ALL →</Link>
           </Stack>
         </motion.div>
 

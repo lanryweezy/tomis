@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
 import { Stack } from '@astryxdesign/core/Stack';
-import { Divider } from '@astryxdesign/core/Divider';
+
 import { useTheme } from '@/hooks/useTheme';
 import { useCart } from '@/hooks/useCart';
 import { navItems } from '@/data/constants';
@@ -53,7 +53,7 @@ export default function TomisNav() {
         style={{
           position: 'sticky', top: 0, zIndex: 1200,
           backgroundColor: isScrolled ? undefined : 'var(--bg)',
-          borderBottom: isScrolled ? 'none' : '1px solid var(--border)',
+          borderBottom: 'none',
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
@@ -65,8 +65,8 @@ export default function TomisNav() {
             </svg>
           </button>
 
-          {/* Logo */}
-          <Link href="/" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', textDecoration: 'none' }}>
+          {/* Logo - left aligned */}
+          <Link href="/" style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}>
             <span className="font-display" style={{ fontSize: isScrolled ? '1.25rem' : '1.5rem', color: 'var(--text-primary)', transition: 'font-size 0.4s ease, color 0.3s', fontStyle: 'italic' }}>Tomis</span>
           </Link>
 
@@ -123,7 +123,7 @@ export default function TomisNav() {
                     </motion.div>
                   ))}
                 </Stack>
-                <Divider />
+                <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '0' }} />
                 <button onClick={toggle} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', fontSize: '0.875rem', transition: 'color 0.3s' }}>
                   {theme === 'light' ? (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>

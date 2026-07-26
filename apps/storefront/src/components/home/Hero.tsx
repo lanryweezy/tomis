@@ -1,11 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Badge } from '@astryxdesign/core/Badge';
+import { fadeIn } from '@/lib/animations';
 
 export default function Hero() {
   return (
@@ -27,7 +27,7 @@ export default function Hero() {
         <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}>
           <Badge label="The Signature Collection" />
         </motion.p>
-        <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: 'clamp(3rem, 8vw, 7rem)', lineHeight: 0.9, letterSpacing: '-0.03em', maxWidth: '600px' }}>
+        <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} className="section-title" style={{ maxWidth: '600px', fontSize: 'clamp(3rem, 8vw, 7rem)' }}>
           HALF THE COLLAR.<br />
           <span style={{ color: 'var(--accent)' }}>ALL THE CHARACTER.</span>
         </motion.h1>
@@ -38,8 +38,8 @@ export default function Hero() {
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.6 }}>
           <Stack direction="horizontal" gap={3}>
-            <Link href="/shop"><Button label="SHOP NOW →" /></Link>
-            <Link href="/about"><Button label="DISCOVER TOMIS" variant="secondary" /></Link>
+            <Link href="/shop" className="btn-primary">SHOP NOW →</Link>
+            <Link href="/about" className="btn-secondary">DISCOVER TOMIS</Link>
           </Stack>
         </motion.div>
       </Stack>

@@ -4,7 +4,7 @@ import { marqueeItems } from '@/data/constants';
 
 export default function MarqueeStrip() {
   return (
-    <div style={{ overflow: 'hidden', padding: '1.5rem 0', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+    <div style={{ overflow: 'hidden', padding: '1.5rem 0' }}>
       <div className="marquee">
         <div className="marquee-content">
           {[...marqueeItems, ...marqueeItems].map((item, i) => (

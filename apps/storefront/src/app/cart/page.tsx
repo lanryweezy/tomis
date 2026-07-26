@@ -7,7 +7,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
-import { Divider } from '@astryxdesign/core/Divider';
+
 import { useCart } from '@/hooks/useCart';
 import { useToast } from '@/components/ui/Toast';
 
@@ -76,17 +76,17 @@ export default function CartPage() {
                     )}
                   </Stack>
 
-                  <Divider style={{ margin: '1rem 0' }} />
+                  <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '1rem 0' }} />
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
+                    <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <input type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                      <input id="promoCode" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       <Button label="APPLY" variant="secondary" />
                     </div>
                   </div>
 
-                  <Divider style={{ margin: '1rem 0' }} />
+                  <div style={{ height: '1px', backgroundColor: 'var(--border)', margin: '1rem 0' }} />
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <Text type="body" weight="medium">Total</Text>
@@ -95,7 +95,7 @@ export default function CartPage() {
 
                   <Link href="/checkout"><Button label="PROCEED TO CHECKOUT" width="100%" /></Link>
                   <Link href="/shop" style={{ display: 'block', textAlign: 'center', marginTop: '1rem' }}>
-                    <Text type="supporting" color="accent">Continue Shopping</Text>
+                    <Text type="supporting" color="accent">CONTINUE SHOPPING</Text>
                   </Link>
                 </div>
               </div>
