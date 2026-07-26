@@ -39,7 +39,7 @@ export default function NewsletterPopup() {
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', color: 'var(--text-primary)', marginBottom: '0.75rem' }}>Get 10% Off Your First Order</h2>
             <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Subscribe for new drops, style tips, and exclusive offers.</p>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+              <input aria-label="Email address" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
               <button onClick={handleSubmit} aria-label="Subscribe to newsletter" style={{ padding: '0.75rem 1.5rem', backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.15em', cursor: 'pointer', transition: 'all 0.3s' }}>SUBSCRIBE</button>
             </div>
             <button onClick={dismiss} aria-label="Dismiss newsletter" style={{ marginTop: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.75rem' }}>No thanks</button>
