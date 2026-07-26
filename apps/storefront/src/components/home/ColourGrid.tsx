@@ -12,13 +12,13 @@ import { colourGrid } from '@/data/constants';
 
 export default function ColourGrid() {
   return (
-    <Section className="section-spacing">
+    <Section variant="transparent" className="section-spacing">
       <div className="container">
         <motion.div {...fadeIn} style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <span className="section-eyebrow">Shop by Colour</span>
           <h2 className="section-title">CHOOSE YOUR MOOD.</h2>
         </motion.div>
-        <Grid columns={5} gap={0}>
+        <Grid columns={5} gap={2}>
           {colourGrid.map((c, i) => (
             <motion.div key={c.name} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}>
               <Link href="/shop" style={{ display: 'block', aspectRatio: '3/4', backgroundColor: c.bg, position: 'relative', textDecoration: 'none', overflow: 'hidden' }}>

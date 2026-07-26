@@ -12,7 +12,7 @@ import { products, formatPrice } from '@/data/products';
 export default function FeaturedProducts() {
   const featured = products.slice(0, 4);
   return (
-    <Section className="section-spacing">
+    <Section variant="transparent" className="section-spacing">
       <div className="container">
         <motion.div {...fadeIn}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>

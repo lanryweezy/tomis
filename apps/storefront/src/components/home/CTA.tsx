@@ -8,7 +8,7 @@ import { fadeIn } from '@/lib/animations';
 
 export default function CTA() {
   return (
-    <Section className="section-spacing" style={{ textAlign: 'center' }}>
+    <Section variant="transparent" className="section-spacing" style={{ textAlign: 'center' }}>
       <motion.div {...fadeIn}>
         <Stack gap={4} style={{ alignItems: 'center' }}>
           <h2 className="section-title">EXPERIENCE TOMIS</h2>

@@ -9,9 +9,9 @@ import { fadeIn } from '@/lib/animations';
 
 export default function BentoGrid() {
   return (
-    <Section className="section-spacing">
+    <Section variant="transparent" className="section-spacing">
       <div className="container">
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gridTemplateRows: 'auto auto', gap: '1px', backgroundColor: 'var(--border)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gridTemplateRows: 'auto auto', gap: '2px', backgroundColor: 'rgba(0,0,0,0.04)' }}>
           <motion.div {...fadeIn} style={{ gridRow: '1 / 3', backgroundColor: 'var(--bg)', padding: 'clamp(2rem, 5vw, 4rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <Stack gap={4}>
               <span className="section-eyebrow">Our Signature</span>

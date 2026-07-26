@@ -53,7 +53,7 @@ export default function TomisNav() {
         style={{
           position: 'sticky', top: 0, zIndex: 1200,
           backgroundColor: isScrolled ? undefined : 'var(--bg)',
-          borderBottom: isScrolled ? 'none' : '1px solid var(--border)',
+          borderBottom: 'none',
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
