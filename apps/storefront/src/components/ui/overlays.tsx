@@ -66,7 +66,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                           <h3 className="text-sm font-medium">{item.name}</h3>
                           <p className="text-xs text-[var(--color-neutral-gray-500)]">{item.color} / {item.size}</p>
                         </div>
-                        <button className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)]">
+                        <button aria-label="Remove item" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)]">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <path d="M6 6l12 12M6 18L18 6" />
                           </svg>
@@ -74,9 +74,9 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                       </div>
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center border border-[var(--color-neutral-gray-200)]">
-                          <button className="w-7 h-7 flex items-center justify-center text-sm">−</button>
+                          <button aria-label="Decrease quantity" className="w-7 h-7 flex items-center justify-center text-sm">−</button>
                           <span className="w-7 h-7 flex items-center justify-center text-sm">{item.quantity}</span>
-                          <button className="w-7 h-7 flex items-center justify-center text-sm">+</button>
+                          <button aria-label="Increase quantity" className="w-7 h-7 flex items-center justify-center text-sm">+</button>
                         </div>
                         <p className="text-sm font-medium">₦{(item.price * item.quantity).toLocaleString('en-NG')}</p>
                       </div>
