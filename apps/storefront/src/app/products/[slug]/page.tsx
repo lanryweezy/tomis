@@ -142,6 +142,8 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                       <button
                         key={size.value}
                         disabled={!size.inStock}
+                        title={!size.inStock ? "Out of stock" : undefined}
+                        aria-label={`${size.label}${!size.inStock ? ' (Out of stock)' : ''}`}
                         onClick={() => setSelectedSize(size.value)}
                         style={{
                           width: '3rem',
