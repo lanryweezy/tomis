@@ -26,27 +26,33 @@ export default function AccountPage() {
 
         <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
           <div>
-            <label className="block text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-neutral-gray-500)] mb-2">
+            <label htmlFor="email" className="block text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-neutral-gray-500)] mb-2">
               Email
             </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 border border-[var(--color-neutral-gray-200)] text-sm focus:outline-none focus:border-[var(--color-neutral-ink)] transition-colors"
               placeholder="your@email.com"
+              autoComplete="email"
+              required
             />
           </div>
           <div>
-            <label className="block text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-neutral-gray-500)] mb-2">
+            <label htmlFor="password" className="block text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-neutral-gray-500)] mb-2">
               Password
             </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 border border-[var(--color-neutral-gray-200)] text-sm focus:outline-none focus:border-[var(--color-neutral-ink)] transition-colors"
               placeholder="••••••••"
+              autoComplete="current-password"
+              required
             />
           </div>
 
