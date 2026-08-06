@@ -19,7 +19,7 @@ export interface FormFieldProps {
   rightIcon?: React.ReactNode;
 }
 
-export interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
+export interface FormProps extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
   onSubmit: (data: Record<string, string>) => Promise<void>;
   children: React.ReactNode;
   submitButtonLabel?: string;
@@ -168,7 +168,7 @@ export function useFormValidation<T extends Record<string, ValidationRule>>(
 }
 
 export function Form({ onSubmit, children, submitButtonLabel = 'Submit', isSubmitting = false, ...props }: FormProps) {
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as Record<string, string>;

@@ -23,8 +23,26 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'TOMIS',
+    url: 'https://tomis.fit',
+    logo: 'https://tomis.fit/logo.png',
+    sameAs: [
+      'https://instagram.com/tomis',
+      'https://twitter.com/tomis'
+    ],
+  };
+
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable} ${dmSerif.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <MotionProvider>
           <CartProvider>

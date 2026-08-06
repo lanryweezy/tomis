@@ -6,3 +6,12 @@
 ## 2026-08-05 - Adding Tooltips and ARIA Labels to Disabled Buttons
 **Learning:** When buttons are disabled (like out-of-stock sizes), a strikethrough visual is not enough. Mouse users need native tooltips to explain *why* it's disabled, and screen readers need this context conveyed through `aria-label`.
 **Action:** Always add `title` and update `aria-label` for disabled UI controls to explicitly state the reason (e.g., 'Out of stock').
+## 2026-07-30 - Accessible Interactive Icons in Header
+
+**Learning:** We observed that interactive icon-only buttons (like mobile menu, search toggle, and overlay close buttons) in the header lack visual focus indicators for keyboard users, making keyboard navigation difficult and ambiguous. In addition, dialog-like overlays were not properly announced by screen readers due to missing ARIA associations on trigger buttons (`aria-expanded`, `aria-controls`) and the overlay containers (`role="dialog"`, `aria-modal="true"`).
+
+**Action:** Added `focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm` to all icon-only buttons in the header to ensure keyboard users have a clear visual focus state. We also added `aria-expanded` and `aria-controls` to the toggle buttons, linked to overlay containers with proper `role="dialog"` and `aria-modal="true"` attributes to ensure an accessible dialog experience.
+
+## 2026-08-06 - Adding Accessible State to Custom Selector Components
+**Learning:** Custom selector components (like color, size, and image thumbnail pickers) that do not use native radio button inputs require explicit `aria-pressed` (or `aria-selected`/`aria-current`) attributes. Without these attributes, screen readers cannot distinguish the currently selected option from the unselected ones, leaving users without crucial feedback on their choice.
+**Action:** When building custom selectable buttons (rather than native `<input type="radio">`), always implement `aria-pressed` mapped to the active state variable.
