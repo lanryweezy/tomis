@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { products } from '@/data/products';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tomis.ng';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tomis.fit';
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily' as const, priority: 1 },
