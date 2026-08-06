@@ -75,6 +75,8 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                       <button
                         key={index}
                         onClick={() => setActiveImage(index)}
+                        aria-label={`View image ${index + 1}`}
+                        aria-pressed={activeImage === index}
                         style={{
                           width: '4rem',
                           height: '5rem',
@@ -134,6 +136,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                           cursor: 'pointer',
                         }}
                         aria-label={v.color}
+                        aria-pressed={selectedColor === index}
                       />
                     ))}
                   </Stack>
@@ -151,6 +154,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                         key={size.value}
                         disabled={!size.inStock}
                         onClick={() => setSelectedSize(size.value)}
+                        aria-pressed={selectedSize === size.value}
                         style={{
                           width: '3rem',
                           height: '3rem',
