@@ -13,29 +13,35 @@ import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { Breadcrumbs, BreadcrumbItem } from '@astryxdesign/core/Breadcrumbs';
 import { Collapsible } from '@astryxdesign/core/Collapsible';
 import { products, getProductBySlug, formatPrice, getRelatedProducts } from '@/data/products';
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
-  if (!product) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Stack gap={4} align="center">
-          <h1 className="font-display" style={{ fontSize: '2.5rem' }}>Product Not Found</h1>
-          <Link href="/shop"><Button label="BACK TO SHOP" /></Link>
-        </Stack>
-      </div>
-    );
-  }
-  return <ProductPageContent product={product} />;
-}
+
 function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeof getProductBySlug>> }) {
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const variant = product.variants[selectedColor];
   const relatedProducts = getRelatedProducts(product.id);
+
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.shortDescription,
+    image: variant.images.map(i => `https://tomis.fit${i.src}`),
+    offers: {
+      '@type': 'Offer',
+      price: variant.price,
+      priceCurrency: 'NGN',
+      availability: 'https://schema.org/InStock',
+      url: `https://tomis.fit/products/${product.slug}`,
+    }
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
         <Section style={{ padding: '1rem 0' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <Breadcrumbs>
@@ -48,14 +54,14 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
         <Section style={{ padding: '2rem 0 4rem' }}>
           <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
             <Grid columns={2} gap={10} style={{ alignItems: 'start' }}>
-              <div>
-                <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'sticky', top: '2rem' }}>
+                <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', overflow: 'hidden', position: 'relative' }}>
                   <AnimatePresence mode="wait">
                     <motion.img
-                      key={`${selectedColor}-${activeImage}`}
-                      src={variant.images[activeImage]?.src || '/images/products/black-front.jpg'}
-                      alt={variant.images[activeImage]?.alt || product.name}
-                      className="w-full h-full object-cover"
+                      key={`${variant.id}-${activeImage}`}
+                      src={variant.images[activeImage]?.src}
+                      alt={variant.images[activeImage]?.alt}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -63,34 +69,38 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     />
                   </AnimatePresence>
                 </div>
-                <Stack direction="horizontal" gap={2} style={{ marginTop: '0.75rem' }}>
-                  {variant.images.map((img, index) => (
-                    <button
-                      key={img.id}
-                      onClick={() => setActiveImage(index)}
-                      style={{
-                        width: '5rem',
-                        height: '6rem',
-                        border: activeImage === index ? '2px solid var(--color-text-primary)' : '2px solid transparent',
-                        overflow: 'hidden',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </Stack>
+                {variant.images.length > 1 && (
+                  <Stack direction="horizontal" gap={2} style={{ marginTop: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                    {variant.images.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveImage(index)}
+                        aria-label={`View image ${index + 1}`}
+                        aria-pressed={activeImage === index}
+                        style={{
+                          width: '4rem',
+                          height: '5rem',
+                          border: activeImage === index ? '2px solid var(--color-text-primary)' : '2px solid transparent',
+                          padding: 0,
+                          cursor: 'pointer',
+                          backgroundColor: 'var(--color-background-muted)',
+                        }}
+                      >
+                        <img src={image.src} alt={image.alt} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </button>
+                    ))}
+                  </Stack>
+                )}
               </div>
               <Stack gap={6}>
                 <div>
-                  <Badge label={product.collection} />
-                  <h1 style={{ fontSize: '1.75rem', fontWeight: 500, color: 'var(--color-text-primary)', marginTop: '0.5rem' }}>
+                  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', lineHeight: 1.1 }}>
                     {product.name}
                   </h1>
                   <AnimatePresence mode="wait">
                     <motion.p
-                      key={selectedColor}
-                      style={{ fontSize: '1.125rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}
+                      key={variant.id}
+                      style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', marginTop: '0.5rem' }}
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
@@ -114,7 +124,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     {product.variants.map((v, index) => (
                       <button
                         key={v.id}
-                        onClick={() => setSelectedColor(index)}
+                        onClick={() => { setSelectedColor(index); setActiveImage(0); }}
                         style={{
                           width: '2.5rem',
                           height: '2.5rem',
@@ -126,6 +136,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                           cursor: 'pointer',
                         }}
                         aria-label={v.color}
+                        aria-pressed={selectedColor === index}
                       />
                     ))}
                   </Stack>
@@ -143,6 +154,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                         key={size.value}
                         disabled={!size.inStock}
                         onClick={() => setSelectedSize(size.value)}
+                        aria-pressed={selectedSize === size.value}
                         style={{
                           width: '3rem',
                           height: '3rem',
@@ -262,4 +274,20 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
         )}
     </div>
   );
+}
+
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+  if (!product) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Stack gap={4} align="center">
+          <h1 className="font-display" style={{ fontSize: '2.5rem' }}>Product Not Found</h1>
+          <Link href="/shop"><Button label="BACK TO SHOP" /></Link>
+        </Stack>
+      </div>
+    );
+  }
+  return <ProductPageContent product={product} />;
 }
