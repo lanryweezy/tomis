@@ -9,6 +9,9 @@ import { Stack } from '@astryxdesign/core/Stack';
 import { Badge } from '@astryxdesign/core/Badge';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { fadeIn } from '@/lib/animations';
+import { Theme } from '@astryxdesign/core/theme';
+import { neutralTheme } from '@astryxdesign/theme-neutral/built';
+import '@astryxdesign/theme-neutral/theme.css';
 
 const articles = [
   {
@@ -69,25 +72,27 @@ const articles = [
 
 export default function JournalPage() {
   return (
-    <div>
-      <Section variant="transparent" style={{ padding: '5rem 0', backgroundColor: 'var(--inverted)', color: 'var(--inverted-text)' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
-          <span className="section-eyebrow" style={{ color: 'var(--inverted-text-muted)' }}>Stories & Style</span>
-          <h1 className="section-title" style={{ color: 'white' }}>JOURNAL</h1>
-          <Text type="body" style={{ color: 'var(--inverted-text-muted)' }}>Stories about style, craft, and the Tomis way of dressing.</Text>
-        </div>
-      </Section>
+    <>
+      <Theme theme={neutralTheme} mode="dark">
+        <Section variant="section" style={{ padding: '5rem 0' }}>
+          <Stack gap={3} align="center" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
+            <Badge label="Stories & Style" />
+            <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>JOURNAL</Text>
+            <Text type="body" color="secondary">Stories about style, craft, and the Tomis way of dressing.</Text>
+          </Stack>
+        </Section>
+      </Theme>
 
-      <Section variant="transparent" className="section-spacing">
-        <div className="container">
+      <Section variant="section" className="section-spacing">
+        <Stack style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
           {/* Featured Article */}
           <motion.div {...fadeIn}>
             <Link href={`/journal/${articles[0].id}`} style={{ textDecoration: 'none' }}>
               <Grid columns={2} gap={8} style={{ alignItems: 'center', marginBottom: '4rem' }}>
-                <div style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
+                <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
                   <img src={articles[0].image} alt={articles[0].title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                </div>
-                <Stack gap={3}>
+                </Stack>
+                <Stack gap={3} align="start">
                   <Badge label={`${articles[0].category} • ${articles[0].date}`} />
                   <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: 'clamp(1.5rem, 3vw, 2rem)', color: 'var(--text-primary)' }}>
                     {articles[0].title}
@@ -105,9 +110,9 @@ export default function JournalPage() {
               <motion.div key={article.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}>
                 <Link href={`/journal/${article.id}`} style={{ textDecoration: 'none' }}>
                   <ClickableCard label={article.title}>
-                    <div style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem' }}>
+                    <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem' }}>
                       <img src={article.image} alt={article.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
+                    </Stack>
                     <Badge label={article.category} />
                     <h3 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-primary)', marginTop: '0.5rem' }}>
                       {article.title}
@@ -121,8 +126,8 @@ export default function JournalPage() {
               </motion.div>
             ))}
           </Grid>
-        </div>
+        </Stack>
       </Section>
-    </div>
+    </>
   );
 }
