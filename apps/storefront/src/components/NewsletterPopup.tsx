@@ -16,7 +16,8 @@ export default function NewsletterPopup() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!email) return;
     toast('Thanks for subscribing! Check your inbox.', 'success');
     setShow(false);
@@ -38,10 +39,10 @@ export default function NewsletterPopup() {
             <p style={{ fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.75rem' }}>Join the Tomis Family</p>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.75rem', color: 'var(--text-primary)', marginBottom: '0.75rem' }}>Get 10% Off Your First Order</h2>
             <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Subscribe for new drops, style tips, and exclusive offers.</p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input aria-label="Email address" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-              <button onClick={handleSubmit} aria-label="Subscribe to newsletter" style={{ padding: '0.75rem 1.5rem', backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.15em', cursor: 'pointer', transition: 'all 0.3s' }}>SUBSCRIBE</button>
-            </div>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem' }}>
+              <input required aria-label="Email address" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" style={{ flex: 1, padding: '0.75rem 1rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+              <button type="submit" aria-label="Subscribe to newsletter" style={{ padding: '0.75rem 1.5rem', backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.15em', cursor: 'pointer', transition: 'all 0.3s' }}>SUBSCRIBE</button>
+            </form>
             <button onClick={dismiss} aria-label="Dismiss newsletter" style={{ marginTop: '1rem', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: '0.75rem' }}>No thanks</button>
           </motion.div>
         </motion.div>

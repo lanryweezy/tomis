@@ -15,3 +15,6 @@
 ## 2026-08-06 - Adding Accessible State to Custom Selector Components
 **Learning:** Custom selector components (like color, size, and image thumbnail pickers) that do not use native radio button inputs require explicit `aria-pressed` (or `aria-selected`/`aria-current`) attributes. Without these attributes, screen readers cannot distinguish the currently selected option from the unselected ones, leaving users without crucial feedback on their choice.
 **Action:** When building custom selectable buttons (rather than native `<input type="radio">`), always implement `aria-pressed` mapped to the active state variable.
+## 2024-08-07 - Wrapping Email Inputs in Forms for "Enter" Key Submission
+**Learning:** Newsletter subscription inputs wrapped only in standard div/flex containers rather than semantic `form` tags prevent the standard UX of submitting via the "Enter" key and do not trigger browser's native email validation. Using `<form>` wrappers around inputs improves accessibility, functionality, and aligns with standard user expectations.
+**Action:** When adding newsletter or inline email collection inputs, always wrap them in a `<form>` element with an `onSubmit` handler, and include native HTML5 validation like `required`.
