@@ -46,10 +46,10 @@ export default function TomisFooter() {
             <Text type="body" weight="medium" style={{ marginBottom: '0.25rem' }}>Stay in the loop</Text>
             <Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>New drops, stories, and the Tomis way of dressing.</Text>
           </div>
-          <Stack direction="horizontal" gap={2}>
+          <form onSubmit={(e) => e.preventDefault()} style={{ display: 'flex', gap: '0.5rem' }}>
               <input aria-label="Email address" type="email" placeholder="Your email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" style={{ flex: 1, minWidth: '200px', padding: '0.75rem 1rem', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: 'white', fontSize: '0.875rem', outline: 'none' }} />
-            <Button label="SUBSCRIBE" />
-          </Stack>
+            <Button type="submit" label="SUBSCRIBE" />
+          </form>
         </Stack>
 
         <div style={{ height: '1px', backgroundColor: 'rgba(255,255,255,0.06)', margin: '1.5rem 0' }} />
