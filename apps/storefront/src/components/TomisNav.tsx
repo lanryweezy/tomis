@@ -110,7 +110,7 @@ export default function TomisNav() {
               <Stack gap={6}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="font-display" style={{ fontSize: '1.5rem', fontStyle: 'italic', color: 'var(--text-primary)' }}>Tomis</span>
-                  <button aria-label="Close mobile menu" onClick={() => setIsMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }}>
+                  <button aria-label="Close menu" onClick={() => setIsMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 6l12 12M6 18L18 6" /></svg>
                   </button>
                 </div>
