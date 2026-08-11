@@ -18,3 +18,7 @@
 ## 2024-08-07 - Wrapping Email Inputs in Forms for "Enter" Key Submission
 **Learning:** Newsletter subscription inputs wrapped only in standard div/flex containers rather than semantic `form` tags prevent the standard UX of submitting via the "Enter" key and do not trigger browser's native email validation. Using `<form>` wrappers around inputs improves accessibility, functionality, and aligns with standard user expectations.
 **Action:** When adding newsletter or inline email collection inputs, always wrap them in a `<form>` element with an `onSubmit` handler, and include native HTML5 validation like `required`.
+
+## 2024-05-18 - Adding Accessible State to Checkouts and Filters
+**Learning:** We observed that some custom selectable elements, such as delivery options in checkout and color filter buttons, missed the `aria-pressed` property to signify active state, thereby degrading the experience for screen readers.
+**Action:** When building custom selectable buttons (rather than native `<input type="radio">`), always implement `aria-pressed` mapped to the active state variable.

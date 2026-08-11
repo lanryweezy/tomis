@@ -216,6 +216,7 @@ export default function CheckoutPage() {
                           <button
                             key={option.id}
                             onClick={() => setSelectedDelivery(option.id)}
+                            aria-pressed={selectedDelivery === option.id}
                             style={{
                               width: '100%', padding: '1rem', border: '1px solid',
                               borderColor: selectedDelivery === option.id ? 'var(--text-primary)' : 'var(--border-strong)',
