@@ -24,6 +24,7 @@ export default function ColorSwatch({ colors, selected, onSelect, size = 'md' }:
             cursor: 'pointer', transition: 'border-color 0.2s',
           }}
           aria-label={c.name}
+          aria-pressed={selected === c.slug}
         />
       ))}
     </div>

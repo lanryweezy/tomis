@@ -19,6 +19,7 @@ export default function SizeSelector({ sizes, selected, onSelect }: SizeSelector
           disabled={!s.inStock}
           title={!s.inStock ? "Out of stock" : undefined}
           aria-label={`${s.label}${!s.inStock ? ' (Out of stock)' : ''}`}
+          aria-pressed={selected === s.value}
           style={{
             width: '3rem', height: '3rem', border: '1px solid',
             borderColor: selected === s.value ? 'var(--text-primary)' : 'var(--border-strong)',
