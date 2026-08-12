@@ -1,0 +1,6 @@
+## 2026-08-12 — State Regression: Focus rings lost on TomisNav
+**Regression:** Icon-only buttons (mobile toggle, theme toggle, account, and cart) in the `TomisNav` header lack focus-visible outlines.
+**Root cause:** A recent PR to improve accessibility in navigation (`ux-a11y-navigation-enhancements-14395261886246601486`) updated the header component in `packages/ui/src/header.tsx` with `focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm` classes, but the actual navigation component used in the storefront application (`apps/storefront/src/components/TomisNav.tsx`) was completely omitted from these updates, leaving it without keyboard focus indicators.
+**Detection gap:** The PR modified the design system's header template but failed to apply the same changes to the app's bespoke `TomisNav` component. Automated visual tests were either not run or do not include keyboard focus state scenarios.
+**Prevention:** Always verify focus states on custom navigation components across all viewports during accessibility audits, and ensure that enhancements made to library components are propagated to application-specific components.
+**Cascade risk:** Any other bespoke interactive elements that mimic design system components may also lack these accessibility enhancements.
