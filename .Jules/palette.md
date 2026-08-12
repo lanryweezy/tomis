@@ -22,3 +22,8 @@
 ## 2024-05-18 - Adding Accessible State to Checkouts and Filters
 **Learning:** We observed that some custom selectable elements, such as delivery options in checkout and color filter buttons, missed the `aria-pressed` property to signify active state, thereby degrading the experience for screen readers.
 **Action:** When building custom selectable buttons (rather than native `<input type="radio">`), always implement `aria-pressed` mapped to the active state variable.
+
+
+## 2026-08-12 - Accessible Navigation Enhancements
+**Learning:** Relying solely on visual cues (like an active tab color) or generic containers for mobile menus leaves screen reader and keyboard users without context. Visual focus states must be paired with explicit semantic ARIA roles (e.g., `aria-current` for active links, and `aria-expanded`/`aria-controls` for menu toggles) for a cohesive and truly accessible navigation experience.
+**Action:** When implementing custom navigation or mobile menus, always pair visual active/focus states with corresponding ARIA attributes (`aria-current`, `aria-expanded`, `aria-controls`) to ensure state is programmatically determinable by assistive technologies.
