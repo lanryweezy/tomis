@@ -12,11 +12,8 @@ export function Footer() {
               The signature half-collar shirt. Designed for the life you actually live.
             </p>
             <div className="flex gap-4 mt-6">
-              {['Instagram', 'Twitter', 'TikTok'].map(social => (
-                <a key={social} href="#" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">
-                  {social}
-                </a>
-              ))}
+              <a href="mailto:hello@tomis.ng" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">EMAIL</a>
+              <a href="https://wa.me/2349033967809" target="_blank" rel="noreferrer" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">WHATSAPP</a>
             </div>
           </div>
 

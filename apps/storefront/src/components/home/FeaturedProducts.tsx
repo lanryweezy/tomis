@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
@@ -17,7 +18,7 @@ export default function FeaturedProducts() {
         <motion.div {...fadeIn}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <Stack gap={1}>
-              <span className="section-eyebrow">New Arrivals</span>
+              <span className="section-eyebrow">Signature Edit</span>
               <h2 className="section-title">THE SIGNATURE</h2>
             </Stack>
             <Link href="/shop" className="btn-text">VIEW ALL →</Link>
@@ -32,7 +33,7 @@ export default function FeaturedProducts() {
               <motion.div key={product.id} {...stagger} transition={{ duration: 0.6, delay: index * 0.1 }}>
                 <Link href={`/products/${product.slug}`} className="card-lift" style={{ display: 'block', textDecoration: 'none' }}>
                   <div className="img-hover" style={{ aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', marginBottom: '1rem', overflow: 'hidden' }}>
-                    <img src={img?.src || variant.images[0]?.src} alt={`Tomis ${variant.color} half-collar shirt flat lay product photo`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <Image src={img?.src || variant.images[0]?.src} alt={`Tomis ${variant.color} half-collar shirt flat lay product photo`} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
                   </div>
                   <Text type="label" color="secondary">{variant.color}</Text>
                   <Text type="body" weight="medium">{product.name}</Text>

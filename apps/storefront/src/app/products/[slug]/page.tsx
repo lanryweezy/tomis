@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
@@ -13,12 +14,35 @@ import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { Breadcrumbs, BreadcrumbItem } from '@astryxdesign/core/Breadcrumbs';
 import { Collapsible } from '@astryxdesign/core/Collapsible';
 import { products, getProductBySlug, formatPrice, getRelatedProducts } from '@/data/products';
+import { useCart } from '@/hooks/useCart';
 
 function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeof getProductBySlug>> }) {
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [cartMessage, setCartMessage] = useState<string | null>(null);
+  const { addItem } = useCart();
   const variant = product.variants[selectedColor];
+
+  const addCurrentItem = () => {
+    if (!selectedSize) {
+      setCartMessage('Choose a size before adding this shirt to your bag.');
+      return false;
+    }
+    addItem({
+      variantId: variant.id,
+      productId: product.id,
+      name: product.name,
+      color: variant.color,
+      colorCode: variant.colorCode,
+      size: selectedSize,
+      price: variant.price,
+      quantity: 1,
+      image: variant.images[0]?.src || '',
+    });
+    setCartMessage(`${variant.color} / ${selectedSize} added to your bag.`);
+    return true;
+  };
   const relatedProducts = getRelatedProducts(product.id);
 
   const productJsonLd = {
@@ -26,6 +50,8 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
     '@type': 'Product',
     name: product.name,
     description: product.shortDescription,
+    brand: { '@type': 'Brand', name: 'TOMIS' },
+    sku: variant.sku,
     image: variant.images.map(i => `https://tomis.fit${i.src}`),
     offers: {
       '@type': 'Offer',
@@ -33,6 +59,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
       priceCurrency: 'NGN',
       availability: 'https://schema.org/InStock',
       url: `https://tomis.fit/products/${product.slug}`,
+      itemCondition: 'https://schema.org/NewCondition',
     }
   };
 
@@ -57,16 +84,9 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
               <div style={{ position: 'sticky', top: '2rem' }}>
                 <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', overflow: 'hidden', position: 'relative' }}>
                   <AnimatePresence mode="wait">
-                    <motion.img
-                      key={`${variant.id}-${activeImage}`}
-                      src={variant.images[activeImage]?.src}
-                      alt={variant.images[activeImage]?.alt}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                    <motion.div key={`${variant.id}-${activeImage}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} style={{ position: 'absolute', inset: 0 }}>
+                      <Image src={variant.images[activeImage]?.src} alt={variant.images[activeImage]?.alt || `${variant.color} ${product.name}`} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover' }} priority={activeImage === 0} />
+                    </motion.div>
                   </AnimatePresence>
                 </div>
                 {variant.images.length > 1 && (
@@ -84,9 +104,10 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                           padding: 0,
                           cursor: 'pointer',
                           backgroundColor: 'var(--color-background-muted)',
+                          position: 'relative',
                         }}
                       >
-                        <img src={image.src} alt={image.alt} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <Image src={image.src} alt={image.alt} fill sizes="4rem" style={{ objectFit: 'cover' }} />
                       </button>
                     ))}
                   </Stack>
@@ -144,7 +165,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
                     <Text type="label" color="secondary">Size</Text>
-                    <Link href="/support" style={{ fontSize: '0.75rem', color: 'var(--color-text-accent)', textDecoration: 'underline' }}>
+                    <Link href="/size-guide" style={{ fontSize: '0.75rem', color: 'var(--color-text-accent)', textDecoration: 'underline' }}>
                       Size Guide
                     </Link>
                   </div>
@@ -178,9 +199,10 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   </Stack>
                 </div>
                 <Stack direction="horizontal" gap={3}>
-                  <Button label="ADD TO BAG" style={{ flex: 1 }} />
-                  <Button label="BUY NOW" variant="secondary" style={{ flex: 1 }} />
+                  <button type="button" onClick={addCurrentItem} style={{ flex: 1, minHeight: '3.25rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG</button>
+                  <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} style={{ flex: 1, minHeight: '3.25rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
                 </Stack>
+                <p aria-live="polite" style={{ minHeight: '1.5rem', fontSize: '0.875rem', color: cartMessage?.includes('added') ? 'var(--color-brand-blue)' : 'var(--color-text-secondary)' }}>{cartMessage}</p>
                 <div style={{ backgroundColor: 'var(--color-background-muted)', padding: '1rem' }}>
                   <Stack gap={2}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
@@ -261,7 +283,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                 {relatedProducts.slice(0, 3).map(p => (
                   <Link key={p.id} href={`/products/${p.slug}`}>
                     <ClickableCard label={p.name}>
-                      <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', marginBottom: '0.75rem' }} />
+                          <div style={{ aspectRatio: '3/4', backgroundColor: 'var(--color-background-muted)', marginBottom: '0.75rem', position: 'relative', overflow: 'hidden' }}><Image src={p.variants[0].images[0]?.src} alt={`${p.variants[0].color} ${p.name}`} fill sizes="(max-width: 900px) 33vw, 25vw" style={{ objectFit: 'cover' }} /></div>
                       <Text type="label" color="secondary" style={{ letterSpacing: '0.15em', textTransform: 'uppercase', fontSize: '0.625rem' }}>
                         {p.variants[0].color}
                       </Text>

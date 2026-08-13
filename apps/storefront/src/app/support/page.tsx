@@ -28,7 +28,7 @@ export default function SupportPage() {
 
           <Stack gap={8}>
             {/* Contact */}
-            <section>
+            <section id="contact">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 500, marginBottom: '1rem' }}>Contact Us</h2>
               <Text type="body" color="secondary" style={{ marginBottom: '1.5rem' }}>
                 Have a question? We&apos;re here to help.
@@ -52,7 +52,7 @@ export default function SupportPage() {
             <div style={{ height: '1px', backgroundColor: 'var(--border)' }} />
 
             {/* FAQ */}
-            <section>
+            <section id="faq">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 500, marginBottom: '1.5rem' }}>Frequently Asked Questions</h2>
               <Stack gap={0}>
                 {faqs.map((faq, i) => (
@@ -71,14 +71,14 @@ export default function SupportPage() {
             <div style={{ height: '1px', backgroundColor: 'var(--border)' }} />
 
             {/* Quick Links */}
-            <section>
+            <section id="care">
               <h2 style={{ fontSize: '1.25rem', fontWeight: 500, marginBottom: '1rem' }}>Quick Links</h2>
               <Grid columns={2} gap={4}>
                 {[
-                  { label: 'Size Guide', href: '/support' },
-                  { label: 'Shipping Info', href: '/support' },
-                  { label: 'Returns', href: '/support' },
-                  { label: 'Care Guide', href: '/support' },
+                  { label: 'Size Guide', href: '/size-guide' },
+                  { label: 'Shipping Info', href: '/shipping' },
+                  { label: 'Returns', href: '/returns' },
+                  { label: 'Care Guide', href: '/support#care' },
                 ].map(link => (
                   <Link key={link.label} href={link.href} style={{ fontSize: '0.95rem', color: 'var(--accent)', textDecoration: 'underline', textUnderlineOffset: '4px' }}>
                     {link.label}

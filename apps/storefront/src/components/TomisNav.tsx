@@ -25,21 +25,16 @@ export default function TomisNav() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- close the drawer when navigation completes.
   useEffect(() => { setIsMobileOpen(false); }, [pathname]);
 
   return (
     <>
       {/* Marquee announcement */}
       <div className="marquee" style={{ backgroundColor: 'var(--navy)', color: 'var(--inverted-text)', padding: '0.5rem 0', fontSize: '0.6rem', letterSpacing: '0.2em', fontWeight: 500 }}>
-        <div className="marquee-content">
+        <div className="announcement-marquee-content">
           {['FREE DELIVERY IN LAGOS ON ORDERS OVER ₦50,000', 'EASY RETURNS WITHIN 14 DAYS', 'MADE IN LAGOS, NIGERIA'].map((text, i) => (
             <span key={i} style={{ padding: '0 3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ width: '4px', height: '4px', backgroundColor: 'var(--accent)', borderRadius: '50%' }} />
-              {text}
-            </span>
-          ))}
-          {['FREE DELIVERY IN LAGOS ON ORDERS OVER ₦50,000', 'EASY RETURNS WITHIN 14 DAYS', 'MADE IN LAGOS, NIGERIA'].map((text, i) => (
-            <span key={`d-${i}`} style={{ padding: '0 3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ width: '4px', height: '4px', backgroundColor: 'var(--accent)', borderRadius: '50%' }} />
               {text}
             </span>

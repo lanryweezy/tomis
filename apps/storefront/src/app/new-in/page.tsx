@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Grid } from '@astryxdesign/core/Grid';
@@ -22,9 +23,9 @@ export default function NewInPage() {
       <Theme theme={neutralTheme} mode="dark">
         <Section variant="section" style={{ padding: '5rem 0' }}>
           <Stack gap={3} align="center" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
-            <Badge label="Just Arrived" />
-            <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>NEW IN</Text>
-            <Text type="body" color="secondary">The latest additions to the Tomis collection.</Text>
+            <Badge label="Signature Edit" />
+            <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>THE EDIT</Text>
+            <Text type="body" color="secondary">A curated edit of signature colours from the Tomis collection.</Text>
           </Stack>
         </Section>
       </Theme>
@@ -40,10 +41,7 @@ export default function NewInPage() {
                   <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
                     <ClickableCard label={product.name}>
                       <Stack style={{ aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', position: 'relative', marginBottom: '1rem' }}>
-                        <img src={img?.src || variant.images[0]?.src} alt={`${variant.color} ${product.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        <Stack style={{ position: 'absolute', top: '0.75rem', left: '0.75rem' }}>
-                          <Badge label="NEW" />
-                        </Stack>
+                        <Image src={img?.src || variant.images[0]?.src} alt={`${variant.color} ${product.name}`} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
                       </Stack>
                       <Text type="label" color="secondary">{variant.color}</Text>
                       <Text type="body" weight="medium">{product.name}</Text>

@@ -52,6 +52,7 @@ export default function CheckoutPage() {
   const [promoDiscount, setPromoDiscount] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const { items: cartItems, subtotal } = useCart();
   const deliveryCost = deliveryOptions.find(d => d.id === selectedDelivery)?.price || 0;
   const freeShipping = subtotal >= 50000;
@@ -69,6 +70,11 @@ export default function CheckoutPage() {
   };
 
   const handlePayment = async () => {
+    if (cartItems.length === 0) {
+      setPaymentError('Your bag is empty. Return to the shop to add an item before checkout.');
+      return;
+    }
+    setPaymentError(null);
     setIsProcessing(true);
     try {
       const response = await fetch('/api/paystack/initialize', {
@@ -76,7 +82,9 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: address.email,
-          amount: total,
+          items: cartItems.map(item => ({ variantId: item.variantId, size: item.size, quantity: item.quantity })),
+          deliveryOption: selectedDelivery,
+          promoCode,
           metadata: {
             orderNumber: `TOM-${Date.now().toString(36).toUpperCase()}`,
             customerName: `${address.firstName} ${address.lastName}`,
@@ -88,19 +96,12 @@ export default function CheckoutPage() {
 
       const data = await response.json();
 
-      if (data.status && data.data.authorization_url) {
-        window.location.href = data.data.authorization_url;
-      } else {
-        // Demo mode - simulate success
-        const demoOrderNumber = `TOM-${Date.now().toString(36).toUpperCase()}`;
-        setOrderNumber(demoOrderNumber);
-        setStep('confirmation');
+      if (!response.ok || !data.status || !data.data?.authorization_url) {
+        throw new Error(data.error || 'Payment could not be initialized. Please try again.');
       }
-    } catch {
-      // Demo mode
-      const demoOrderNumber = `TOM-${Date.now().toString(36).toUpperCase()}`;
-      setOrderNumber(demoOrderNumber);
-      setStep('confirmation');
+      window.location.href = data.data.authorization_url;
+    } catch (error) {
+      setPaymentError(error instanceof Error ? error.message : 'Payment could not be initialized. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -292,11 +293,12 @@ export default function CheckoutPage() {
 
                       <Button label="CONTINUE TO DELIVERY →" variant="secondary" onClick={() => setStep('delivery')} />
 
+                      {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem' }}>{paymentError}</p>}
                       <Button
                         label={isProcessing ? 'PROCESSING...' : `PAY ₦${total.toLocaleString('en-NG')} →`}
                         width="100%"
                         onClick={handlePayment}
-                        isDisabled={isProcessing}
+                        isDisabled={isProcessing || cartItems.length === 0}
                       />
 
                       <Text type="supporting" color="secondary" style={{ textAlign: 'center' }}>

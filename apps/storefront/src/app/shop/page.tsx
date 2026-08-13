@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Text } from '@astryxdesign/core/Text';
@@ -9,27 +10,21 @@ import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
 import { Badge } from '@astryxdesign/core/Badge';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-import { products, formatPrice } from '@/data/products';
+import { products, formatPrice, getUniqueColors } from '@/data/products';
 import { Theme } from '@astryxdesign/core/theme';
 import { neutralTheme } from '@astryxdesign/theme-neutral/built';
 import '@astryxdesign/theme-neutral/theme.css';
 
 const allColors = [
   { name: 'All', slug: 'all' },
-  { name: 'Black', slug: 'black' },
-  { name: 'Navy', slug: 'navy' },
-  { name: 'Olive', slug: 'olive' },
-  { name: 'Pink', slug: 'pink' },
-  { name: 'Brown', slug: 'brown' },
-  { name: 'Terracotta', slug: 'terracotta' },
-  { name: 'Lavender', slug: 'lavender' },
-  { name: 'Sage', slug: 'sage' },
-  { name: 'Stone', slug: 'stone' },
-  { name: 'Cream', slug: 'cream' },
-  { name: 'Sand', slug: 'sand' },
-  { name: 'Burgundy', slug: 'burgundy' },
-  { name: 'Sky Blue', slug: 'sky' },
+  ...getUniqueColors().map(color => ({ name: color.name, slug: color.slug })),
 ];
+
+const collectionColorSlugs: Record<string, string[]> = {
+  essentials: ['black', 'navy', 'cream'],
+  'earth-tones': ['olive', 'brown', 'terracotta', 'sage', 'sand'],
+  bold: ['pink', 'lavender', 'burgundy', 'sky'],
+};
 
 function ProductCard({ product }: { product: typeof products[0] }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -70,11 +65,15 @@ function ProductCard({ product }: { product: typeof products[0] }) {
   );
 }
 
-export default function ShopPage() {
+function ShopPageContent() {
+  const searchParams = useSearchParams();
+  const collection = searchParams.get('collection');
   const [selectedColor, setSelectedColor] = useState('all');
   const filteredProducts = products.filter(p => {
-    if (selectedColor === 'all') return true;
-    return p.variants.some(v => v.colorSlug === selectedColor);
+    const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
+    const collectionSlugs = collection ? collectionColorSlugs[collection] : undefined;
+    const matchesCollection = !collectionSlugs || p.variants.some(v => collectionSlugs.includes(v.colorSlug));
+    return matchesColor && matchesCollection;
   });
 
   return (
@@ -84,7 +83,7 @@ export default function ShopPage() {
           <Stack gap={3} align="center" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
             <Badge label="The Collection" />
             <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>HALF-COLLAR SHIRTS</Text>
-            <Text type="body" color="secondary">{products.length} shirts. One signature. Endless possibilities.</Text>
+            <Text type="body" color="secondary">{products.length} colours. One signature shirt. Endless possibilities.</Text>
           </Stack>
         </Section>
       </Theme>
@@ -92,7 +91,7 @@ export default function ShopPage() {
       <Section variant="section" style={{ padding: '3rem 0' }}>
         <Stack gap={6} style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
-            <Text type="body" color="secondary">{filteredProducts.length} products</Text>
+            <Text type="body" color="secondary">{filteredProducts.length} {filteredProducts.length === 1 ? 'colour' : 'colours'} shown</Text>
           </Stack>
 
           <Stack direction="horizontal" gap={8} align="start">
@@ -119,4 +118,8 @@ export default function ShopPage() {
       </Section>
     </>
   );
+}
+
+export default function ShopPage() {
+  return <Suspense fallback={<div style={{ minHeight: '50vh' }} />}><ShopPageContent /></Suspense>;
 }

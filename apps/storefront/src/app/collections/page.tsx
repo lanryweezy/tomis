@@ -11,36 +11,38 @@ import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { Theme } from '@astryxdesign/core/theme';
 import { neutralTheme } from '@astryxdesign/theme-neutral/built';
 import '@astryxdesign/theme-neutral/theme.css';
-import { products } from '@/data/products';
+import { products, getUniqueColors } from '@/data/products';
 
+const colors = getUniqueColors();
+const colorSlugs = new Set(colors.map(color => color.slug));
 const collections = [
   {
     name: 'Signature',
-    description: 'The original half-collar collection. 14 colours, one iconic silhouette.',
-    productCount: 14,
+    description: `The original half-collar collection. ${products.length} colours, one iconic silhouette.`,
+    productCount: products.length,
     image: '/images/products/olive-front.jpg',
     href: '/shop',
   },
   {
     name: 'Essentials',
-    description: 'Core colours that anchor every wardrobe. Black, Navy, White.',
-    productCount: 6,
+    description: 'Core colours that anchor every wardrobe: Black, Navy, and Cream.',
+    productCount: ['black', 'navy', 'cream'].filter(slug => colorSlugs.has(slug)).length,
     image: '/images/products/black-front.jpg',
-    href: '/shop',
+    href: '/shop?collection=essentials',
   },
   {
     name: 'Earth Tones',
     description: 'Warm, natural colours inspired by the Nigerian landscape.',
-    productCount: 5,
+    productCount: ['olive', 'brown', 'terracotta', 'sage', 'sand'].filter(slug => colorSlugs.has(slug)).length,
     image: '/images/products/brown-front.jpg',
-    href: '/shop',
+    href: '/shop?collection=earth-tones',
   },
   {
     name: 'Bold',
     description: 'Statement colours for those who dress to be noticed.',
-    productCount: 4,
+    productCount: ['pink', 'lavender', 'burgundy', 'sky'].filter(slug => colorSlugs.has(slug)).length,
     image: '/images/products/pink-front.jpg',
-    href: '/shop',
+    href: '/shop?collection=bold',
   },
 ];
 
@@ -52,7 +54,7 @@ export default function CollectionsPage() {
           <Stack gap={3} align="center" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
             <Badge label="Explore" />
             <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>COLLECTIONS</Text>
-            <Text type="body" color="secondary">Curated groupings of our half-collar shirts, organized by mood and style.</Text>
+            <Text type="body" color="secondary">Curated views of one signature silhouette, organized by mood and colour.</Text>
           </Stack>
         </Section>
       </Theme>
