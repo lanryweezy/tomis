@@ -25,7 +25,6 @@ function CheckoutVerifyContent() {
     if (!reference) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- derive the initial error from the callback URL.
       setError('No payment reference was provided.');
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- derive the initial error from the callback URL.
       setState('error');
       return;
     }
