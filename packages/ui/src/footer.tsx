@@ -14,6 +14,7 @@ export function Footer() {
             <div className="flex gap-4 mt-6">
               <a href="mailto:hello@tomis.ng" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">EMAIL</a>
               <a href="https://wa.me/2349033967809" target="_blank" rel="noreferrer" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">WHATSAPP</a>
+              <a href="https://www.instagram.com/tomis_inc/" target="_blank" rel="noreferrer" className="text-xs tracking-wider text-neutral-400 hover:text-white transition-colors">INSTAGRAM</a>
             </div>
           </div>
 

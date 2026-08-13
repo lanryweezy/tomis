@@ -48,6 +48,7 @@ export default function TomisFooter() {
             <Stack gap={2}>
               <a href="mailto:hello@tomis.ng" style={{ fontSize: '0.875rem', color: 'var(--inverted-text-muted)', textDecoration: 'none' }}>hello@tomis.ng</a>
               <a href="https://wa.me/2349033967809" rel="noreferrer" target="_blank" style={{ fontSize: '0.875rem', color: 'var(--inverted-text-muted)', textDecoration: 'none' }}>Chat on WhatsApp</a>
+              <a href="https://www.instagram.com/tomis_inc/" rel="noreferrer" target="_blank" style={{ fontSize: '0.875rem', color: 'var(--inverted-text-muted)', textDecoration: 'none' }}>Instagram @tomis_inc</a>
             </Stack>
           </Stack>
 

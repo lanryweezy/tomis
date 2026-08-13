@@ -29,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: 'TOMIS',
     url: 'https://tomis.fit',
     logo: 'https://tomis.fit/images/brand/logo-light.svg',
+    sameAs: ['https://www.instagram.com/tomis_inc/'],
     contactPoint: {
       '@type': 'ContactPoint',
       email: 'hello@tomis.ng',
