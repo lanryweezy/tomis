@@ -138,8 +138,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!RESEND_API_KEY) {
-      console.log('Email would be sent:', { type, to, subject });
-      return NextResponse.json({ status: 'demo', message: 'Email sent (demo mode)' });
+      return NextResponse.json({ error: 'Transactional email is not configured.' }, { status: 503 });
     }
 
     const result = await sendEmail({ to, subject, html });
