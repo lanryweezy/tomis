@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 interface Subscriber { id: string; email: string; firstName?: string; status: string; subscribedAt: string; unsubscribedAt?: string; }
-let subscribers: Subscriber[] = [];
+const subscribers: Subscriber[] = [];
 
 export async function GET() {
   return NextResponse.json({ subscribers: subscribers.filter(s => s.status === 'active'), stats: { total: subscribers.length, active: subscribers.filter(s => s.status === 'active').length, unsubscribed: subscribers.filter(s => s.status === 'unsubscribed').length } });

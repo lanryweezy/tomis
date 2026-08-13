@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 interface PaymentRecord { id: string; orderId: string; provider: string; providerReference?: string; amount: number; currency: string; status: string; metadata?: Record<string, unknown>; createdAt: string; updatedAt: string; }
-let payments: PaymentRecord[] = [];
+const payments: PaymentRecord[] = [];
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
