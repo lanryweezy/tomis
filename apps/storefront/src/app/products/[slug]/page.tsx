@@ -198,7 +198,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     ))}
                   </Stack>
                 </div>
-                <Stack direction="horizontal" gap={3}>
+                <Stack direction="horizontal" gap={3} className="pdp-actions">
                   <button type="button" onClick={addCurrentItem} style={{ flex: 1, minHeight: '3.25rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG</button>
                   <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} style={{ flex: 1, minHeight: '3.25rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
                 </Stack>
@@ -258,19 +258,10 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </Grid>
           </div>
         </Section>
-        <Section style={{ padding: '4rem 0', backgroundColor: 'var(--color-background-muted)' }}>
-          <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
-            <Text type="label" color="secondary" style={{ textAlign: 'center', display: 'block', marginBottom: '3rem', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.625rem' }}>
-              HOW TO WEAR IT
-            </Text>
-            <Grid columns={3} gap={6}>
-              {['WORK', 'WEEKEND', 'EVENING'].map(look => (
-                <ClickableCard key={look} label={look}>
-                  <div style={{ aspectRatio: '4/5', backgroundColor: 'var(--color-background-muted)', marginBottom: '0.75rem' }} />
-                  <Text type="label" color="secondary">{look}</Text>
-                </ClickableCard>
-              ))}
-            </Grid>
+        <Section style={{ padding: '3rem 0', backgroundColor: 'var(--color-background-muted)' }}>
+          <div style={{ maxWidth: '52rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
+            <Text type="label" color="secondary" style={{ display: 'block', marginBottom: '1rem', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.625rem' }}>STYLE NOTES</Text>
+            <Text type="body" color="secondary" style={{ lineHeight: 1.7 }}>Keep the half-collar shirt crisp with tailored trousers, relaxed denim, or layered under a lightweight jacket. The silhouette is designed to move between everyday settings without overthinking the outfit.</Text>
           </div>
         </Section>
         {relatedProducts.length > 0 && (

@@ -50,6 +50,7 @@ export default function CheckoutPage() {
   const [selectedDelivery, setSelectedDelivery] = useState('lagos-standard');
   const [promoCode, setPromoCode] = useState('');
   const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoMessage, setPromoMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -67,6 +68,18 @@ export default function CheckoutPage() {
 
   const handleDeliverySubmit = () => {
     setStep('payment');
+  };
+
+  const handlePromoApply = () => {
+    const normalizedCode = promoCode.trim().toUpperCase();
+    setPromoCode(normalizedCode);
+    if (normalizedCode === 'TOMIS10') {
+      setPromoDiscount(Math.round(subtotal * 0.1));
+      setPromoMessage('10% discount applied.');
+    } else {
+      setPromoDiscount(0);
+      setPromoMessage('That code is not valid.');
+    }
   };
 
   const handlePayment = async () => {
@@ -141,7 +154,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          <Grid columns={step === 'confirmation' ? 1 : 2} gap={10}>
+          <Grid columns={step === 'confirmation' ? 1 : 2} gap={10} className="checkout-layout">
             {/* Left: Form */}
             <div>
               <AnimatePresence mode="wait">
@@ -153,7 +166,7 @@ export default function CheckoutPage() {
                         <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Address</h2>
                       </div>
 
-                      <Grid columns={2} gap={4}>
+                      <Grid columns={2} gap={4} className="checkout-fields">
                         <div>
                           <label htmlFor="firstName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>First Name *</label>
                           <input id="firstName" type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
@@ -183,7 +196,7 @@ export default function CheckoutPage() {
                         <input aria-label="Apartment, suite, etc. (optional)" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
-                      <Grid columns={2} gap={4}>
+                      <Grid columns={2} gap={4} className="checkout-fields">
                         <div>
                           <label htmlFor="city" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>City *</label>
                           <input id="city" type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
@@ -279,8 +292,9 @@ export default function CheckoutPage() {
                         <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
                           <input id="promoCode" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" onClick={() => { if (promoCode === 'TOMIS10') setPromoDiscount(Math.round(subtotal * 0.1)); }} />
+                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" onClick={handlePromoApply} />
                         </div>
+                        {promoMessage && <p role="status" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: promoDiscount > 0 ? 'var(--accent)' : 'var(--color-error, #b91c1c)' }}>{promoMessage}</p>}
                       </div>
 
                       {/* Delivery Address Summary */}
@@ -291,7 +305,7 @@ export default function CheckoutPage() {
                         <Text type="supporting" color="secondary">{address.phone}</Text>
                       </div>
 
-                      <Button label="CONTINUE TO DELIVERY →" variant="secondary" onClick={() => setStep('delivery')} />
+                      <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
 
                       {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem' }}>{paymentError}</p>}
                       <Button
