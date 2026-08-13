@@ -1,33 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
 import { Badge } from '@astryxdesign/core/Badge';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
-import { products, formatPrice } from '@/data/products';
+import { products, formatPrice, getUniqueColors } from '@/data/products';
+import { Theme } from '@astryxdesign/core/theme';
+import { neutralTheme } from '@astryxdesign/theme-neutral/built';
+import '@astryxdesign/theme-neutral/theme.css';
 
 const allColors = [
   { name: 'All', slug: 'all' },
-  { name: 'Black', slug: 'black' },
-  { name: 'Navy', slug: 'navy' },
-  { name: 'Olive', slug: 'olive' },
-  { name: 'Pink', slug: 'pink' },
-  { name: 'Brown', slug: 'brown' },
-  { name: 'Terracotta', slug: 'terracotta' },
-  { name: 'Lavender', slug: 'lavender' },
-  { name: 'Sage', slug: 'sage' },
-  { name: 'Stone', slug: 'stone' },
-  { name: 'Cream', slug: 'cream' },
-  { name: 'Sand', slug: 'sand' },
-  { name: 'Burgundy', slug: 'burgundy' },
-  { name: 'Sky Blue', slug: 'sky' },
+  ...getUniqueColors().map(color => ({ name: color.name, slug: color.slug })),
 ];
+
+const collectionColorSlugs: Record<string, string[]> = {
+  essentials: ['black', 'navy', 'cream'],
+  'earth-tones': ['olive', 'brown', 'terracotta', 'sage', 'sand'],
+  bold: ['pink', 'lavender', 'burgundy', 'sky'],
+};
 
 function ProductCard({ product }: { product: typeof products[0] }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -43,7 +40,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
         onMouseLeave={() => setIsHovered(false)}
         className="card-lift"
       >
-        <div className="img-hover" style={{ aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', position: 'relative', overflow: 'hidden' }}>
+        <Stack direction="vertical" style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
           <motion.img
             src={isHovered && modelImage ? modelImage.src : (productImage?.src || variant.images[0]?.src)}
             alt={isHovered && modelImage ? modelImage.alt : (productImage?.alt || variant.images[0]?.alt)}
@@ -53,11 +50,11 @@ function ProductCard({ product }: { product: typeof products[0] }) {
             transition={{ duration: 0.4 }}
           />
           {product.tags.includes('best-seller') && (
-            <div style={{ position: 'absolute', top: '0.75rem', left: '0.75rem' }}>
+            <Stack style={{ position: 'absolute', top: '0.75rem', left: '0.75rem' }}>
               <Badge label="BEST SELLER" />
-            </div>
+            </Stack>
           )}
-        </div>
+        </Stack>
         <Stack gap={1} style={{ marginTop: '0.75rem' }}>
           <Text type="label" color="secondary">{variant.color}</Text>
           <Text type="body" weight="medium">{product.name}</Text>
@@ -68,53 +65,61 @@ function ProductCard({ product }: { product: typeof products[0] }) {
   );
 }
 
-export default function ShopPage() {
+function ShopPageContent() {
+  const searchParams = useSearchParams();
+  const collection = searchParams.get('collection');
   const [selectedColor, setSelectedColor] = useState('all');
   const filteredProducts = products.filter(p => {
-    if (selectedColor === 'all') return true;
-    return p.variants.some(v => v.colorSlug === selectedColor);
+    const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
+    const collectionSlugs = collection ? collectionColorSlugs[collection] : undefined;
+    const matchesCollection = !collectionSlugs || p.variants.some(v => collectionSlugs.includes(v.colorSlug));
+    return matchesColor && matchesCollection;
   });
 
   return (
-    <div>
-      <Section style={{ padding: '5rem 0', backgroundColor: 'var(--inverted)', color: 'var(--inverted-text)' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
-          <Badge label="The Collection" />
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9, marginTop: '0.75rem' }}>HALF-COLLAR SHIRTS</h1>
-          <Text type="body" style={{ color: 'var(--inverted-text-muted)', marginTop: '0.5rem' }}>{products.length} shirts. One signature. Endless possibilities.</Text>
-        </div>
-      </Section>
+    <>
+      <Theme theme={neutralTheme} mode="dark">
+        <Section variant="section" style={{ padding: '5rem 0' }}>
+          <Stack gap={3} align="center" style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)', textAlign: 'center' }}>
+            <Badge label="The Collection" />
+            <Text type="display-1" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 6vw, 4.5rem)', lineHeight: 0.9 }}>HALF-COLLAR SHIRTS</Text>
+            <Text type="body" color="secondary">{products.length} colours. One signature shirt. Endless possibilities.</Text>
+          </Stack>
+        </Section>
+      </Theme>
 
-      <Section style={{ padding: '3rem 0' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
-          <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
-            <Text type="body" color="secondary">{filteredProducts.length} products</Text>
+      <Section variant="section" style={{ padding: '3rem 0' }}>
+        <Stack gap={6} style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
+          <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
+            <Text type="body" color="secondary">{filteredProducts.length} {filteredProducts.length === 1 ? 'colour' : 'colours'} shown</Text>
           </Stack>
 
-          <div style={{ display: 'flex', gap: '2rem' }}>
-            <aside style={{ width: '12rem', flexShrink: 0 }}>
-              <Text type="label" color="secondary" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem', marginBottom: '1rem', display: 'block' }}>Colour</Text>
+          <Stack direction="horizontal" gap={8} align="start">
+            <Stack as="aside" gap={4} style={{ width: '12rem', flexShrink: 0 }}>
+              <Text type="label" color="secondary" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>Colour</Text>
               <Stack gap={2}>
                 {allColors.map(color => (
-                  <button key={color.slug} onClick={() => setSelectedColor(color.slug)} aria-label={`Filter by ${color.name}`} style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: '0.875rem', color: selectedColor === color.slug ? 'var(--accent)' : 'var(--text-secondary)', fontWeight: selectedColor === color.slug ? 500 : 400, transition: 'color 0.2s' }}>
+                  <button key={color.slug} onClick={() => setSelectedColor(color.slug)} aria-pressed={selectedColor === color.slug} aria-label={`Filter by ${color.name}`} style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: '0.875rem', color: selectedColor === color.slug ? 'var(--accent)' : 'var(--text-secondary)', fontWeight: selectedColor === color.slug ? 500 : 400, transition: 'color 0.2s' }}>
                     {color.name}
                   </button>
                 ))}
               </Stack>
-            </aside>
+            </Stack>
 
-            <div style={{ flex: 1 }}>
-              <Grid columns={{ minWidth: 280 }} gap={6}>
-                {filteredProducts.map((product, index) => (
-                  <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
-                    <ProductCard product={product} />
-                  </motion.div>
-                ))}
-              </Grid>
-            </div>
-          </div>
-        </div>
+            <Grid columns={{ minWidth: 280 }} gap={6} style={{ flex: 1 }}>
+              {filteredProducts.map((product, index) => (
+                <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </Grid>
+          </Stack>
+        </Stack>
       </Section>
-    </div>
+    </>
   );
+}
+
+export default function ShopPage() {
+  return <Suspense fallback={<div style={{ minHeight: '50vh' }} />}><ShopPageContent /></Suspense>;
 }

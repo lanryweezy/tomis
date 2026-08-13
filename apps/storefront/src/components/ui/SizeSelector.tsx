@@ -17,6 +17,9 @@ export default function SizeSelector({ sizes, selected, onSelect }: SizeSelector
           whileTap={{ scale: s.inStock ? 0.95 : 1 }}
           onClick={() => s.inStock && onSelect(s.value)}
           disabled={!s.inStock}
+          title={!s.inStock ? "Out of stock" : undefined}
+          aria-label={`${s.label}${!s.inStock ? ' (Out of stock)' : ''}`}
+          aria-pressed={selected === s.value}
           style={{
             width: '3rem', height: '3rem', border: '1px solid',
             borderColor: selected === s.value ? 'var(--text-primary)' : 'var(--border-strong)',

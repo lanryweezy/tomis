@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 
 interface CartItem {
   id: string;
@@ -29,6 +29,23 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem('tomis-cart');
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate the client-only cart from browser storage.
+      if (saved) setItems(JSON.parse(saved) as CartItem[]);
+    } catch {
+      window.localStorage.removeItem('tomis-cart');
+    } finally {
+      setHasHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hasHydrated) window.localStorage.setItem('tomis-cart', JSON.stringify(items));
+  }, [hasHydrated, items]);
 
   const addItem = useCallback((item: Omit<CartItem, 'id'>) => {
     setItems(prev => {

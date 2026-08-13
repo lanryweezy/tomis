@@ -38,8 +38,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
           <div className="flex items-center justify-between h-[var(--header-height-desktop)]">
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden w-10 h-10 flex items-center justify-center"
+              className="lg:hidden w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu-overlay"
               aria-label="Toggle menu"
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -82,8 +84,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             {/* Right Actions */}
             <div className="flex items-center gap-4">
               <button
-                className="w-10 h-10 flex items-center justify-center"
+                className="w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
+                aria-expanded={isSearchOpen}
+                aria-controls="search-overlay"
                 aria-label="Search"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -92,14 +96,14 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 </svg>
               </button>
 
-              <Link href="/account" className="hidden md:flex w-10 h-10 items-center justify-center" aria-label="Account">
+              <Link href="/account" className="hidden md:flex w-10 h-10 items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Account">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
               </Link>
 
-              <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center" aria-label="Cart">
+              <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Cart">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
@@ -182,12 +186,12 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[var(--z-modal)] lg:hidden">
+        <div id="mobile-menu-overlay" role="dialog" aria-modal="true" className="fixed inset-0 z-[var(--z-modal)] lg:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setIsMobileMenuOpen(false)} />
           <div className="absolute left-0 top-0 bottom-0 w-80 bg-white p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-8">
               <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
-              <button onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu">
+              <button onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 6l12 12M6 18L18 6" />
                 </svg>
@@ -217,7 +221,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
       {/* Search Overlay */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[var(--z-modal)] bg-white">
+        <div id="search-overlay" role="dialog" aria-modal="true" className="fixed inset-0 z-[var(--z-modal)] bg-white">
           <div className="max-w-2xl mx-auto px-4 pt-20">
             <div className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -227,10 +231,11 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               <input
                 type="text"
                 placeholder="Search Tomis..."
+                aria-label="Search query"
                 className="flex-1 text-xl outline-none bg-transparent placeholder:text-[var(--color-neutral-gray-400)]"
                 autoFocus
               />
-              <button onClick={() => setIsSearchOpen(false)} aria-label="Close search">
+              <button onClick={() => setIsSearchOpen(false)} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 6l12 12M6 18L18 6" />
                 </svg>

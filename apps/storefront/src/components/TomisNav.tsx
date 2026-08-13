@@ -25,21 +25,16 @@ export default function TomisNav() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- close the drawer when navigation completes.
   useEffect(() => { setIsMobileOpen(false); }, [pathname]);
 
   return (
     <>
       {/* Marquee announcement */}
       <div className="marquee" style={{ backgroundColor: 'var(--navy)', color: 'var(--inverted-text)', padding: '0.5rem 0', fontSize: '0.6rem', letterSpacing: '0.2em', fontWeight: 500 }}>
-        <div className="marquee-content">
+        <div className="announcement-marquee-content">
           {['FREE DELIVERY IN LAGOS ON ORDERS OVER ₦50,000', 'EASY RETURNS WITHIN 14 DAYS', 'MADE IN LAGOS, NIGERIA'].map((text, i) => (
             <span key={i} style={{ padding: '0 3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <span style={{ width: '4px', height: '4px', backgroundColor: 'var(--accent)', borderRadius: '50%' }} />
-              {text}
-            </span>
-          ))}
-          {['FREE DELIVERY IN LAGOS ON ORDERS OVER ₦50,000', 'EASY RETURNS WITHIN 14 DAYS', 'MADE IN LAGOS, NIGERIA'].map((text, i) => (
-            <span key={`d-${i}`} style={{ padding: '0 3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ width: '4px', height: '4px', backgroundColor: 'var(--accent)', borderRadius: '50%' }} />
               {text}
             </span>
@@ -59,7 +54,7 @@ export default function TomisNav() {
       >
         <Stack direction="horizontal" gap={4} padding={4} style={{ maxWidth: '1400px', margin: '0 auto', alignItems: 'center', justifyContent: 'space-between', height: isScrolled ? '3.5rem' : '4.5rem', transition: 'height 0.4s ease' }}>
           {/* Mobile toggle */}
-          <button onClick={() => setIsMobileOpen(!isMobileOpen)} style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }} aria-label="Menu">
+          <button onClick={() => setIsMobileOpen(!isMobileOpen)} aria-expanded={isMobileOpen} aria-controls="mobile-menu" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }} aria-label="Menu">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               {isMobileOpen ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M3 8h18M3 16h18" />}
             </svg>
@@ -73,7 +68,7 @@ export default function TomisNav() {
           {/* Desktop nav */}
           <nav style={{ display: 'none' }} className="desktop-nav" aria-label="Main">
             {navItems.map(item => (
-              <Link key={item.label} href={item.href} className="link-underline" style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.15em', color: pathname === item.href ? 'var(--accent)' : 'var(--text-primary)', textDecoration: 'none', transition: 'color 0.3s' }}>
+              <Link key={item.label} href={item.href} className="link-underline" aria-current={pathname === item.href ? 'page' : undefined} style={{ fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.15em', color: pathname === item.href ? 'var(--accent)' : 'var(--text-primary)', textDecoration: 'none', transition: 'color 0.3s' }}>
                 {item.label}
               </Link>
             ))}
@@ -106,18 +101,18 @@ export default function TomisNav() {
         {isMobileOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'fixed', inset: 0, zIndex: 1400 }}>
             <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)' }} onClick={() => setIsMobileOpen(false)} />
-            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 30, stiffness: 300 }} style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '85vw', maxWidth: '320px', backgroundColor: 'var(--bg)', padding: '2rem', overflowY: 'auto', borderRight: '1px solid var(--border)' }}>
+            <motion.div id="mobile-menu" initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 30, stiffness: 300 }} style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '85vw', maxWidth: '320px', backgroundColor: 'var(--bg)', padding: '2rem', overflowY: 'auto', borderRight: '1px solid var(--border)' }}>
               <Stack gap={6}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="font-display" style={{ fontSize: '1.5rem', fontStyle: 'italic', color: 'var(--text-primary)' }}>Tomis</span>
-                  <button onClick={() => setIsMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }}>
+                  <button aria-label="Close menu" onClick={() => setIsMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 6l12 12M6 18L18 6" /></svg>
                   </button>
                 </div>
                 <Stack gap={4}>
                   {navItems.map((item, i) => (
                     <motion.div key={item.label} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
-                      <Link href={item.href} onClick={() => setIsMobileOpen(false)} style={{ fontSize: '1.5rem', fontWeight: 300, letterSpacing: '0.05em', color: pathname === item.href ? 'var(--accent)' : 'var(--text-primary)', textDecoration: 'none', transition: 'color 0.3s' }}>
+                      <Link href={item.href} onClick={() => setIsMobileOpen(false)} aria-current={pathname === item.href ? 'page' : undefined} style={{ fontSize: '1.5rem', fontWeight: 300, letterSpacing: '0.05em', color: pathname === item.href ? 'var(--accent)' : 'var(--text-primary)', textDecoration: 'none', transition: 'color 0.3s' }}>
                         {item.label}
                       </Link>
                     </motion.div>

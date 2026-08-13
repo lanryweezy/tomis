@@ -36,6 +36,8 @@ export default function AccountPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 border border-[var(--color-neutral-gray-200)] text-sm focus:outline-none focus:border-[var(--color-neutral-ink)] transition-colors"
               placeholder="your@email.com"
+              autoComplete="email"
+              required
             />
           </div>
           <div>
@@ -49,6 +51,8 @@ export default function AccountPage() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 border border-[var(--color-neutral-gray-200)] text-sm focus:outline-none focus:border-[var(--color-neutral-ink)] transition-colors"
               placeholder="••••••••"
+              autoComplete="current-password"
+              required
             />
           </div>
 
