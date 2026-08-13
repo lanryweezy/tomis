@@ -48,6 +48,6 @@ export const values = [
 export const milestones = [
   { year: '2024', event: 'The first Tomis half-collar shirt is designed in Lagos.' },
   { year: '2024', event: 'Prototype testing with 50 men across Lagos.' },
-  { year: '2025', event: 'Tomis launches with 14 signature colours.' },
+  { year: '2025', event: 'Tomis launches with its signature half-collar collection.' },
   { year: '2025', event: 'The digital flagship store goes live.' },
 ];

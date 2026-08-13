@@ -28,11 +28,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     '@type': 'Organization',
     name: 'TOMIS',
     url: 'https://tomis.fit',
-    logo: 'https://tomis.fit/logo.png',
-    sameAs: [
-      'https://instagram.com/tomis',
-      'https://twitter.com/tomis'
-    ],
+    logo: 'https://tomis.fit/images/brand/logo-light.svg',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: 'hello@tomis.ng',
+      contactType: 'customer support',
+      areaServed: 'NG',
+      availableLanguage: 'en',
+    },
   };
 
   return (

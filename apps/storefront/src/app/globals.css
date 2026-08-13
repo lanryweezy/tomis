@@ -167,6 +167,7 @@
 
   .marquee { display: flex; overflow: hidden; white-space: nowrap; }
   .marquee-content { display: flex; animation: marquee 30s linear infinite; }
+  .announcement-marquee-content { display: flex; justify-content: center; width: 100%; }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
   .link-underline { position: relative; text-decoration: none; }
@@ -180,6 +181,18 @@
   /* Dark mode specific */
   [data-theme="dark"] .card-lift:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
   [data-theme="dark"] img { filter: brightness(0.9); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .announcement-marquee-content { animation: none !important; }
+    .reveal, .stagger > * { opacity: 1; transform: none; }
+  }
 }
 
   /* Desktop nav - show above 1024px */
