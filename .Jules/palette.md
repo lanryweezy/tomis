@@ -27,3 +27,7 @@
 ## 2026-08-12 - Accessible Navigation Enhancements
 **Learning:** Relying solely on visual cues (like an active tab color) or generic containers for mobile menus leaves screen reader and keyboard users without context. Visual focus states must be paired with explicit semantic ARIA roles (e.g., `aria-current` for active links, and `aria-expanded`/`aria-controls` for menu toggles) for a cohesive and truly accessible navigation experience.
 **Action:** When implementing custom navigation or mobile menus, always pair visual active/focus states with corresponding ARIA attributes (`aria-current`, `aria-expanded`, `aria-controls`) to ensure state is programmatically determinable by assistive technologies.
+
+## 2024-08-16 - Ensuring All Form Fields Have Explicit Labels
+**Learning:** We observed that some optional form fields (like "Apartment, suite, etc." in checkout) relied entirely on `aria-label` or `placeholder` attributes without a visible `<label>` element. This creates an inconsistent experience and reduces the clickable hit area, especially on mobile devices.
+**Action:** Always ensure inputs have explicitly associated visible `<label>` elements using `htmlFor` matching the input's `id`, even for optional fields, to improve accessibility and usability for everyone. We also added an explicit `aria-label` to the 'Apply promo code' button in the cart so it matches the identical component found in checkout.
