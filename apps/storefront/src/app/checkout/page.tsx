@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@astryxdesign/core/Button';
@@ -131,8 +132,9 @@ export default function CheckoutPage() {
       <Section style={{ padding: '2rem 0' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 1.5rem' }}>
           {/* Breadcrumb */}
-          <nav style={{ marginBottom: '2rem' }}>
-            <Link href="/cart" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textDecoration: 'none' }}>← Back to bag</Link>
+                      <nav style={{ marginBottom: '2rem' }} aria-label="Checkout navigation">
+            <Link href="/cart" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textDecoration: 'none' }}>← Back to bag</Link>
+
           </nav>
 
           {/* Progress Steps */}
@@ -169,42 +171,42 @@ export default function CheckoutPage() {
                       <Grid columns={2} gap={4} className="checkout-fields">
                         <div>
                           <label htmlFor="firstName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>First Name *</label>
-                          <input id="firstName" type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input id="firstName" name="firstName" autoComplete="given-name" type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                         <div>
                           <label htmlFor="lastName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Last Name *</label>
-                          <input id="lastName" type="text" value={address.lastName} required onChange={e => setAddress({ ...address, lastName: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input id="lastName" name="lastName" autoComplete="family-name" type="text" value={address.lastName} required onChange={e => setAddress({ ...address, lastName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                       </Grid>
 
                       <div>
                         <label htmlFor="email" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Email *</label>
-                        <input id="email" type="email" value={address.email} required onChange={e => setAddress({ ...address, email: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input id="email" name="email" autoComplete="email" type="email" value={address.email} required onChange={e => setAddress({ ...address, email: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
                         <label htmlFor="phone" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Phone *</label>
-                        <input id="phone" type="tel" value={address.phone} required onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input id="phone" name="phone" autoComplete="tel" type="tel" value={address.phone} required onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
                         <label htmlFor="address1" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Address *</label>
-                        <input id="address1" type="text" value={address.address1} required onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input id="address1" name="address1" autoComplete="street-address" type="text" value={address.address1} required onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <div>
                         <label htmlFor="address2" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Apartment, suite, etc. (optional)</label>
-                        <input id="address2" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <input id="address2" name="address2" autoComplete="address-line2" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <Grid columns={2} gap={4} className="checkout-fields">
                         <div>
                           <label htmlFor="city" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>City *</label>
-                          <input id="city" type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input id="city" name="city" autoComplete="address-level2" type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
                         <div>
                           <label htmlFor="state" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>State *</label>
-                          <select id="state" value={address.state} required onChange={e => setAddress({ ...address, state: e.target.value })} style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
+                          <select id="state" name="state" autoComplete="address-level1" value={address.state} required onChange={e => setAddress({ ...address, state: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
                             <option value="">Select state</option>
                             {['Lagos', 'Abuja', 'Ogun', 'Oyo', 'Rivers', 'Kano', 'Edo', 'Delta', 'Anambra', 'Enugu'].map(s => (
                               <option key={s} value={s}>{s}</option>
@@ -228,9 +230,11 @@ export default function CheckoutPage() {
 
                       <Stack gap={3}>
                         {deliveryOptions.map(option => (
-                          <button
+                                                      <button
                             key={option.id}
                             onClick={() => setSelectedDelivery(option.id)}
+                            className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
+
                             aria-pressed={selectedDelivery === option.id}
                             style={{
                               width: '100%', padding: '1rem', border: '1px solid',
@@ -257,7 +261,7 @@ export default function CheckoutPage() {
 
                       {freeShipping && (
                         <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-elevated)', textAlign: 'center' }}>
-                          <Text type="supporting" color="accent">🎉 Free shipping on orders over ₦50,000</Text>
+                            <Text type="supporting" color="accent">Free shipping on orders over ₦50,000</Text>
                         </div>
                       )}
 
@@ -292,7 +296,7 @@ export default function CheckoutPage() {
                       <div>
                         <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
                         <div style={{ display: 'flex', gap: '0.5rem' }}>
-                          <input id="promoCode" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <input id="promoCode" name="promoCode" autoComplete="off" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                           <Button label="APPLY" variant="secondary" aria-label="Apply promo code" onClick={handlePromoApply} />
                         </div>
                         {promoMessage && <p role="status" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: promoDiscount > 0 ? 'var(--accent)' : 'var(--color-error, #b91c1c)' }}>{promoMessage}</p>}
@@ -365,12 +369,14 @@ export default function CheckoutPage() {
               <div>
                 <div style={{ padding: '1.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--bg)', position: 'sticky', top: '6rem' }}>
                   <Text type="label" color="secondary" style={{ marginBottom: '1rem', display: 'block' }}>Your Order</Text>
+                  <Link href="/shipping" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ display: 'inline-block', fontSize: '0.75rem', color: 'var(--accent)', textDecoration: 'underline', marginBottom: '1rem' }}>View delivery details</Link>
 
                   <Stack gap={4}>
                     {cartItems.map(item => (
                       <div key={item.id} style={{ display: 'flex', gap: '0.75rem' }}>
-                        <div style={{ width: '4rem', height: '5rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0 }}>
-                          <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                  <div style={{ width: '4rem', height: '5rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+                          <Image src={item.image} alt={`${item.color} ${item.name}`} fill sizes="4rem" style={{ objectFit: 'cover' }} />
+
                         </div>
                         <div style={{ flex: 1 }}>
                           <Text type="body" weight="medium">{item.name}</Text>

@@ -137,15 +137,15 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   </Text>
                 </div>
                 <Divider />
-                <div>
-                  <Text type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>
+                <div role="group" aria-labelledby="product-colour-label">
+                  <Text id="product-colour-label" type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>
                     Colour: <span style={{ color: 'var(--color-text-primary)' }}>{variant.color}</span>
                   </Text>
                   <Stack direction="horizontal" gap={3}>
                     {product.variants.map((v, index) => (
                       <button
                         key={v.id}
-                        onClick={() => { setSelectedColor(index); setActiveImage(0); }}
+                        onClick={() => { setSelectedColor(index); setSelectedSize(null); setActiveImage(0); setCartMessage(null); }}
                         style={{
                           width: '2.5rem',
                           height: '2.5rem',
@@ -156,16 +156,17 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                           transition: 'all 0.2s',
                           cursor: 'pointer',
                         }}
+                        className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
                         aria-label={v.color}
                         aria-pressed={selectedColor === index}
                       />
                     ))}
                   </Stack>
                 </div>
-                <div>
+                <div role="group" aria-labelledby="product-size-label">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <Text type="label" color="secondary">Size</Text>
-                    <Link href="/size-guide" style={{ fontSize: '0.75rem', color: 'var(--color-text-accent)', textDecoration: 'underline' }}>
+                    <Text id="product-size-label" type="label" color="secondary">Size</Text>
+                    <Link href="/size-guide" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ fontSize: '0.75rem', color: 'var(--color-text-accent)', textDecoration: 'underline' }}>
                       Size Guide
                     </Link>
                   </div>
@@ -192,6 +193,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                           opacity: size.inStock ? 1 : 0.3,
                           textDecoration: size.inStock ? 'none' : 'line-through',
                         }}
+                        className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
                       >
                         {size.label}
                       </button>
@@ -199,8 +201,8 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   </Stack>
                 </div>
                 <Stack direction="horizontal" gap={3} className="pdp-actions">
-                  <button type="button" onClick={addCurrentItem} style={{ flex: 1, minHeight: '3.25rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG</button>
-                  <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} style={{ flex: 1, minHeight: '3.25rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
+                  <button type="button" onClick={addCurrentItem} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 1, minHeight: '3.25rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG</button>
+                  <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 1, minHeight: '3.25rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
                 </Stack>
                 <p aria-live="polite" style={{ minHeight: '1.5rem', fontSize: '0.875rem', color: cartMessage?.includes('added') ? 'var(--color-brand-blue)' : 'var(--color-text-secondary)' }}>{cartMessage}</p>
                 <div style={{ backgroundColor: 'var(--color-background-muted)', padding: '1rem' }}>

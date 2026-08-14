@@ -19,6 +19,26 @@ export function Header({ cartCount = 0 }: HeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const isOverlayOpen = isMobileMenuOpen || isSearchOpen;
+    if (!isOverlayOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+        setIsSearchOpen(false);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileMenuOpen, isSearchOpen]);
+
   return (
     <>
       <header
@@ -42,7 +62,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu-overlay"
-              aria-label="Toggle menu"
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 {isMobileMenuOpen ? (
@@ -186,9 +206,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div id="mobile-menu-overlay" role="dialog" aria-modal="true" className="fixed inset-0 z-[var(--z-modal)] lg:hidden">
-          <div className="absolute inset-0 bg-black/30" onClick={() => setIsMobileMenuOpen(false)} />
-          <div className="absolute left-0 top-0 bottom-0 w-80 bg-white p-6 overflow-y-auto">
+        <div id="mobile-menu-overlay" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title" className="fixed inset-0 z-[var(--z-modal)] lg:hidden">
+          <button type="button" className="absolute inset-0 bg-black/30" onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu" />
+          <div className="absolute left-0 top-0 bottom-0 w-80 max-w-[calc(100vw-2rem)] bg-white p-6 overflow-y-auto">
+            <h2 id="mobile-menu-title" className="sr-only">Tomis menu</h2>
             <div className="flex justify-between items-center mb-8">
               <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
               <button onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
@@ -221,8 +242,9 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
       {/* Search Overlay */}
       {isSearchOpen && (
-        <div id="search-overlay" role="dialog" aria-modal="true" className="fixed inset-0 z-[var(--z-modal)] bg-white">
+        <div id="search-overlay" role="dialog" aria-modal="true" aria-labelledby="search-overlay-title" className="fixed inset-0 z-[var(--z-modal)] bg-white">
           <div className="max-w-2xl mx-auto px-4 pt-20">
+            <h2 id="search-overlay-title" className="sr-only">Search Tomis</h2>
             <div className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11" cy="11" r="8" />
@@ -246,10 +268,16 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 Popular Searches
               </p>
               <div className="flex flex-wrap gap-2">
-                {['Half-collar', 'Black', 'Navy', 'New Arrivals', 'Best Sellers'].map(tag => (
-                  <span key={tag} className="px-4 py-2 border border-[var(--color-neutral-gray-200)] text-sm hover:border-[var(--color-neutral-ink)] cursor-pointer transition-colors">
-                    {tag}
-                  </span>
+                {[
+                  { label: 'Half-collar', href: '/shop' },
+                  { label: 'Black', href: '/shop?collection=black' },
+                  { label: 'Navy', href: '/shop?collection=navy' },
+                  { label: 'New Arrivals', href: '/new-in' },
+                  { label: 'Best Sellers', href: '/shop' },
+                ].map(tag => (
+                  <Link key={tag.label} href={tag.href} onClick={() => setIsSearchOpen(false)} className="px-4 py-2 border border-[var(--color-neutral-gray-200)] text-sm hover:border-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] transition-colors">
+                    {tag.label}
+                  </Link>
                 ))}
               </div>
             </div>
