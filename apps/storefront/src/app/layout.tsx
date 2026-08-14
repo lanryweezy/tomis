@@ -11,6 +11,7 @@ import NewsletterPopup from '@/components/NewsletterPopup';
 import { MotionProvider } from '@/components/MotionProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { CartProvider } from '@/hooks/useCart';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: { default: 'TOMIS — The Half-Collar Shirt', template: '%s | TOMIS' },
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ToastProvider>
           </CartProvider>
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
