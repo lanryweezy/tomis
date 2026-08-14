@@ -69,6 +69,7 @@ function ShopPageContent() {
   const searchParams = useSearchParams();
   const collection = searchParams.get('collection');
   const [selectedColor, setSelectedColor] = useState('all');
+  const activeCollection = collection && collectionColorSlugs[collection] ? collection : null;
   const filteredProducts = products.filter(p => {
     const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
     const collectionSlugs = collection ? collectionColorSlugs[collection] : undefined;
@@ -91,11 +92,21 @@ function ShopPageContent() {
       <Section variant="section" style={{ padding: '3rem 0' }}>
         <Stack gap={6} style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
-            <Text type="body" color="secondary">{filteredProducts.length} {filteredProducts.length === 1 ? 'colour' : 'colours'} shown</Text>
+            <Stack direction="horizontal" gap={3} style={{ alignItems: 'center' }}>
+              <Text type="body" color="secondary">{filteredProducts.length} {filteredProducts.length === 1 ? 'colour' : 'colours'} shown</Text>
+              {activeCollection && <Badge label={`${activeCollection.replace('-', ' ')} edit`} />}
+            </Stack>
           </Stack>
 
-          <Stack direction="horizontal" gap={8} align="start">
-            <Stack as="aside" gap={4} style={{ width: '12rem', flexShrink: 0 }}>
+          <div className="shop-mobile-filter">
+            <label htmlFor="shop-colour-filter" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Filter by colour</label>
+            <select id="shop-colour-filter" value={selectedColor} onChange={event => setSelectedColor(event.target.value)} style={{ width: '100%', padding: '0.8rem', border: '1px solid var(--border-strong)', background: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem' }}>
+              {allColors.map(color => <option key={color.slug} value={color.slug}>{color.name}</option>)}
+            </select>
+          </div>
+
+          <Stack direction="horizontal" gap={8} align="start" className="shop-results-layout">
+            <Stack as="aside" gap={4} className="shop-filter-sidebar" style={{ width: '12rem', flexShrink: 0 }}>
               <Text type="label" color="secondary" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.625rem' }}>Colour</Text>
               <Stack gap={2}>
                 {allColors.map(color => (
@@ -106,13 +117,21 @@ function ShopPageContent() {
               </Stack>
             </Stack>
 
-            <Grid columns={{ minWidth: 280 }} gap={6} style={{ flex: 1 }}>
-              {filteredProducts.map((product, index) => (
-                <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </Grid>
+            {filteredProducts.length > 0 ? (
+              <Grid columns={{ minWidth: 280 }} gap={6} style={{ flex: 1 }}>
+                {filteredProducts.map((product, index) => (
+                  <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.05 }}>
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))}
+              </Grid>
+            ) : (
+              <div style={{ flex: 1, padding: '4rem 1rem', textAlign: 'center', border: '1px solid var(--border)' }}>
+                <Text type="body" weight="medium">No colours match this filter.</Text>
+                <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.5rem' }}>Try another colour or view the full signature collection.</Text>
+                <button type="button" onClick={() => setSelectedColor('all')} style={{ marginTop: '1.5rem', border: '1px solid var(--border-strong)', background: 'transparent', padding: '0.75rem 1rem', cursor: 'pointer', fontSize: '0.7rem', letterSpacing: '0.12em', fontWeight: 600 }}>VIEW ALL COLOURS</button>
+              </div>
+            )}
           </Stack>
         </Stack>
       </Section>

@@ -10,6 +10,7 @@ export function useTheme() {
     const saved = localStorage.getItem('tomis-theme') as Theme | null;
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const initial = saved || (systemPrefersDark ? 'dark' : 'light');
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync persisted theme after hydration.
     setTheme(initial);
     document.documentElement.setAttribute('data-theme', initial);
   }, []);

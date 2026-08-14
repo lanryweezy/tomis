@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   const coupon = coupons.find(c => c.code.toUpperCase() === code.toUpperCase() && c.isActive);
   if (!coupon) return NextResponse.json({ error: 'Invalid coupon code' }, { status: 404 });
   if (coupon.minOrderAmount && orderAmount < coupon.minOrderAmount) return NextResponse.json({ error: `Minimum order amount is ₦${coupon.minOrderAmount.toLocaleString('en-NG')}` }, { status: 400 });
-  let discount = coupon.discountType === 'percentage' ? Math.round(orderAmount * (coupon.discountValue / 100)) : coupon.discountValue;
+  const discount = coupon.discountType === 'percentage' ? Math.round(orderAmount * (coupon.discountValue / 100)) : coupon.discountValue;
   coupon.usedCount += 1;
   return NextResponse.json({ coupon, discount, finalAmount: orderAmount - discount });
 }

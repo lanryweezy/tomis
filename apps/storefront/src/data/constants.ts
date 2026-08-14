@@ -1,9 +1,9 @@
 export const colourGrid = [
-  { name: 'BLACK', sub: 'The Essential', bg: 'var(--color-neutral-ink, #101114)' },
-  { name: 'NAVY', sub: 'The Classic', bg: 'var(--color-brand-navy, #0B1F5E)' },
-  { name: 'OLIVE', sub: 'The Natural', bg: 'var(--color-fashion-olive, #7A8065)' },
-  { name: 'PINK', sub: 'The Unexpected', bg: 'var(--color-fashion-dusty-pink, #D4A5A5)' },
-  { name: 'BROWN', sub: 'The Warmth', bg: 'var(--color-fashion-sand, #8B6F47)' },
+  { name: 'BLACK', slug: 'black', sub: 'The Essential', bg: 'var(--color-neutral-ink, #101114)' },
+  { name: 'NAVY', slug: 'navy', sub: 'The Classic', bg: 'var(--color-brand-navy, #0B1F5E)' },
+  { name: 'OLIVE', slug: 'olive', sub: 'The Natural', bg: 'var(--color-fashion-olive, #7A8065)' },
+  { name: 'PINK', slug: 'pink', sub: 'The Unexpected', bg: 'var(--color-fashion-dusty-pink, #D4A5A5)' },
+  { name: 'BROWN', slug: 'brown', sub: 'The Warmth', bg: 'var(--color-fashion-sand, #8B6F47)' },
 ];
 
 export const marqueeItems = ['PREMIUM FABRICS', 'CLEAN DESIGN', 'FAST DELIVERY', 'MADE IN LAGOS', 'FREE RETURNS', 'SECURE PAYMENT'];

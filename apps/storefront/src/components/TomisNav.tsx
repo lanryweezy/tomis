@@ -28,6 +28,11 @@ export default function TomisNav() {
   // eslint-disable-next-line react-hooks/set-state-in-effect -- close the drawer when navigation completes.
   useEffect(() => { setIsMobileOpen(false); }, [pathname]);
 
+  useEffect(() => {
+    document.body.style.overflow = isMobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMobileOpen]);
+
   return (
     <>
       {/* Marquee announcement */}
@@ -54,7 +59,7 @@ export default function TomisNav() {
       >
         <Stack direction="horizontal" gap={4} padding={4} style={{ maxWidth: '1400px', margin: '0 auto', alignItems: 'center', justifyContent: 'space-between', height: isScrolled ? '3.5rem' : '4.5rem', transition: 'height 0.4s ease' }}>
           {/* Mobile toggle */}
-          <button onClick={() => setIsMobileOpen(!isMobileOpen)} aria-expanded={isMobileOpen} aria-controls="mobile-menu" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }} aria-label="Menu">
+          <button onClick={() => setIsMobileOpen(!isMobileOpen)} aria-expanded={isMobileOpen} aria-controls="mobile-menu" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }} aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               {isMobileOpen ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M3 8h18M3 16h18" />}
             </svg>
@@ -101,7 +106,7 @@ export default function TomisNav() {
         {isMobileOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ position: 'fixed', inset: 0, zIndex: 1400 }}>
             <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)' }} onClick={() => setIsMobileOpen(false)} />
-            <motion.div id="mobile-menu" initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 30, stiffness: 300 }} style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '85vw', maxWidth: '320px', backgroundColor: 'var(--bg)', padding: '2rem', overflowY: 'auto', borderRight: '1px solid var(--border)' }}>
+            <motion.div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Tomis navigation" initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', damping: 30, stiffness: 300 }} style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '85vw', maxWidth: '320px', backgroundColor: 'var(--bg)', padding: '2rem', overflowY: 'auto', borderRight: '1px solid var(--border)' }}>
               <Stack gap={6}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="font-display" style={{ fontSize: '1.5rem', fontStyle: 'italic', color: 'var(--text-primary)' }}>Tomis</span>

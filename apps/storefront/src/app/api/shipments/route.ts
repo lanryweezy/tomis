@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 interface ShipmentRecord { id: string; orderId: string; carrier: string; trackingNumber?: string; trackingUrl?: string; status: string; estimatedDelivery?: string; deliveredAt?: string; createdAt: string; updatedAt: string; }
-let shipments: ShipmentRecord[] = [];
+const shipments: ShipmentRecord[] = [];
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
@@ -9,14 +9,13 @@ import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
 
 import { useCart } from '@/hooks/useCart';
-import { useToast } from '@/components/ui/Toast';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
-  const { toast } = useToast();
-  const [promoCode, setPromoCode] = useState('');
-
   const shipping = subtotal >= 50000 ? 0 : 2500;
+  const freeShippingThreshold = 50000;
+  const freeShippingProgress = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
+  const amountToFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
   const total = subtotal + shipping;
 
   return (
@@ -31,12 +30,12 @@ export default function CartPage() {
               <Link href="/shop"><Button label="CONTINUE SHOPPING" /></Link>
             </div>
           ) : (
-            <Grid columns={2} gap={10}>
+            <Grid columns={2} gap={10} className="cart-layout">
               <Stack gap={0}>
                 {items.map(item => (
                   <div key={item.id} style={{ display: 'flex', gap: '1rem', padding: '1.5rem 0', borderBottom: '1px solid var(--border)' }}>
-                    <div style={{ width: '5rem', height: '6rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0 }}>
-                      <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ width: '5rem', height: '6rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
+                      <Image src={item.image} alt={item.name} fill sizes="5rem" style={{ objectFit: 'cover' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -71,8 +70,13 @@ export default function CartPage() {
                       <Text type="body" color="secondary">Shipping</Text>
                       <Text type="body">{shipping === 0 ? 'FREE' : formatPrice(shipping)}</Text>
                     </div>
-                    {shipping > 0 && (
-                      <Text type="supporting" color="accent">Free shipping on orders over ₦50,000</Text>
+                    {shipping > 0 ? (
+                      <div style={{ marginTop: '0.5rem' }}>
+                        <Text type="supporting" color="accent">Add ₦{amountToFreeShipping.toLocaleString('en-NG')} more for free Lagos delivery.</Text>
+                        <div aria-label={`${freeShippingProgress}% toward free delivery`} role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={freeShippingProgress} style={{ height: '4px', marginTop: '0.5rem', background: 'var(--bg-elevated)' }}><div style={{ width: `${freeShippingProgress}%`, height: '100%', background: 'var(--accent)' }} /></div>
+                      </div>
+                    ) : (
+                      <Text type="supporting" color="accent">Free Lagos delivery unlocked.</Text>
                     )}
                   </Stack>
 
