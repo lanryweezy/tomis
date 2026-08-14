@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Text } from '@astryxdesign/core/Text';
@@ -87,10 +88,10 @@ export default function JournalPage() {
         <Stack style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 clamp(1.5rem, 5vw, 4rem)' }}>
           {/* Featured Article */}
           <motion.div {...fadeIn}>
-            <Link href={`/journal/${articles[0].id}`} style={{ textDecoration: 'none' }}>
+            <Link href={`/journal/${articles[0].id}`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-4" style={{ textDecoration: 'none' }}>
               <Grid columns={2} gap={8} style={{ alignItems: 'center', marginBottom: '4rem' }}>
-                <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
-                  <img src={articles[0].image} alt={articles[0].title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', position: 'relative' }}>
+                  <Image src={articles[0].image} alt={articles[0].title} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} priority />
                 </Stack>
                 <Stack gap={3} align="start">
                   <Badge label={`${articles[0].category} • ${articles[0].date}`} />
@@ -108,10 +109,10 @@ export default function JournalPage() {
           <Grid columns={3} gap={6}>
             {articles.slice(1).map((article, index) => (
               <motion.div key={article.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}>
-                <Link href={`/journal/${article.id}`} style={{ textDecoration: 'none' }}>
+                <Link href={`/journal/${article.id}`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-4" style={{ textDecoration: 'none' }}>
                   <ClickableCard label={article.title}>
-                    <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem' }}>
-                      <img src={article.image} alt={article.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <Stack style={{ aspectRatio: '4/3', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem', position: 'relative' }}>
+                      <Image src={article.image} alt={article.title} fill sizes="(max-width: 768px) 100vw, 33vw" style={{ objectFit: 'cover' }} />
                     </Stack>
                     <Badge label={article.category} />
                     <h3 style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-primary)', marginTop: '0.5rem' }}>

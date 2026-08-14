@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export function Footer() {
@@ -7,7 +8,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <img src="/images/brand/logo-light.svg" alt="TOMIS" className="h-6 mb-4" />
+            <Image src="/images/brand/logo-light.svg" alt="TOMIS" width={120} height={24} className="h-6 w-auto mb-4" />
             <p className="text-sm text-neutral-400 leading-relaxed max-w-xs">
               The signature half-collar shirt. Designed for the life you actually live.
             </p>
@@ -23,10 +24,15 @@ export function Footer() {
               Shop
             </h4>
             <ul className="space-y-2.5">
-              {['Half-Collar Shirts', 'New Arrivals', 'Best Sellers', 'All Products'].map(item => (
-                <li key={item}>
-                  <Link href="/shop" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                    {item}
+              {[
+                { label: 'Half-Collar Shirts', href: '/shop' },
+                { label: 'New Arrivals', href: '/new-in' },
+                { label: 'Best Sellers', href: '/shop' },
+                { label: 'All Products', href: '/shop' },
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-neutral-400 hover:text-white focus-visible:outline-2 focus-visible:outline-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -39,10 +45,15 @@ export function Footer() {
               Company
             </h4>
             <ul className="space-y-2.5">
-              {['Our Story', 'Journal', 'Careers', 'Sustainability'].map(item => (
-                <li key={item}>
-                  <Link href="/about" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                    {item}
+              {[
+                { label: 'Our Story', href: '/about' },
+                { label: 'Journal', href: '/journal' },
+                { label: 'Careers', href: '/careers' },
+                { label: 'Sustainability', href: '/sustainability' },
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-neutral-400 hover:text-white focus-visible:outline-2 focus-visible:outline-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -55,10 +66,17 @@ export function Footer() {
               Support
             </h4>
             <ul className="space-y-2.5">
-              {['Contact Us', 'FAQ', 'Shipping & Delivery', 'Returns & Exchanges', 'Size Guide', 'Care Guide'].map(item => (
-                <li key={item}>
-                  <Link href="/support" className="text-sm text-neutral-400 hover:text-white transition-colors">
-                    {item}
+              {[
+                { label: 'Contact Us', href: '/support#contact' },
+                { label: 'FAQ', href: '/support#faq' },
+                { label: 'Shipping & Delivery', href: '/shipping' },
+                { label: 'Returns & Exchanges', href: '/returns' },
+                { label: 'Size Guide', href: '/size-guide' },
+                { label: 'Care Guide', href: '/support#care' },
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-sm text-neutral-400 hover:text-white focus-visible:outline-2 focus-visible:outline-white transition-colors">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -76,10 +94,12 @@ export function Footer() {
             <div className="flex w-full md:w-auto">
               <input
                 type="email"
+                id="footer-newsletter-email"
+                aria-label="Email address for Tomis newsletter"
                 placeholder="Your email"
-                className="flex-1 md:w-64 px-4 py-3 bg-neutral-800 border border-neutral-700 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-white transition-colors"
+                className="flex-1 md:w-64 px-4 py-3 bg-neutral-800 border border-neutral-700 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-white focus-visible:ring-2 focus-visible:ring-white transition-colors"
               />
-              <button className="px-6 py-3 bg-[var(--color-brand-blue)] text-white text-xs font-medium tracking-widest uppercase hover:bg-[var(--color-brand-navy)] transition-colors">
+              <button type="button" className="px-6 py-3 bg-[var(--color-brand-blue)] text-white text-xs font-medium tracking-widest uppercase hover:bg-[var(--color-brand-navy)] focus-visible:outline-2 focus-visible:outline-white transition-colors">
                 SUBSCRIBE
               </button>
             </div>
@@ -92,9 +112,13 @@ export function Footer() {
             &copy; {new Date().getFullYear()} Tomis. All rights reserved.
           </p>
           <div className="flex gap-6">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
-              <Link key={item} href="/legal" className="text-xs text-neutral-500 hover:text-neutral-300 transition-colors">
-                {item}
+            {[
+              { label: 'Privacy Policy', href: '/privacy' },
+              { label: 'Terms of Service', href: '/terms' },
+              { label: 'Cookie Policy', href: '/cookies' },
+            ].map(item => (
+              <Link key={item.label} href={item.href} className="text-xs text-neutral-500 hover:text-neutral-300 focus-visible:outline-2 focus-visible:outline-white transition-colors">
+                {item.label}
               </Link>
             ))}
           </div>

@@ -35,7 +35,7 @@ export default function CartPage() {
                 {items.map(item => (
                   <div key={item.id} style={{ display: 'flex', gap: '1rem', padding: '1.5rem 0', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ width: '5rem', height: '6rem', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
-                      <Image src={item.image} alt={item.name} fill sizes="5rem" style={{ objectFit: 'cover' }} />
+                      <Image src={item.image} alt={`${item.color} ${item.name}`} fill sizes="5rem" style={{ objectFit: 'cover' }} />
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -43,13 +43,13 @@ export default function CartPage() {
                           <Text type="body" weight="medium">{item.name}</Text>
                           <Text type="supporting" color="secondary">{item.color} / {item.size}</Text>
                         </div>
-                        <button onClick={() => removeItem(item.id)} aria-label="Remove item" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>✕</button>
+                        <button onClick={() => removeItem(item.id)} aria-label={`Remove ${item.color} ${item.name} from bag`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>✕</button>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.75rem' }}>
-                        <div style={{ display: 'flex', border: '1px solid var(--border-strong)' }}>
-                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label="Decrease quantity" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>−</button>
-                          <span style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem' }}>{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label="Increase quantity" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>+</button>
+                        <div role="group" aria-label={`Quantity for ${item.color} ${item.name}`} style={{ display: 'flex', border: '1px solid var(--border-strong)' }}>
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} aria-label={`Decrease quantity of ${item.color} ${item.name}`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>−</button>
+                          <span aria-live="polite" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem' }}>{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label={`Increase quantity of ${item.color} ${item.name}`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ width: '2rem', height: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}>+</button>
                         </div>
                         <Text type="body" weight="medium">{formatPrice(item.price * item.quantity)}</Text>
                       </div>
@@ -61,6 +61,7 @@ export default function CartPage() {
               <div>
                 <div style={{ padding: '1.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--bg)', position: 'sticky', top: '6rem' }}>
                   <Text type="label" color="secondary" style={{ marginBottom: '1rem', display: 'block' }}>Order Summary</Text>
+                  <Link href="/shipping" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ display: 'inline-block', fontSize: '0.75rem', color: 'var(--accent)', textDecoration: 'underline', marginBottom: '1rem' }}>View delivery details</Link>
                   <Stack gap={2}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Text type="body" color="secondary">Subtotal</Text>
@@ -97,8 +98,8 @@ export default function CartPage() {
                     <Text type="body" weight="medium" style={{ fontSize: '1.125rem' }}>{formatPrice(total)}</Text>
                   </div>
 
-                  <Link href="/checkout"><Button label="PROCEED TO CHECKOUT" width="100%" /></Link>
-                  <Link href="/shop" style={{ display: 'block', textAlign: 'center', marginTop: '1rem' }}>
+                  <Link href="/checkout" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"><Button label="PROCEED TO CHECKOUT" width="100%" /></Link>
+                  <Link href="/shop" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ display: 'block', textAlign: 'center', marginTop: '1rem' }}>
                     <Text type="supporting" color="accent">CONTINUE SHOPPING</Text>
                   </Link>
                 </div>

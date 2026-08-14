@@ -1,6 +1,6 @@
 'use client';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Section } from '@astryxdesign/core/Section';
 import { Center } from '@astryxdesign/core/Center';
 import { slideInLeft, slideInRight } from '@/lib/animations';
 
@@ -15,7 +15,7 @@ export default function EditorialHero() {
         </Center>
       </motion.div>
       <motion.div {...slideInRight} style={{ position: 'relative', overflow: 'hidden' }}>
-        <img src="/images/lifestyle/olive-glasses.jpg" alt="Man wearing Tomis olive half-collar shirt with glasses in modern setting" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <Image src="/images/lifestyle/olive-glasses.jpg" alt="Man wearing Tomis olive half-collar shirt with glasses in modern setting" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
       </motion.div>
     </section>
   );

@@ -1,10 +1,10 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Text } from '@astryxdesign/core/Text';
 import { Section } from '@astryxdesign/core/Section';
 import { Stack } from '@astryxdesign/core/Stack';
-import { Badge } from '@astryxdesign/core/Badge';
 import { fadeIn } from '@/lib/animations';
 
 export default function BentoGrid() {
@@ -22,11 +22,11 @@ export default function BentoGrid() {
               <Link href="/shop" className="btn-primary">SHOP HALF-COLLAR →</Link>
             </Stack>
           </motion.div>
-          <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="img-hover" style={{ backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
-            <img src="/images/products/olive-front.jpg" alt="Olive green Tomis half-collar shirt flat lay product photo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <motion.div {...fadeIn} transition={{ delay: 0.1 }} className="img-hover relative min-h-[18rem]" style={{ backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
+            <Image src="/images/products/olive-front.jpg" alt="Olive green Tomis half-collar shirt flat lay product photo" fill sizes="(max-width: 768px) 100vw, 40vw" className="object-cover" />
           </motion.div>
-          <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="img-hover" style={{ backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
-            <img src="/images/lifestyle/white-office.jpg" alt="Man wearing Tomis white half-collar shirt in modern office" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <motion.div {...fadeIn} transition={{ delay: 0.2 }} className="img-hover relative min-h-[18rem]" style={{ backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
+            <Image src="/images/lifestyle/white-office.jpg" alt="Man wearing Tomis white half-collar shirt in modern office" fill sizes="(max-width: 768px) 100vw, 30vw" className="object-cover" />
           </motion.div>
         </div>
       </div>

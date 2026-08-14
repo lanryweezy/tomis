@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Text } from '@astryxdesign/core/Text';
@@ -64,10 +65,10 @@ export default function CollectionsPage() {
           <Grid columns={2} gap={6}>
             {collections.map((collection, index) => (
               <motion.div key={collection.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }}>
-                <Link href={collection.href} style={{ textDecoration: 'none' }}>
+                <Link href={collection.href} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-4" style={{ textDecoration: 'none' }}>
                   <ClickableCard label={collection.name}>
-                    <Stack style={{ aspectRatio: '16/9', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem' }}>
-                      <img src={collection.image} alt={`${collection.name} collection`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <Stack style={{ aspectRatio: '16/9', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden', marginBottom: '1rem', position: 'relative' }}>
+                      <Image src={collection.image} alt={`${collection.name} collection`} fill sizes="(max-width: 768px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
                     </Stack>
                     <Badge label={`${collection.productCount} PRODUCTS`} />
                     <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.5rem', marginTop: '0.5rem', color: 'var(--text-primary)' }}>
