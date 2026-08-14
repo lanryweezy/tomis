@@ -82,7 +82,7 @@ export default function CartPage() {
                     <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                       <input id="promoCode" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                      <Button label="APPLY" variant="secondary" />
+                      <Button label="APPLY" variant="secondary" aria-label="Apply promo code" />
                     </div>
                   </div>
 

@@ -180,7 +180,8 @@ export default function CheckoutPage() {
                       </div>
 
                       <div>
-                        <input aria-label="Apartment, suite, etc. (optional)" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        <label htmlFor="address2" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Apartment, suite, etc. (optional)</label>
+                        <input id="address2" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                       </div>
 
                       <Grid columns={2} gap={4}>
