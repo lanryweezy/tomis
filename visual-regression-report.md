@@ -1,6 +1,6 @@
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `TomisNav` (navigation header), `TomisFooter`, `Hero`, `FeaturedProducts`.
+- Components reviewed: `TomisNav` (navigation header), `TomisFooter`, `Hero`, `FeaturedProducts`, `WhatsAppChat`.
 - Viewports tested: 375px (Mobile portrait), 768px (Tablet), 1280px (Desktop).
 - Browsers tested: Chrome, Firefox, Safari.
 - States tested: hover, focus, disabled.
@@ -48,3 +48,28 @@ Check the consistency of interactive states (hover and focus rings) on checkout 
 
 ## INFRASTRUCTURE RECOMMENDATION
 Implement Playwright visual snapshot testing specifically for interaction states (focus-visible, hover) to automatically prevent critical keyboard accessibility regressions.
+
+## SECONDARY FINDING (UPDATED)
+
+[CRITICAL 🔴] Type: State Regression
+Component: WhatsAppChat (apps/storefront/src/components/WhatsAppChat.tsx)
+
+What changed:
+The WhatsApp floating action button lacks a `focus-visible` outline. Keyboard users tabbing through the interface see no visual indicator when this interactive element is focused.
+
+Baseline:
+A visible focus ring should appear on all interactive elements when focused via keyboard navigation, in line with global focus state handling.
+
+Current state:
+The `WhatsAppChat` widget has a custom floating action button that visually removes standard focus indicators (or they are lost due to specificity or rendering issues like `outline-none` conflicts with Tailwind v4 or the global styles), leaving keyboard navigation without visual feedback. Confirmed manually.
+
+Reproduction steps:
+1. Open the storefront application at any standard viewport.
+2. Tab through the page content using only the keyboard until reaching the floating WhatsApp button at the bottom left.
+3. Observe: The floating button shows no visual focus indicator when active.
+
+Root cause (if identified):
+The component was updated in a recent PR (`palette-whatsapp-a11y-9511167992572241009`) with custom `focus-visible:outline-[var(--whatsapp-green,#25D366)]` classes. However, due to CSS specificity issues, potential conflicts with the global `*:focus-visible` reset, or because it relies on Tailwind classes that might not be correctly processed for arbitrary variables without the `theme()` function or proper variable scoping, the outline fails to render.
+
+Fix required:
+Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green,#25D366)]` works by adopting standard tailwind `ring` utilities instead of arbitrary `outline` colors that may fail. Needs investigation into exact CSS cascade conflict.
