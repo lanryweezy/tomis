@@ -37,7 +37,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
             <h2 className="text-sm font-medium tracking-[0.1em] uppercase">
               YOUR BAG ({items.length})
             </h2>
-            <button onClick={onClose} aria-label="Close cart" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)]">
+            <button onClick={onClose} aria-label="Close cart" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 6l12 12M6 18L18 6" />
               </svg>
@@ -66,7 +66,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                           <h3 className="text-sm font-medium">{item.name}</h3>
                           <p className="text-xs text-[var(--color-neutral-gray-500)]">{item.color} / {item.size}</p>
                         </div>
-                        <button aria-label="Remove item" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)]">
+                        <button aria-label="Remove item" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <path d="M6 6l12 12M6 18L18 6" />
                           </svg>
@@ -74,9 +74,9 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                       </div>
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center border border-[var(--color-neutral-gray-200)]">
-                          <button aria-label="Decrease quantity" className="w-7 h-7 flex items-center justify-center text-sm">−</button>
+                          <button aria-label="Decrease quantity" className="w-7 h-7 flex items-center justify-center text-sm focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">−</button>
                           <span className="w-7 h-7 flex items-center justify-center text-sm">{item.quantity}</span>
-                          <button aria-label="Increase quantity" className="w-7 h-7 flex items-center justify-center text-sm">+</button>
+                          <button aria-label="Increase quantity" className="w-7 h-7 flex items-center justify-center text-sm focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">+</button>
                         </div>
                         <p className="text-sm font-medium">₦{(item.price * item.quantity).toLocaleString('en-NG')}</p>
                       </div>
@@ -99,13 +99,13 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
               </p>
               <a
                 href="/cart"
-                className="block w-full h-11 bg-[var(--color-brand-blue)] text-white text-sm font-medium tracking-wider text-center leading-[44px] hover:bg-[var(--color-brand-navy)] transition-colors"
+                className="block w-full h-11 bg-[var(--color-brand-blue)] text-white text-sm font-medium tracking-wider text-center leading-[44px] hover:bg-[var(--color-brand-navy)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2 rounded-sm"
               >
                 VIEW BAG
               </a>
               <a
                 href="/checkout"
-                className="block w-full h-11 border border-[var(--color-neutral-ink)] text-[var(--color-neutral-ink)] text-sm font-medium tracking-wider text-center leading-[44px] hover:bg-[var(--color-neutral-ink)] hover:text-white transition-colors mt-2"
+                className="block w-full h-11 border border-[var(--color-neutral-ink)] text-[var(--color-neutral-ink)] text-sm font-medium tracking-wider text-center leading-[44px] hover:bg-[var(--color-neutral-ink)] hover:text-white transition-colors mt-2 focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2 rounded-sm"
               >
                 CHECKOUT
               </a>
@@ -139,7 +139,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             className="flex-1 text-xl outline-none bg-transparent placeholder:text-[var(--color-neutral-gray-400)]"
             autoFocus
           />
-          <button onClick={onClose} aria-label="Close search">
+          <button onClick={onClose} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
@@ -176,7 +176,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       <div className="absolute left-0 top-0 bottom-0 w-80 bg-white p-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-8">
           <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
-          <button onClick={onClose} aria-label="Close menu">
+          <button onClick={onClose} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
