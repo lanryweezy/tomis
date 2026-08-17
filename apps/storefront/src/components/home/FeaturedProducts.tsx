@@ -20,8 +20,9 @@ export default function FeaturedProducts() {
             <Stack gap={1}>
               <span className="section-eyebrow">Signature Edit</span>
               <h2 className="section-title">THE SIGNATURE</h2>
+              <Text type="supporting" color="secondary">One half-collar silhouette, shown in the colours available now.</Text>
             </Stack>
-            <Link href="/shop" className="btn-text">VIEW ALL →</Link>
+            <Link href="/shop" className="btn-text">VIEW ALL {products.length} COLOURS →</Link>
           </Stack>
         </motion.div>
 
@@ -35,9 +36,10 @@ export default function FeaturedProducts() {
                   <div className="img-hover" style={{ aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', marginBottom: '1rem', overflow: 'hidden' }}>
                     <Image src={img?.src || variant.images[0]?.src} alt={`Tomis ${variant.color} half-collar shirt flat lay product photo`} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
                   </div>
-                  <Text type="label" color="secondary">{variant.color}</Text>
+                  <Text type="label" color="secondary">{variant.color} · SIGNATURE EDIT</Text>
                   <Text type="body" weight="medium">{product.name}</Text>
                   <Text type="body">{formatPrice(variant.price)}</Text>
+                  <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>View details →</Text>
                 </Link>
               </motion.div>
             );

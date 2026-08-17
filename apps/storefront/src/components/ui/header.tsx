@@ -148,10 +148,14 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   Half-Collar Shirts
                 </h4>
                 <ul className="space-y-2.5">
-                  {['Best Sellers', 'New Arrivals', 'All Shirts'].map(item => (
-                    <li key={item}>
-                      <Link href="/shop" className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors">
-                        {item}
+                  {[
+                    { label: 'Best Seller', href: '/products/half-collar-shirt-black' },
+                    { label: 'Curated Colour Edit', href: '/new-in' },
+                    { label: 'All Signature Shirts', href: '/shop' },
+                  ].map(item => (
+                    <li key={item.label}>
+                      <Link href={item.href} className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2">
+                        {item.label}
                       </Link>
                     </li>
                   ))}
@@ -162,10 +166,16 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   Shop by Colour
                 </h4>
                 <ul className="space-y-2.5">
-                  {['Black', 'Navy', 'Olive', 'Pink', 'Brown'].map(item => (
-                    <li key={item}>
-                      <Link href="/shop" className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors">
-                        {item}
+                  {[
+                    { label: 'Black', href: '/shop?color=black' },
+                    { label: 'Navy', href: '/shop?color=navy' },
+                    { label: 'Olive', href: '/shop?color=olive' },
+                    { label: 'Pink', href: '/shop?color=pink' },
+                    { label: 'Brown', href: '/shop?color=brown' },
+                  ].map(item => (
+                    <li key={item.label}>
+                      <Link href={item.href} className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2">
+                        {item.label}
                       </Link>
                     </li>
                   ))}
@@ -190,10 +200,15 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   The Tomis World
                 </h4>
                 <ul className="space-y-2.5">
-                  {['Journal', 'Lookbook', 'Our Story', 'Size Guide'].map(item => (
-                    <li key={item}>
-                      <Link href="/about" className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors">
-                        {item}
+                  {[
+                    { label: 'Journal', href: '/journal' },
+                    { label: 'Lookbook', href: '/journal' },
+                    { label: 'Our Story', href: '/about' },
+                    { label: 'Size Guide', href: '/size-guide' },
+                  ].map(item => (
+                    <li key={item.label}>
+                      <Link href={item.href} className="text-sm text-[var(--color-neutral-ink)] hover:text-[var(--color-brand-blue)] transition-colors focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2">
+                        {item.label}
                       </Link>
                     </li>
                   ))}
@@ -268,12 +283,12 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 Popular Searches
               </p>
               <div className="flex flex-wrap gap-2">
-                {[
-                  { label: 'Half-collar', href: '/shop' },
-                  { label: 'Black', href: '/shop?collection=black' },
-                  { label: 'Navy', href: '/shop?collection=navy' },
-                  { label: 'New Arrivals', href: '/new-in' },
-                  { label: 'Best Sellers', href: '/shop' },
+                  {[
+                  { label: 'Half-collar shirt', href: '/shop' },
+                  { label: 'Black', href: '/shop?color=black' },
+                  { label: 'Navy', href: '/shop?color=navy' },
+                  { label: 'Curated colour edit', href: '/new-in' },
+                  { label: 'Best seller', href: '/products/half-collar-shirt-black' },
                 ].map(tag => (
                   <Link key={tag.label} href={tag.href} onClick={() => setIsSearchOpen(false)} className="px-4 py-2 border border-[var(--color-neutral-gray-200)] text-sm hover:border-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] transition-colors">
                     {tag.label}

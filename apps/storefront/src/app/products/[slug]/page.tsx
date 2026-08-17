@@ -115,7 +115,8 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
               </div>
               <Stack gap={6}>
                 <div>
-                  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', lineHeight: 1.1 }}>
+                  <Badge label="Signature half-collar" />
+                  <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: 1.05, marginTop: '0.75rem' }}>
                     {product.name}
                   </h1>
                   <AnimatePresence mode="wait">
@@ -135,8 +136,16 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   <Text type="body" color="secondary" style={{ marginTop: '1rem', lineHeight: 1.6 }}>
                     {product.shortDescription}
                   </Text>
+                  <Stack direction="horizontal" gap={3} style={{ flexWrap: 'wrap', marginTop: '1rem' }}>
+                    <Text type="supporting" color="secondary">100% premium cotton</Text>
+                    <Text type="supporting" color="secondary">{product.fabricWeight}</Text>
+                    <Text type="supporting" color="secondary">Made in Lagos</Text>
+                  </Stack>
                 </div>
                 <Divider />
+                <div style={{ padding: '0.85rem 1rem', backgroundColor: 'var(--color-background-muted)', borderLeft: '3px solid var(--color-brand-blue)' }}>
+                  <Text type="supporting" color="secondary">One relaxed-fit silhouette, available in {product.variants.length} signature colours. Choose your colour, then your size.</Text>
+                </div>
                 <div role="group" aria-labelledby="product-colour-label">
                   <Text id="product-colour-label" type="label" color="secondary" style={{ marginBottom: '0.75rem', display: 'block' }}>
                     Colour: <span style={{ color: 'var(--color-text-primary)' }}>{variant.color}</span>
