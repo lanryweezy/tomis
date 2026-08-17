@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Text } from '@astryxdesign/core/Text';
@@ -11,15 +12,21 @@ export default function Hero() {
   return (
     <Section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', right: 0, top: 0, width: '55%', height: '100%', overflow: 'hidden' }}>
-        <motion.img
-          src="/images/hero/hero-white-office.jpg"
-          alt="Man wearing Tomis half-collar shirt in modern office setting"
+        <motion.div
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          loading="eager"
-        />
+          style={{ position: 'absolute', inset: 0 }}
+        >
+          <Image
+            src="/images/hero/hero-white-office.jpg"
+            alt="Man wearing Tomis half-collar shirt in a modern office setting"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 55vw"
+            style={{ objectFit: 'cover' }}
+          />
+        </motion.div>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, var(--bg) 0%, transparent 30%)' }} />
       </div>
 
@@ -38,8 +45,15 @@ export default function Hero() {
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.6 }}>
           <Stack direction="horizontal" gap={3}>
-            <Link href="/shop" className="btn-primary">SHOP NOW →</Link>
-            <Link href="/about" className="btn-secondary">DISCOVER TOMIS</Link>
+            <Link href="/shop" className="btn-primary">SHOP THE SIGNATURE →</Link>
+            <Link href="/shop?color=black" className="btn-secondary">EXPLORE COLOURS</Link>
+          </Stack>
+        </motion.div>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.15, duration: 0.6 }}>
+          <Stack direction="horizontal" gap={4} style={{ flexWrap: 'wrap', alignItems: 'center' }}>
+            <Text type="supporting" color="secondary">₦35,000</Text>
+            <Text type="supporting" color="secondary">5 signature colours</Text>
+            <Text type="supporting" color="secondary">Made in Lagos</Text>
           </Stack>
         </motion.div>
       </Stack>

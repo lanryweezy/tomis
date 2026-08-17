@@ -25,17 +25,17 @@ export const navItems = [
 ];
 
 export const shopDropdown = [
-  { label: 'All Shirts', href: '/shop' },
-  { label: 'Best Sellers', href: '/shop' },
-  { label: 'New Arrivals', href: '/shop' },
+  { label: 'All Signature Shirts', href: '/shop' },
+  { label: 'Best Seller', href: '/products/half-collar-shirt-black' },
+  { label: 'Curated Colour Edit', href: '/new-in' },
 ];
 
 export const shopByColour = [
-  { label: 'Black', href: '/shop' },
-  { label: 'Navy', href: '/shop' },
-  { label: 'Olive', href: '/shop' },
-  { label: 'Pink', href: '/shop' },
-  { label: 'Brown', href: '/shop' },
+  { label: 'Black', href: '/shop?color=black' },
+  { label: 'Navy', href: '/shop?color=navy' },
+  { label: 'Olive', href: '/shop?color=olive' },
+  { label: 'Pink', href: '/shop?color=pink' },
+  { label: 'Brown', href: '/shop?color=brown' },
 ];
 
 export const values = [

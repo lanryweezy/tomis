@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState } from 'react';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -33,7 +34,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
   const modelImage = variant.images.find(i => i.type === 'model');
 
   return (
-    <Link href={`/products/${product.slug}`} style={{ textDecoration: 'none' }}>
+    <Link href={`/products/${product.slug}`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-4" style={{ textDecoration: 'none' }}>
       <ClickableCard
         label={product.name}
         onMouseEnter={() => setIsHovered(true)}
@@ -41,14 +42,20 @@ function ProductCard({ product }: { product: typeof products[0] }) {
         className="card-lift"
       >
         <Stack direction="vertical" style={{ position: 'relative', aspectRatio: '3/4', backgroundColor: 'var(--bg-elevated)', overflow: 'hidden' }}>
-          <motion.img
-            src={isHovered && modelImage ? modelImage.src : (productImage?.src || variant.images[0]?.src)}
-            alt={isHovered && modelImage ? modelImage.alt : (productImage?.alt || variant.images[0]?.alt)}
-            className="w-full h-full object-cover"
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-          />
+            style={{ position: 'absolute', inset: 0 }}
+          >
+            <Image
+              src={isHovered && modelImage ? modelImage.src : (productImage?.src || variant.images[0]?.src)}
+              alt={isHovered && modelImage ? modelImage.alt : (productImage?.alt || variant.images[0]?.alt)}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              style={{ objectFit: 'cover' }}
+            />
+          </motion.div>
           {product.tags.includes('best-seller') && (
             <Stack style={{ position: 'absolute', top: '0.75rem', left: '0.75rem' }}>
               <Badge label="BEST SELLER" />
@@ -59,6 +66,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
           <Text type="label" color="secondary">{variant.color}</Text>
           <Text type="body" weight="medium">{product.name}</Text>
           <Text type="body">{formatPrice(variant.price)}</Text>
+          <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>View details →</Text>
         </Stack>
       </ClickableCard>
     </Link>
@@ -68,7 +76,9 @@ function ProductCard({ product }: { product: typeof products[0] }) {
 function ShopPageContent() {
   const searchParams = useSearchParams();
   const collection = searchParams.get('collection');
-  const [selectedColor, setSelectedColor] = useState('all');
+  const queryColor = searchParams.get('color') || (collection && !collectionColorSlugs[collection] ? collection : null);
+  const initialColor = queryColor && allColors.some(color => color.slug === queryColor) ? queryColor : 'all';
+  const [selectedColor, setSelectedColor] = useState(initialColor);
   const activeCollection = collection && collectionColorSlugs[collection] ? collection : null;
   const filteredProducts = products.filter(p => {
     const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
@@ -95,6 +105,7 @@ function ShopPageContent() {
             <Stack direction="horizontal" gap={3} style={{ alignItems: 'center' }}>
               <Text type="body" color="secondary">{filteredProducts.length} {filteredProducts.length === 1 ? 'colour' : 'colours'} shown</Text>
               {activeCollection && <Badge label={`${activeCollection.replace('-', ' ')} edit`} />}
+              {selectedColor !== 'all' && <Badge label={`${allColors.find(color => color.slug === selectedColor)?.name || selectedColor} selected`} />}
             </Stack>
           </Stack>
 
