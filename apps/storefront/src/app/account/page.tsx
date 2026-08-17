@@ -64,7 +64,7 @@ export default function AccountPage() {
             </div>
           )}
 
-          <Button variant="primary" size="lg" fullWidth>
+          <Button variant="primary" size="lg" fullWidth type="submit">
             {isLogin ? 'SIGN IN' : 'CREATE ACCOUNT'}
           </Button>
         </form>

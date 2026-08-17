@@ -162,61 +162,63 @@ export default function CheckoutPage() {
               <AnimatePresence mode="wait">
                 {step === 'address' && (
                   <motion.div key="address" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                    <Stack gap={6}>
-                      <div>
-                        <Badge label="Step 1" />
-                        <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Address</h2>
-                      </div>
-
-                      <Grid columns={2} gap={4} className="checkout-fields">
+                    <form onSubmit={(e) => { e.preventDefault(); handleAddressSubmit(); }}>
+                      <Stack gap={6}>
                         <div>
-                          <label htmlFor="firstName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>First Name *</label>
-                          <input id="firstName" name="firstName" autoComplete="given-name" type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <Badge label="Step 1" />
+                          <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Address</h2>
                         </div>
+
+                        <Grid columns={2} gap={4} className="checkout-fields">
+                          <div>
+                            <label htmlFor="firstName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>First Name *</label>
+                            <input id="firstName" name="firstName" autoComplete="given-name" type="text" value={address.firstName} required onChange={e => setAddress({ ...address, firstName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          </div>
+                          <div>
+                            <label htmlFor="lastName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Last Name *</label>
+                            <input id="lastName" name="lastName" autoComplete="family-name" type="text" value={address.lastName} required onChange={e => setAddress({ ...address, lastName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          </div>
+                        </Grid>
+
                         <div>
-                          <label htmlFor="lastName" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Last Name *</label>
-                          <input id="lastName" name="lastName" autoComplete="family-name" type="text" value={address.lastName} required onChange={e => setAddress({ ...address, lastName: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <label htmlFor="email" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Email *</label>
+                          <input id="email" name="email" autoComplete="email" type="email" value={address.email} required onChange={e => setAddress({ ...address, email: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
-                      </Grid>
 
-                      <div>
-                        <label htmlFor="email" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Email *</label>
-                        <input id="email" name="email" autoComplete="email" type="email" value={address.email} required onChange={e => setAddress({ ...address, email: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                      </div>
-
-                      <div>
-                        <label htmlFor="phone" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Phone *</label>
-                        <input id="phone" name="phone" autoComplete="tel" type="tel" value={address.phone} required onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                      </div>
-
-                      <div>
-                        <label htmlFor="address1" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Address *</label>
-                        <input id="address1" name="address1" autoComplete="street-address" type="text" value={address.address1} required onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                      </div>
-
-                      <div>
-                        <label htmlFor="address2" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Apartment, suite, etc. (optional)</label>
-                        <input id="address2" name="address2" autoComplete="address-line2" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                      </div>
-
-                      <Grid columns={2} gap={4} className="checkout-fields">
                         <div>
-                          <label htmlFor="city" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>City *</label>
-                          <input id="city" name="city" autoComplete="address-level2" type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <label htmlFor="phone" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Phone *</label>
+                          <input id="phone" name="phone" autoComplete="tel" type="tel" value={address.phone} required onChange={e => setAddress({ ...address, phone: e.target.value })} placeholder="+234" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
                         </div>
-                        <div>
-                          <label htmlFor="state" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>State *</label>
-                          <select id="state" name="state" autoComplete="address-level1" value={address.state} required onChange={e => setAddress({ ...address, state: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
-                            <option value="">Select state</option>
-                            {['Lagos', 'Abuja', 'Ogun', 'Oyo', 'Rivers', 'Kano', 'Edo', 'Delta', 'Anambra', 'Enugu'].map(s => (
-                              <option key={s} value={s}>{s}</option>
-                            ))}
-                          </select>
-                        </div>
-                      </Grid>
 
-                      <Button label="CONTINUE TO DELIVERY →" width="100%" onClick={handleAddressSubmit} />
-                    </Stack>
+                        <div>
+                          <label htmlFor="address1" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Address *</label>
+                          <input id="address1" name="address1" autoComplete="street-address" type="text" value={address.address1} required onChange={e => setAddress({ ...address, address1: e.target.value })} placeholder="Street address" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        </div>
+
+                        <div>
+                          <label htmlFor="address2" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Apartment, suite, etc. (optional)</label>
+                          <input id="address2" name="address2" autoComplete="address-line2" type="text" value={address.address2} onChange={e => setAddress({ ...address, address2: e.target.value })} placeholder="Apartment, suite, etc. (optional)" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                        </div>
+
+                        <Grid columns={2} gap={4} className="checkout-fields">
+                          <div>
+                            <label htmlFor="city" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>City *</label>
+                            <input id="city" name="city" autoComplete="address-level2" type="text" value={address.city} required onChange={e => setAddress({ ...address, city: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          </div>
+                          <div>
+                            <label htmlFor="state" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>State *</label>
+                            <select id="state" name="state" autoComplete="address-level1" value={address.state} required onChange={e => setAddress({ ...address, state: e.target.value })} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }}>
+                              <option value="">Select state</option>
+                              {['Lagos', 'Abuja', 'Ogun', 'Oyo', 'Rivers', 'Kano', 'Edo', 'Delta', 'Anambra', 'Enugu'].map(s => (
+                                <option key={s} value={s}>{s}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </Grid>
+
+                        <Button label="CONTINUE TO DELIVERY →" width="100%" type="submit" />
+                      </Stack>
+                    </form>
                   </motion.div>
                 )}
 
@@ -295,10 +297,10 @@ export default function CheckoutPage() {
                       {/* Promo Code */}
                       <div>
                         <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <form onSubmit={(e) => { e.preventDefault(); handlePromoApply(); }} style={{ display: 'flex', gap: '0.5rem' }}>
                           <input id="promoCode" name="promoCode" autoComplete="off" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" onClick={handlePromoApply} />
-                        </div>
+                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" type="submit" />
+                        </form>
                         {promoMessage && <p role="status" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: promoDiscount > 0 ? 'var(--accent)' : 'var(--color-error, #b91c1c)' }}>{promoMessage}</p>}
                       </div>
 
