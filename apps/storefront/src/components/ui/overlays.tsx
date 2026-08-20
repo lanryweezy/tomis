@@ -38,7 +38,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
               YOUR BAG ({items.length})
             </h2>
             <button onClick={onClose} aria-label="Close cart" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6 6l12 12M6 18L18 6" />
               </svg>
             </button>
@@ -67,7 +67,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                           <p className="text-xs text-[var(--color-neutral-gray-500)]">{item.color} / {item.size}</p>
                         </div>
                         <button aria-label="Remove item" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <path d="M6 6l12 12M6 18L18 6" />
                           </svg>
                         </button>
@@ -129,7 +129,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
     <div className="fixed inset-0 z-[var(--z-modal)] bg-white">
       <div className="max-w-2xl mx-auto px-4 pt-20">
         <div className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <circle cx="11" cy="11" r="8" />
             <path d="M21 21l-4.35-4.35" />
           </svg>
@@ -140,7 +140,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
             autoFocus
           />
           <button onClick={onClose} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
           </button>
@@ -177,7 +177,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="flex justify-between items-center mb-8">
           <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
           <button onClick={onClose} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M6 6l12 12M6 18L18 6" />
             </svg>
           </button>

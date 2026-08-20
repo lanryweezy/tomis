@@ -64,7 +64,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               aria-controls="mobile-menu-overlay"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 {isMobileMenuOpen ? (
                   <path d="M6 6l12 12M6 18L18 6" />
                 ) : (
@@ -110,21 +110,21 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 aria-controls="search-overlay"
                 aria-label="Search"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <circle cx="11" cy="11" r="8" />
                   <path d="M21 21l-4.35-4.35" />
                 </svg>
               </button>
 
               <Link href="/account" className="hidden md:flex w-10 h-10 items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Account">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
               </Link>
 
               <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Cart">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
@@ -228,7 +228,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             <div className="flex justify-between items-center mb-8">
               <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
               <button onClick={() => setIsMobileMenuOpen(false)} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 6l12 12M6 18L18 6" />
                 </svg>
               </button>
@@ -261,7 +261,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
           <div className="max-w-2xl mx-auto px-4 pt-20">
             <h2 id="search-overlay-title" className="sr-only">Search Tomis</h2>
             <div className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
               </svg>
@@ -273,7 +273,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 autoFocus
               />
               <button onClick={() => setIsSearchOpen(false)} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 6l12 12M6 18L18 6" />
                 </svg>
               </button>
