@@ -73,3 +73,29 @@ The component was updated in a recent PR (`palette-whatsapp-a11y-951116799257224
 
 Fix required:
 Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green,#25D366)]` works by adopting standard tailwind `ring` utilities instead of arbitrary `outline` colors that may fail. Needs investigation into exact CSS cascade conflict.
+
+## THIRD FINDING
+
+[HIGH 🟠] Type: Component Appearance Change
+Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+
+What changed:
+The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling.
+
+Baseline:
+The SUBSCRIBE button previously rendered with the correct default visual styling for a secondary or primary action on the inverted footer surface, either via global button utility classes or standard `Button` properties.
+
+Current state:
+The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. Confirmed via screenshot on Desktop Chrome.
+
+Reproduction steps:
+1. Open the storefront application at http://localhost:3000.
+2. Scroll to the bottom of the page to view the footer.
+3. Observe the newsletter signup form on the right side.
+4. The "SUBSCRIBE" button next to the email input is nearly invisible.
+
+Root cause (if identified):
+In a recent PR (9617241 "Palette: Form Keyboard Accessibility"), the `TomisFooter.tsx` was refactored to wrap the input and button in a `<form>` element. However, the `Button` component import was changed or initialized improperly: it uses `import { Button } from '@astryxdesign/core/Button';` but fails to pass any necessary theme overrides, inverted variant props, or custom styling. Since `@astryxdesign/core/Button` uses StyleX with design tokens that likely default to light-mode values (or transparent backgrounds with dark text for ghost buttons) unless configured for an inverted surface, the button renders with default (dark) tokens on a dark background.
+
+Fix required:
+Either switch the import back to the internal `packages/ui/src/button.tsx` (which relies on tailwind and standard overrides) or pass the correct variant/className to `@astryxdesign/core/Button` (e.g. `variant="secondary"` and pass inverted token classes, or simply manually apply `style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg)' }}` similar to `NewsletterPopup.tsx`) to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
