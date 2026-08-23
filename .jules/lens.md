@@ -5,3 +5,9 @@
 **Detection gap:** Automated visual testing (e.g., Playwright, Chromatic) is entirely absent. In addition, manual testing likely focused on mouse interaction and did not test the actual application layer integration using a keyboard.
 **Prevention:** 1) Automated visual snapshot testing that explicitly includes `focus-visible` and interactive states is required. 2) When applying custom focus rings to components with inline styles or complex box-shadows, the changes must be explicitly verified in the browser. Rely on standard Tailwind `ring` utilities over arbitrary `outline` colors that may fail.
 **Cascade risk:** High. Any bespoke application component that does not directly inherit from the design system or attempts to override global resets with arbitrary focus utility classes is at risk.
+## 2026-08-20 — State Regression: Tailwind v4 arbitrary variables fail in complex selectors
+**Regression:** Focus ring (outline) failed to render on `WhatsAppChat` floating button.
+**Root cause:** Using arbitrary values with CSS variables like `outline-[var(--whatsapp-green,#25D366)]` in Tailwind v4 alongside `focus-visible:` pseudo-class can break specificity or simply not compile correctly depending on configuration.
+**Detection gap:** It was visually removed by a PR trying to make it accessible without proper Playwright tests. Playwright test snapshots of interaction states (like tab focus) didn't exist.
+**Prevention:** Always verify focus rings manually or via Playwright by simulating tab interactions. Recommend standard tailwind utilities like `ring-2` with standard theme colors over arbitrary `outline-color` using variables.
+**Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes in focus or hover states might be failing similarly.
