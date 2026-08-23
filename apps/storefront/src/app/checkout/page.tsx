@@ -224,54 +224,57 @@ export default function CheckoutPage() {
 
                 {step === 'delivery' && (
                   <motion.div key="delivery" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-                    <Stack gap={6}>
-                      <div>
-                        <Badge label="Step 2" />
-                        <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Method</h2>
-                      </div>
-
-                      <Stack gap={3}>
-                        {deliveryOptions.map(option => (
-                                                      <button
-                            key={option.id}
-                            onClick={() => setSelectedDelivery(option.id)}
-                            className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
-
-                            aria-pressed={selectedDelivery === option.id}
-                            style={{
-                              width: '100%', padding: '1rem', border: '1px solid',
-                              borderColor: selectedDelivery === option.id ? 'var(--text-primary)' : 'var(--border-strong)',
-                              backgroundColor: selectedDelivery === option.id ? 'var(--bg-elevated)' : 'var(--bg)',
-                              cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
-                            }}
-                          >
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <Stack gap={1}>
-                                <Text type="body" weight="medium">{option.name}</Text>
-                                <Text type="supporting" color="secondary">{option.description}</Text>
-                              </Stack>
-                              <Stack gap={1} style={{ textAlign: 'right' }}>
-                                <Text type="body" weight="medium">
-                                  {option.price === 0 ? 'FREE' : `₦${option.price.toLocaleString('en-NG')}`}
-                                </Text>
-                                <Text type="supporting" color="secondary">{option.estimatedDays}</Text>
-                              </Stack>
-                            </div>
-                          </button>
-                        ))}
-                      </Stack>
-
-                      {freeShipping && (
-                        <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-elevated)', textAlign: 'center' }}>
-                            <Text type="supporting" color="accent">Free shipping on orders over ₦50,000</Text>
+                    <form onSubmit={(e) => { e.preventDefault(); handleDeliverySubmit(); }}>
+                      <Stack gap={6}>
+                        <div>
+                          <Badge label="Step 2" />
+                          <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Method</h2>
                         </div>
-                      )}
 
-                      <Stack direction="horizontal" gap={4}>
-                        <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} />
-                        <Button label="CONTINUE TO PAYMENT →" width="100%" onClick={handleDeliverySubmit} />
+                        <Stack gap={3}>
+                          {deliveryOptions.map(option => (
+                            <button
+                              type="button"
+                              key={option.id}
+                              onClick={() => setSelectedDelivery(option.id)}
+                              className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
+
+                              aria-pressed={selectedDelivery === option.id}
+                              style={{
+                                width: '100%', padding: '1rem', border: '1px solid',
+                                borderColor: selectedDelivery === option.id ? 'var(--text-primary)' : 'var(--border-strong)',
+                                backgroundColor: selectedDelivery === option.id ? 'var(--bg-elevated)' : 'var(--bg)',
+                                cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
+                              }}
+                            >
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Stack gap={1}>
+                                  <Text type="body" weight="medium">{option.name}</Text>
+                                  <Text type="supporting" color="secondary">{option.description}</Text>
+                                </Stack>
+                                <Stack gap={1} style={{ textAlign: 'right' }}>
+                                  <Text type="body" weight="medium">
+                                    {option.price === 0 ? 'FREE' : `₦${option.price.toLocaleString('en-NG')}`}
+                                  </Text>
+                                  <Text type="supporting" color="secondary">{option.estimatedDays}</Text>
+                                </Stack>
+                              </div>
+                            </button>
+                          ))}
+                        </Stack>
+
+                        {freeShipping && (
+                          <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-elevated)', textAlign: 'center' }}>
+                              <Text type="supporting" color="accent">Free shipping on orders over ₦50,000</Text>
+                          </div>
+                        )}
+
+                        <Stack direction="horizontal" gap={4}>
+                          <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} />
+                          <Button label="CONTINUE TO PAYMENT →" width="100%" type="submit" />
+                        </Stack>
                       </Stack>
-                    </Stack>
+                    </form>
                   </motion.div>
                 )}
 
@@ -314,17 +317,19 @@ export default function CheckoutPage() {
 
                       <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
 
-                      {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem' }}>{paymentError}</p>}
-                      <Button
-                        label={isProcessing ? 'PROCESSING...' : `PAY ₦${total.toLocaleString('en-NG')} →`}
-                        width="100%"
-                        onClick={handlePayment}
-                        isDisabled={isProcessing || cartItems.length === 0}
-                      />
+                      <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
+                        {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem', marginBottom: '1rem' }}>{paymentError}</p>}
+                        <Button
+                          label={isProcessing ? 'PROCESSING...' : `PAY ₦${total.toLocaleString('en-NG')} →`}
+                          width="100%"
+                          type="submit"
+                          isDisabled={isProcessing || cartItems.length === 0}
+                        />
 
-                      <Text type="supporting" color="secondary" style={{ textAlign: 'center' }}>
-                        Secured by Paystack. Your payment information is encrypted.
-                      </Text>
+                        <Text type="supporting" color="secondary" style={{ textAlign: 'center', marginTop: '1rem' }}>
+                          Secured by Paystack. Your payment information is encrypted.
+                        </Text>
+                      </form>
                     </Stack>
                   </motion.div>
                 )}
