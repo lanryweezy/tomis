@@ -58,7 +58,7 @@ export default function AccountPage() {
 
           {isLogin && (
             <div className="flex justify-end">
-              <button className="text-xs text-[var(--color-brand-blue)] underline underline-offset-4 hover:text-[var(--color-brand-navy)]">
+              <button type="button" className="text-xs text-[var(--color-brand-blue)] underline underline-offset-4 hover:text-[var(--color-brand-navy)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2 rounded-sm">
                 Forgot password?
               </button>
             </div>
