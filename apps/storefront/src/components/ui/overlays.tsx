@@ -136,6 +136,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <input
             type="text"
             placeholder="Search Tomis..."
+            aria-label="Search query"
             className="flex-1 text-xl outline-none bg-transparent placeholder:text-[var(--color-neutral-gray-400)]"
             autoFocus
           />

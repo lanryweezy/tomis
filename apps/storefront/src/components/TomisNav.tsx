@@ -81,7 +81,7 @@ export default function TomisNav() {
 
           {/* Right icons */}
           <Stack direction="horizontal" gap={2}>
-            <button onClick={toggle} className="magnetic-btn" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+            <button onClick={toggle} className="magnetic-btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
               {theme === 'light' ? (
                 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
               ) : (
