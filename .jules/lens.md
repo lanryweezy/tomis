@@ -13,3 +13,9 @@
 **Detection gap:** The component change was made in a commit focused purely on DOM structure (`div` to `form` for keyboard accessibility) and tested in an isolated DOM inspection without running automated visual regression tests that catch cross-surface rendering errors.
 **Prevention:** Developers and agents modifying interactive primitives must ensure they import components from the local wrapper (e.g., `@tomis/ui`) rather than importing raw components directly from the base design system (`@astryxdesign/core`) unless they fully comprehend the required styling contexts (e.g., passing explicit variants or theme tokens).
 **Cascade risk:** High. Any refactor that touches imports across standard UI elements risks replacing locally customized components with unstyled base components, leading to broken appearances on inverted surfaces across the application.
+## 2026-08-20 — State Regression: Tailwind v4 arbitrary variables fail in complex selectors
+**Regression:** Focus ring (outline) failed to render on `WhatsAppChat` floating button.
+**Root cause:** Using arbitrary values with CSS variables like `outline-[var(--whatsapp-green,#25D366)]` in Tailwind v4 alongside `focus-visible:` pseudo-class can break specificity or simply not compile correctly depending on configuration.
+**Detection gap:** It was visually removed by a PR trying to make it accessible without proper Playwright tests. Playwright test snapshots of interaction states (like tab focus) didn't exist.
+**Prevention:** Always verify focus rings manually or via Playwright by simulating tab interactions. Recommend standard tailwind utilities like `ring-2` with standard theme colors over arbitrary `outline-color` using variables.
+**Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes in focus or hover states might be failing similarly.
