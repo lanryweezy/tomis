@@ -11,34 +11,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm run lint
 
   typecheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-      - run: npm ci
-      - run: npx tsc --noEmit
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm exec tsc --noEmit
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm run build
       - uses: actions/upload-artifact@v4
         with:
           name: build-output
@@ -49,12 +58,15 @@ jobs:
     needs: [lint, typecheck]
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-      - run: npm ci
-      - run: npm test
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm test
 
   deploy-staging:
     runs-on: ubuntu-latest
