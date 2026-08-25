@@ -19,3 +19,15 @@
 **Detection gap:** It was visually removed by a PR trying to make it accessible without proper Playwright tests. Playwright test snapshots of interaction states (like tab focus) didn't exist.
 **Prevention:** Always verify focus rings manually or via Playwright by simulating tab interactions. Recommend standard tailwind utilities like `ring-2` with standard theme colors over arbitrary `outline-color` using variables.
 **Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes in focus or hover states might be failing similarly.
+
+## 2026-08-25 — Component Appearance Change: TomisFooter SUBSCRIBE Button Unstyled
+
+**Regression:** The "SUBSCRIBE" button in the footer newsletter form rendered almost completely unstyled and invisible on a dark background.
+
+**Root cause:** The `TomisFooter` component imported the raw core design system button (`@astryxdesign/core/Button`) instead of the app's standard wrapper (`@tomis/ui` or local wrapper). The core button lacks the local contextual theme overrides needed for the inverted footer surface.
+
+**Detection gap:** The button change happened during a refactor to wrap inputs in a `<form>` for keyboard accessibility. Visual regressions from import changes are rarely caught by standard unit tests because the code still compiles and renders valid HTML elements.
+
+**Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
+
+**Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
