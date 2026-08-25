@@ -10,6 +10,7 @@
     "start": "cd apps/storefront && pnpm run start",
     "lint": "cd apps/storefront && pnpm run lint",
     "typecheck": "cd apps/storefront && pnpm exec tsc --noEmit",
+    "test": "echo \"No tests specified\"",
     "db:generate": "cd packages/database && pnpm run db:generate",
     "db:migrate": "cd packages/database && pnpm run db:migrate",
     "db:push": "cd packages/database && pnpm run db:push",
