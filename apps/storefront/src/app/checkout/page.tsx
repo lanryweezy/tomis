@@ -270,7 +270,7 @@ export default function CheckoutPage() {
                         )}
 
                         <Stack direction="horizontal" gap={4}>
-                          <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} />
+                          <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} type="button" />
                           <Button label="CONTINUE TO PAYMENT →" width="100%" type="submit" />
                         </Stack>
                       </Stack>
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
                         <Text type="supporting" color="secondary">{address.phone}</Text>
                       </div>
 
-                      <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
+                      <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} type="button" />
 
                       <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
                         {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem', marginBottom: '1rem' }}>{paymentError}</p>}
