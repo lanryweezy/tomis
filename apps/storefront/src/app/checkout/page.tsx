@@ -271,6 +271,7 @@ export default function CheckoutPage() {
 
                         <Stack direction="horizontal" gap={4}>
                           <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} type="button" />
+                          <Button type="button" label="← BACK" variant="secondary" onClick={() => setStep('address')} />
                           <Button label="CONTINUE TO PAYMENT →" width="100%" type="submit" />
                         </Stack>
                       </Stack>
@@ -301,10 +302,10 @@ export default function CheckoutPage() {
                       <div>
                         <label htmlFor="promoCode" style={{ display: 'block', fontSize: '0.65rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Promo Code</label>
                         <form onSubmit={(e) => { e.preventDefault(); handlePromoApply(); }} style={{ display: 'flex', gap: '0.5rem' }}>
-                          <input id="promoCode" name="promoCode" autoComplete="off" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
-                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" type="submit" />
+                          <input id="promoCode" name="promoCode" autoComplete="off" type="text" value={promoCode} onChange={e => setPromoCode(e.target.value)} placeholder="Enter code" aria-invalid={promoDiscount === 0 && promoMessage ? 'true' : 'false'} aria-describedby={promoMessage ? "promo-message" : undefined} className="focus-visible:ring-2 focus-visible:ring-[var(--color-brand-blue)]" style={{ flex: 1, padding: '0.75rem', border: '1px solid var(--border-strong)', backgroundColor: 'var(--bg)', color: 'var(--text-primary)', fontSize: '0.875rem', outline: 'none' }} />
+                          <Button label="APPLY" variant="secondary" aria-label="Apply promo code" type="submit" isDisabled={!promoCode.trim()} />
                         </form>
-                        {promoMessage && <p role="status" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: promoDiscount > 0 ? 'var(--accent)' : 'var(--color-error, #b91c1c)' }}>{promoMessage}</p>}
+                        {promoMessage && <p id="promo-message" role="status" style={{ marginTop: '0.5rem', fontSize: '0.8rem', color: promoDiscount > 0 ? 'var(--accent)' : 'var(--color-error, #b91c1c)' }}>{promoMessage}</p>}
                       </div>
 
                       {/* Delivery Address Summary */}
@@ -316,6 +317,7 @@ export default function CheckoutPage() {
                       </div>
 
                       <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} type="button" />
+                      <Button type="button" label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
 
                       <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
                         {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem', marginBottom: '1rem' }}>{paymentError}</p>}
