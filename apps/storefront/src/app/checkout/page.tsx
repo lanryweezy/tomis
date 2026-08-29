@@ -270,6 +270,7 @@ export default function CheckoutPage() {
                         )}
 
                         <Stack direction="horizontal" gap={4}>
+                          <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} type="button" />
                           <Button type="button" label="← BACK" variant="secondary" onClick={() => setStep('address')} />
                           <Button label="CONTINUE TO PAYMENT →" width="100%" type="submit" />
                         </Stack>
@@ -315,6 +316,7 @@ export default function CheckoutPage() {
                         <Text type="supporting" color="secondary">{address.phone}</Text>
                       </div>
 
+                      <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} type="button" />
                       <Button type="button" label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
 
                       <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
