@@ -91,18 +91,19 @@ export function Footer() {
               <h4 className="text-sm font-medium tracking-wide mb-1">Stay in the loop</h4>
               <p className="text-xs text-neutral-400">New drops, stories, and the Tomis way of dressing.</p>
             </div>
-            <div className="flex w-full md:w-auto">
+            <form onSubmit={(e) => e.preventDefault()} className="flex w-full md:w-auto">
               <input
                 type="email"
+                required
                 id="footer-newsletter-email"
                 aria-label="Email address for Tomis newsletter"
                 placeholder="Your email"
                 className="flex-1 md:w-64 px-4 py-3 bg-neutral-800 border border-neutral-700 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:border-white focus-visible:ring-2 focus-visible:ring-white transition-colors"
               />
-              <button type="button" className="px-6 py-3 bg-[var(--color-brand-blue)] text-white text-xs font-medium tracking-widest uppercase hover:bg-[var(--color-brand-navy)] focus-visible:outline-2 focus-visible:outline-white transition-colors">
+              <button type="submit" className="px-6 py-3 bg-[var(--color-brand-blue)] text-white text-xs font-medium tracking-widest uppercase hover:bg-[var(--color-brand-navy)] focus-visible:outline-2 focus-visible:outline-white transition-colors">
                 SUBSCRIBE
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
