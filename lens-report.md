@@ -35,7 +35,7 @@ Reproduction steps:
 4. The "SUBSCRIBE" button next to the email input is nearly invisible.
 
 Root cause (if identified):
-The `TomisFooter.tsx` component imports the `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component likely lacks the necessary inverted surface styling or the default Tailwind classes provided by the local app wrapper (`@tomis/ui` or `components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+The `TomisFooter.tsx` component imports the `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui` or `components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
 
 Fix required:
 Switch the import in `apps/storefront/src/components/TomisFooter.tsx` from `@astryxdesign/core/Button` to the local app wrapper (e.g., `import { Button } from '@/components/ui/button';`) or explicitly pass the inverted styling/classes to the core `Button` component so that it renders visibly on the dark footer background.
