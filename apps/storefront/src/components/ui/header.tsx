@@ -260,24 +260,24 @@ export function Header({ cartCount = 0 }: HeaderProps) {
         <div id="search-overlay" role="dialog" aria-modal="true" aria-labelledby="search-overlay-title" className="fixed inset-0 z-[var(--z-modal)] bg-white">
           <div className="max-w-2xl mx-auto px-4 pt-20">
             <h2 id="search-overlay-title" className="sr-only">Search Tomis</h2>
-            <div className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
+            <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
               <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
               </svg>
               <input
-                type="text"
+                type="search"
                 placeholder="Search Tomis..."
                 aria-label="Search query"
                 className="flex-1 text-xl outline-none bg-transparent placeholder:text-[var(--color-neutral-gray-400)]"
                 autoFocus
               />
-              <button onClick={() => setIsSearchOpen(false)} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
+              <button type="button" onClick={() => setIsSearchOpen(false)} aria-label="Close search" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
                 <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 6l12 12M6 18L18 6" />
                 </svg>
               </button>
-            </div>
+            </form>
             <div className="mt-8">
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[var(--color-neutral-gray-500)] mb-4">
                 Popular Searches

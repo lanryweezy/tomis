@@ -35,6 +35,7 @@ Reproduction steps:
 
 Root cause (if identified):
 The component was updated with custom `focus-visible:outline-[var(--whatsapp-green,#25D366)]` classes. However, due to CSS specificity issues and potential conflicts with the global `*:focus-visible` reset, or because it relies on Tailwind classes that might not be correctly processed for arbitrary variables without the `theme()` function or proper variable scoping in Tailwind v4, the outline fails to render.
+The `TomisFooter.tsx` component imports the `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui` or `components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
 
 Fix required:
 Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class works by adopting standard tailwind `ring` utilities like `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green,#25D366)]` instead of arbitrary `outline` colors that fail in the current CSS cascade.
