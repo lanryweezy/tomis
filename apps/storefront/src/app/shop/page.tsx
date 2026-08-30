@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -80,12 +80,19 @@ function ShopPageContent() {
   const initialColor = queryColor && allColors.some(color => color.slug === queryColor) ? queryColor : 'all';
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const activeCollection = collection && collectionColorSlugs[collection] ? collection : null;
-  const filteredProducts = products.filter(p => {
-    const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
-    const collectionSlugs = collection ? collectionColorSlugs[collection] : undefined;
-    const matchesCollection = !collectionSlugs || p.variants.some(v => collectionSlugs.includes(v.colorSlug));
-    return matchesColor && matchesCollection;
-  });
+
+  // ⚡ Bolt Optimization: Memoize the filtered products calculation
+  // Impact: Prevents O(n*m) filtering operations across all products and variants
+  // on every render, especially useful during client-side hydration or when
+  // search params update independently of color/collection changes.
+  const filteredProducts = useMemo(() => {
+    return products.filter(p => {
+      const matchesColor = selectedColor === 'all' || p.variants.some(v => v.colorSlug === selectedColor);
+      const collectionSlugs = collection ? collectionColorSlugs[collection] : undefined;
+      const matchesCollection = !collectionSlugs || p.variants.some(v => collectionSlugs.includes(v.colorSlug));
+      return matchesColor && matchesCollection;
+    });
+  }, [selectedColor, collection]);
 
   return (
     <>
