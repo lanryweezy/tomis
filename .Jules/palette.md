@@ -8,3 +8,7 @@
 ## 2024-05-24 - Form Wrappers for State-driven Inputs
 **Learning:** Raw input elements in overlays (e.g. search bars, newsletters) lack implicit keyboard form submission ('Enter' key) unless wrapped in a `<form>` element.
 **Action:** Always wrap state-driven inputs in a `<form onSubmit={(e) => e.preventDefault()}>` to enable default keyboard submission accessibility without triggering page reloads. Ensure primary buttons are `type="submit"` and secondary actions are `type="button"`.
+
+## 2024-05-24 - Programmatic Focus Accessibility
+**Learning:** Skip links and dynamic focus shifts (like back-to-top) need target elements to be focusable programmatically, but adding a default `tabIndex` can create unwanted focus rings on click.
+**Action:** When adding programmatic focus targets (e.g., `<main id="main-content">`), always use `tabIndex={-1}` and `style={{ outline: 'none' }}` to allow keyboard focus shifting without displaying visual focus outlines for mouse users. When calling `.focus()` on these elements, pass `{ preventScroll: true }` to maintain smooth scrolling behavior.
