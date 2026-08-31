@@ -31,6 +31,20 @@
 
   html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--text-primary);
+    color: var(--bg);
+    padding: 8px;
+    z-index: 10000;
+    transition: top 0.2s;
+  }
+  .skip-link:focus {
+    top: 0;
+  }
+
   /* === LIGHT MODE (default) === */
   :root {
     --bg: #FAFAF9;

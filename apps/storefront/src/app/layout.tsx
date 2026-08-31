@@ -49,13 +49,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <MotionProvider>
           <CartProvider>
             <ToastProvider>
             <TomisNav />
             <PageTransition>
               <ErrorBoundary>
-                <main>{children}</main>
+                <main id="main-content" tabIndex={-1} style={{ outline: 'none' }}>{children}</main>
               </ErrorBoundary>
             </PageTransition>
             <TomisFooter />

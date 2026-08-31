@@ -9,6 +9,14 @@ export default function BackToTop() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+      mainContent.focus({ preventScroll: true });
+    }
+  };
+
   return (
     <AnimatePresence>
       {show && (
@@ -16,7 +24,7 @@ export default function BackToTop() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={handleClick}
           style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '3rem', height: '3rem', backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, boxShadow: 'var(--shadow-lg)', transition: 'background-color 0.3s, color 0.3s' }}
           aria-label="Back to top"
         >
