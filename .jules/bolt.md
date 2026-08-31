@@ -1,0 +1,3 @@
+## 2025-08-31 - Memoize computations derived from Context State
+**Learning:** The globally used `useCart` hook, which provides state to the root `CartProvider`, was running unmemoized array reductions (`itemCount`, `subtotal`) on every render of any component that consumed the context. Given how often the context is accessed throughout the app layout, this unnecessarily runs O(n) array loops on every render.
+**Action:** Use `useMemo` for derived states in global Context Providers to ensure expensive array operations only run when their dependent state variables change.
