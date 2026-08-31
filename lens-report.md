@@ -1,8 +1,8 @@
-🔍 Lens: State Regression — CRITICAL — WhatsAppChat Focus State
+🔍 Lens: Component Appearance Change — HIGH — TomisFooter Subscribe Button
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `TomisFooter`, `TomisNav`, `WhatsAppChat`
+- Components reviewed: `TomisFooter`, `WhatsAppChat`
 - Viewports tested: 1280px (Desktop)
 - Browsers tested: Chromium (Playwright headless)
 - States tested: default, focus
@@ -16,34 +16,32 @@ What was scanned this session:
 
 ## PRIMARY FINDING
 
-[CRITICAL 🔴] Type: State Regression
-Component: WhatsAppChat (apps/storefront/src/components/WhatsAppChat.tsx)
-
-What changed:
-The WhatsApp floating action button lacks a `focus-visible` outline. Keyboard users tabbing through the interface see no visual indicator when this interactive element is focused.
-
-Baseline:
-A visible focus ring should appear on all interactive elements when focused via keyboard navigation, in line with global focus state handling.
-
-Current state:
-The `WhatsAppChat` widget has a custom floating action button that visually removes standard focus indicators. The outline fails to render, leaving keyboard navigation without visual feedback. Confirmed via Playwright on desktop viewport (1280x800).
-
-Reproduction steps:
-1. Open the storefront application at a desktop viewport (e.g., 1280x800).
-2. Tab through the page content using only the keyboard until reaching the floating WhatsApp button at the bottom left.
-3. Observe: The floating button shows no visual focus indicator when active.
-
-Root cause (if identified):
-The component was updated with custom `focus-visible:outline-[var(--whatsapp-green,#25D366)]` classes. However, due to CSS specificity issues and potential conflicts with the global `*:focus-visible` reset, or because it relies on Tailwind classes that might not be correctly processed for arbitrary variables without the `theme()` function or proper variable scoping in Tailwind v4, the outline fails to render.
-The `TomisFooter.tsx` component imports the `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui` or `components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
-
-Fix required:
-Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class works by adopting standard tailwind `ring` utilities like `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green,#25D366)]` instead of arbitrary `outline` colors that fail in the current CSS cascade.
-
-## SECONDARY FINDINGS (if any)
 [HIGH 🟠] Type: Component Appearance Change
 Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
-The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable.
+
+What changed:
+The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling.
+
+Baseline:
+The SUBSCRIBE button previously rendered with the correct default visual styling for a secondary or primary action on the inverted footer surface, either via global button utility classes or standard `Button` properties.
+
+Current state:
+The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. Confirmed via screenshot on Desktop Chrome.
+
+Reproduction steps:
+1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g. 1280x800).
+2. Scroll to the bottom of the page to view the footer.
+3. Observe the newsletter signup form on the right side.
+4. The "SUBSCRIBE" button next to the email input is nearly invisible.
+
+Root cause (if identified):
+The component imports `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui/button` or `@/components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+
+Fix required:
+Switch the import back to the internal `packages/ui/src/button.tsx` or `@tomis/ui/button` (which relies on tailwind and standard overrides), or pass the correct variant/className to `@astryxdesign/core/Button` to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
+
+## SECONDARY FINDINGS (if any)
+None.
 
 ## CLEAN AREAS
 The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
