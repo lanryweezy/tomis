@@ -15,7 +15,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
+    // ⚡ Bolt Optimization: Added { passive: true } to scroll event listener
+    // Impact: Improves scrolling performance by allowing the browser to scroll
+    // without waiting for the listener to execute, as we don't call preventDefault().
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
