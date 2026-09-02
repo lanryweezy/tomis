@@ -35,13 +35,17 @@ Reproduction steps:
 4. The "SUBSCRIBE" button next to the email input is nearly invisible.
 
 Root cause (if identified):
-The component imports `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui/button` or `@/components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+In a recent PR (9617241 "Palette: Form Keyboard Accessibility"), the `TomisFooter.tsx` was refactored to wrap the input and button in a `<form>` element. However, the `Button` component import was changed or initialized improperly: it uses `import { Button } from '@astryxdesign/core/Button';` but fails to pass any necessary theme overrides, inverted variant props, or custom styling. Since `@astryxdesign/core/Button` uses StyleX with design tokens that likely default to light-mode values (or transparent backgrounds with dark text for ghost buttons) unless configured for an inverted surface, the button renders with default (dark) tokens on a dark background.
 
 Fix required:
-Switch the import back to the internal `packages/ui/src/button.tsx` or `@tomis/ui/button` (which relies on tailwind and standard overrides), or pass the correct variant/className to `@astryxdesign/core/Button` to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
+Either switch the import back to the internal `packages/ui/src/button.tsx` (which relies on tailwind and standard overrides) or pass the correct variant/className to `@astryxdesign/core/Button` (e.g. `variant="secondary"` and pass inverted token classes, or simply manually apply `style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg)' }}` similar to `NewsletterPopup.tsx`) to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
 
 ## SECONDARY FINDINGS (if any)
-None.
+[CRITICAL 🔴] Type: State Regression
+Component: WhatsAppChat (apps/storefront/src/components/WhatsAppChat.tsx)
+
+What changed:
+The WhatsApp floating action button lacks a `focus-visible` outline. Keyboard users tabbing through the interface see no visual indicator when this interactive element is focused.
 
 ## CLEAN AREAS
 The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
