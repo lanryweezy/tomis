@@ -31,3 +31,11 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+
+## 2026-09-02 — Component Appearance Change: Design System Import Conflicts
+
+**Regression:** The "SUBSCRIBE" button in the `TomisFooter` component rendered virtually invisible against a dark background, completely losing its intended appearance.
+**Root cause:** A recent PR refactoring the footer for form accessibility mistakenly changed the component import from the internal library wrapper (e.g. `packages/ui/src/button.tsx`) to the upstream design system dependency (`@astryxdesign/core/Button`). The upstream component lacks the necessary styling defaults for an inverted surface context or fallback utility classes that the local application wrapper applies.
+**Detection gap:** The component change was made during a DOM structure refactor (`div` to `form`) and was not validated by automated visual regression tests, allowing a cross-surface rendering error to ship.
+**Prevention:** Developers and agents modifying interactive primitives must ensure they import components from the local wrapper (e.g., `@tomis/ui` or `@/components/ui/button`) rather than importing raw components directly from the base design system (`@astryxdesign/core`) unless explicitly configuring required theme tokens.
+**Cascade risk:** High. Any refactor that touches standard UI elements risks replacing locally customized components with unstyled base components, breaking appearances across the application.
