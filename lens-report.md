@@ -1,12 +1,12 @@
-🔍 Lens: Component Appearance Change — HIGH — TomisFooter Subscribe Button
+🔍 Lens: State Regression — CRITICAL — TomisNav Icon Buttons Focus (Global)
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `TomisFooter`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop)
+- Components reviewed: `TomisNav`, `TomisFooter`, `Hero`, `WhatsAppChat`
+- Viewports tested: 375px (Mobile portrait), 768px (Tablet), 1280px (Desktop)
 - Browsers tested: Chromium (Playwright headless)
-- States tested: default, focus
-- Infrastructure available: Temporary Playwright scripts
+- States tested: default, focus, hover
+- Infrastructure available: Temporary Playwright scripts (manual)
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
 - Exists: no (only temporary Playwright scripts used)
@@ -16,32 +16,33 @@ What was scanned this session:
 
 ## PRIMARY FINDING
 
-[HIGH 🟠] Type: Component Appearance Change
-Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+[CRITICAL 🔴] Type: State Regression
+Component: TomisNav (apps/storefront/src/components/TomisNav.tsx)
 
 What changed:
-The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling.
+Icon-only buttons in the global navigation header (mobile menu toggle, theme toggle x2, account, and cart) lack any visible `focus-visible` outline. Keyboard users tabbing through the global navigation interface see no visual indicator when these core interactive elements are focused.
 
 Baseline:
-The SUBSCRIBE button previously rendered with the correct default visual styling for a secondary or primary action on the inverted footer surface, either via global button utility classes or standard `Button` properties.
+A visible 2px focus ring should appear on all interactive elements when focused via keyboard navigation, in line with global focus state handling (e.g., `*:focus-visible { outline: 2px solid var(--accent); }` in `globals.css`).
 
 Current state:
-The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. Confirmed via screenshot on Desktop Chrome.
+The bespoke `TomisNav` component's icon buttons are missing focus rings. For the theme toggle, the inline arbitrary Tailwind variable `focus-visible:outline-[var(--accent)]` fails to render a visible outline, and other buttons simply do not have focus styles applied or override the global reset. Keyboard navigation provides no visual feedback. Confirmed via Playwright on all viewports (375px, 768px, 1280px).
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g. 1280x800).
-2. Scroll to the bottom of the page to view the footer.
-3. Observe the newsletter signup form on the right side.
-4. The "SUBSCRIBE" button next to the email input is nearly invisible.
+1. Open the storefront application at http://localhost:3000 at any viewport (e.g. 1280x800).
+2. Tab through the page content using only the keyboard, starting from the very top of the page.
+3. Observe: The theme toggle, account icon, and cart icon in the navigation header show no visual focus indicator when active.
 
 Root cause (if identified):
-The component imports `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui/button` or `@/components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+The component uses custom CSS classes like `focus-visible:outline-[var(--accent)]`. However, due to Tailwind v4 arbitrary variable compilation rules and specificity conflicts with inline styles (`border: 'none'`, `background: 'none'`), the focus ring is either not compiled correctly or is overridden. Furthermore, some buttons in `TomisNav` omit focus classes entirely, bypassing the global focus handler.
 
 Fix required:
-Switch the import back to the internal `packages/ui/src/button.tsx` or `@tomis/ui/button` (which relies on tailwind and standard overrides), or pass the correct variant/className to `@astryxdesign/core/Button` to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
+Update the `className` on all interactive `<button>` and `<Link>` elements in `apps/storefront/src/components/TomisNav.tsx`. Replace `focus-visible:outline-[var(--accent)]` with standard Tailwind utility classes `focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:outline-none`. This ensures they correctly leverage the standard focus ring system without specificity battles.
 
-## SECONDARY FINDINGS (if any)
-None.
+## SECONDARY FINDINGS
+[HIGH 🟠] Type: Component Appearance Change
+Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The component imports `Button` directly from `@astryxdesign/core/Button` but lacks the necessary inverted surface styling default.
 
 ## CLEAN AREAS
 The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
