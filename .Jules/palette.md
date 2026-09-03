@@ -12,3 +12,7 @@
 ## 2024-05-24 - Programmatic Focus Accessibility
 **Learning:** Skip links and dynamic focus shifts (like back-to-top) need target elements to be focusable programmatically, but adding a default `tabIndex` can create unwanted focus rings on click.
 **Action:** When adding programmatic focus targets (e.g., `<main id="main-content">`), always use `tabIndex={-1}` and `style={{ outline: 'none' }}` to allow keyboard focus shifting without displaying visual focus outlines for mouse users. When calling `.focus()` on these elements, pass `{ preventScroll: true }` to maintain smooth scrolling behavior.
+
+## 2024-05-15 - Escapable Popups
+**Learning:** Custom UI elements like floating action chat panels (e.g., WhatsApp widgets) or notification popups require a keyboard-accessible way to dismiss them, as screen reader and keyboard-only users can get trapped inside them or have to navigate backward to find the original toggle.
+**Action:** Always include a document-level 'Escape' key listener to easily dismiss floating custom components, greatly improving accessibility and user experience.
