@@ -31,3 +31,10 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+
+## 2026-09-03 — State Regression: TomisNav Icon Buttons Focus Failure
+**Regression:** Icon-only buttons (mobile menu, theme toggle, account, cart) in the global navigation header lost their focus indicators, breaking keyboard accessibility.
+**Root cause:** The use of arbitrary Tailwind v4 variables for outlines (`focus-visible:outline-[var(--accent)]`) failed to compile correctly or was overridden by specificity conflicts with inline styles (`border: 'none'`, `background: 'none'`).
+**Detection gap:** Manual visual testing and Playwright tests did not verify keyboard interactions (`Tab` focus) across standard viewports.
+**Prevention:** Always verify interactive states (focus, hover) using the keyboard (e.g., Tab key testing) and Playwright snapshot tests explicitly for `focus-visible`. Use standard Tailwind `ring` utilities instead of arbitrary variables for custom focus indicators.
+**Cascade risk:** Critical. All custom bespoke components (e.g., `TomisNav`, `WhatsAppChat`) that implement custom focus states using arbitrary Tailwind variables are at risk of losing focus indicators globally.
