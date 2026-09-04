@@ -31,3 +31,11 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+
+## 2026-09-04 — Responsive Regression: Global fixed widgets obscuring critical mobile paths
+
+**Regression:** The global `WhatsAppChat` widget (fixed to bottom-left) obscures critical user inputs (like phone number and address fields) on the mobile checkout page.
+**Root cause:** A global widget was added with fixed positioning (`bottom-6 left-6`) without conditional rendering logic for critical conversion paths (like `/checkout`) or adequate layout padding on mobile devices to prevent content overlap.
+**Detection gap:** The widget was likely designed and verified on a desktop viewport where screen real estate is abundant. Manual mobile testing likely focused on the homepage rather than deep conversion flows like checkout. Automated visual testing for mobile viewports (375px) is absent.
+**Prevention:** 1) Global fixed elements must be tested across all critical paths (checkout, cart, forms) on minimum viable viewports (375px). 2) Consider conditionally hiding non-essential floating widgets on checkout/payment routes to preserve focus and screen space. 3) Implement automated visual testing across multiple viewports.
+**Cascade risk:** High. Any new global floating element (like a newsletter popup, cookie banner, or chat widget) introduced to the layout risks breaking mobile experiences on forms and data entry pages if not carefully managed.
