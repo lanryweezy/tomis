@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode, useMemo } from 'react';
 
 interface CartItem {
   id: string;
@@ -75,11 +75,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // ⚡ Bolt Optimization: Memoize derived state calculations to avoid O(n) array reductions on unrelated re-renders.
+  const itemCount = useMemo(() => items.reduce((sum, item) => sum + item.quantity, 0), [items]);
+  const subtotal = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
+
+  // ⚡ Bolt Optimization: Memoize the context value object.
+  // Impact: Prevents needless cascading re-renders in all Next.js components consuming useCart() whenever the Provider re-renders.
+  const value = useMemo(() => ({
+    items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal
+  }), [items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal]);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
