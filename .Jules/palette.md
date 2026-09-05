@@ -12,3 +12,6 @@
 ## 2024-05-24 - Programmatic Focus Accessibility
 **Learning:** Skip links and dynamic focus shifts (like back-to-top) need target elements to be focusable programmatically, but adding a default `tabIndex` can create unwanted focus rings on click.
 **Action:** When adding programmatic focus targets (e.g., `<main id="main-content">`), always use `tabIndex={-1}` and `style={{ outline: 'none' }}` to allow keyboard focus shifting without displaying visual focus outlines for mouse users. When calling `.focus()` on these elements, pass `{ preventScroll: true }` to maintain smooth scrolling behavior.
+## 2024-09-05 - Global Floating Widgets on Mobile
+**Learning:** Global floating widgets (like WhatsApp chats) can easily obscure critical inputs or CTAs on mobile viewports during conversion paths (e.g., checkout), causing friction. Also, custom floating popups must include an 'Escape' key listener to prevent keyboard traps for accessibility.
+**Action:** Always conditionally hide persistent floating UI on critical paths like checkout, and ensure all custom modal/popup components have a document-level 'Escape' dismissal listener.
