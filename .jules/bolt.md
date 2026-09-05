@@ -1,0 +1,3 @@
+## 2024-05-18 - Memoizing React Context values
+**Learning:** In Next.js applications, a common performance bottleneck occurs when context providers are re-rendered (e.g. from state changes, prop updates, or navigation events in global layouts). If the `value` prop is not memoized, it results in a new object reference on every render, triggering cascading re-renders across all consumers of the context, even if the underlying logic/state hasn't fundamentally changed.
+**Action:** When creating global context providers (like CartProvider), always use `useMemo` to memoize the context `value` object and any expensive derived states (e.g., array reductions) to prevent cascading re-renders across consuming Next.js components.
