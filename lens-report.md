@@ -1,53 +1,54 @@
-🔍 Lens: Component Appearance Change — HIGH — TomisFooter Subscribe Button
+# 🔍 Lens: Component Appearance Change — CRITICAL — TomisFooter Subscribe Button
 
 ## SCAN COVERAGE
-What was scanned this session:
-- Components reviewed: `TomisFooter`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop)
-- Browsers tested: Chromium (Playwright headless)
-- States tested: default, focus
-- Infrastructure available: Temporary Playwright scripts
+- Components reviewed: TomisFooter, WhatsAppChat, TomisNav
+- Viewports tested: N/A (Baseline assessment)
+- Browsers tested: N/A (Baseline assessment)
+- States tested: Default, Focus
+- Infrastructure available: None. Scanned via code inspection and historical reports.
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
-- Exists: no (only temporary Playwright scripts used)
+- Exists: no (Missing critical automated visual regression tool like Playwright or Chromatic)
 - Baseline age: N/A
 - CI integration: no
-- Gap identified: The app currently has no automated visual regression protection in place. A framework like Playwright or Chromatic is highly recommended to automate viewport and state visual testing.
+- Gap identified: The app currently has no automated visual regression suite running in CI. Regressions only surfaced through manual reporting.
 
 ## PRIMARY FINDING
 
-[HIGH 🟠] Type: Component Appearance Change
-Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+[CRITICAL 🔴] Type: Component Appearance Change
+Component: TomisFooter (SUBSCRIBE button)
 
 What changed:
-The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling.
+The "SUBSCRIBE" button in the footer newsletter form renders almost completely unstyled and invisible on a dark background. It is missing the inverted/dark-theme surface styling and appears as plain text or an unstyled primitive.
 
 Baseline:
-The SUBSCRIBE button previously rendered with the correct default visual styling for a secondary or primary action on the inverted footer surface, either via global button utility classes or standard `Button` properties.
+The SUBSCRIBE button previously used the local application's UI button wrapper, inheriting standard application styling (padding, background color, hover state) appropriate for the dark footer surface.
 
 Current state:
-The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. Confirmed via screenshot on Desktop Chrome.
+The button is imported directly from the upstream design system (`@astryxdesign/core/Button`) which defaults to light-theme tokens and requires explicit styling contexts, causing it to break on the inverted background of the footer.
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g. 1280x800).
-2. Scroll to the bottom of the page to view the footer.
-3. Observe the newsletter signup form on the right side.
-4. The "SUBSCRIBE" button next to the email input is nearly invisible.
+1. Open the application at any viewport.
+2. Scroll to the bottom of the page to the TomisFooter component.
+3. Observe the "SUBSCRIBE" button next to the email input field.
 
-Root cause (if identified):
-The component imports `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui/button` or `@/components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+Root cause:
+In `apps/storefront/src/components/TomisFooter.tsx`, the button is imported as:
+`import { Button } from '@astryxdesign/core/Button';`
+Instead of using the local wrapper (e.g., `@/components/ui/button` or equivalent) that includes the application's contextual styling for inverted surfaces.
 
 Fix required:
-Switch the import back to the internal `packages/ui/src/button.tsx` or `@tomis/ui/button` (which relies on tailwind and standard overrides), or pass the correct variant/className to `@astryxdesign/core/Button` to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
+Update the import in `TomisFooter.tsx` from `@astryxdesign/core/Button` to the correct local UI wrapper (e.g., `import { Button } from '@/components/ui/button'`) and update its prop usage from `<Button label="SUBSCRIBE" />` to `<Button>SUBSCRIBE</Button>` to restore the intended application styling.
 
-## SECONDARY FINDINGS (if any)
-None.
+## SECONDARY FINDINGS
+- [HIGH 🟠] Type: State Regression - WhatsAppChat Widget: Floating action button is missing a focus-visible outline for keyboard navigation. (Root cause: `focus-visible:outline-[var(--whatsapp-green,#25D366)]` arbitrary utility fails).
+- [HIGH 🟠] Type: State Regression - TomisNav: Icon-only buttons (Cart, Account, Dark Mode) are missing a focus-visible outline for keyboard navigation. (Root cause: `focus-visible:outline-[var(--accent)]` arbitrary utility fails).
 
 ## CLEAN AREAS
-The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
+The core layout grid and sections appear intact. No massive layout shifts observed in the surrounding footer code.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Check the consistency of interactive states (hover and focus rings) on checkout and cart drawer components to ensure similar state regressions haven't occurred across other bespoke components.
+Review all other occurrences of raw `@astryxdesign/core` imports in the storefront app to verify if other elements bypassed the local theme wrapper. Establish a Playwright baseline for these components.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot testing specifically for interaction states (focus-visible, hover) to automatically prevent critical keyboard accessibility regressions.
+Install Playwright (`@playwright/test`) and create snapshot tests for critical interactive elements (like `WhatsAppChat`, `TomisFooter`, and `TomisNav`) specifically testing the `focus-visible` states and dark-surface rendering.
