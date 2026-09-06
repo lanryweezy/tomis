@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode, useMemo } from 'react';
 
 interface CartItem {
   id: string;
@@ -75,11 +75,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => setItems([]), []);
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // ⚡ Bolt: Memoize derived state and context value to prevent cascading re-renders across consumers
+  const contextValue = useMemo(() => {
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    return { items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal };
+  }, [items, addItem, removeItem, updateQuantity, clearCart]);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal }}>
+    <CartContext.Provider value={contextValue}>
       {children}
     </CartContext.Provider>
   );
