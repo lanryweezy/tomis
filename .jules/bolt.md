@@ -1,0 +1,3 @@
+## 2024-05-17 - Unmemoized Context Values Causing Cascading Re-renders
+**Learning:** In React applications heavily relying on Context (like this one with `CartProvider` and `ToastProvider`), passing unmemoized objects inline to `value={{ ... }}` causes every component consuming that context to re-render whenever the provider re-renders, even if the underlying context data hasn't logically changed. This creates significant unnecessary work for the main thread, especially near the root of the app.
+**Action:** Always wrap context values in `useMemo` (e.g. `const value = useMemo(() => ({ items }), [items])`) when exposing an object.
