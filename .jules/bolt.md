@@ -1,0 +1,3 @@
+## 2024-05-18 - Global Context Provider Optimization
+**Learning:** Found an anti-pattern in the codebase where Context Providers (like `CartProvider` and `ToastProvider`) passed newly created object literals inline to their `value` props. This forces all components consuming the contexts to re-render whenever *any* state in the provider updates, even if the value they care about hasn't fundamentally changed.
+**Action:** Always wrap context `value` objects and derived complex state (e.g., array reductions in `CartProvider`) with `useMemo`. When memoizing, be sure to include all functions and values that the consumer context needs in the dependency array.

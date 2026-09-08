@@ -1,6 +1,6 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect, createContext, useContext, useCallback } from 'react';
+import { useState, useEffect, createContext, useContext, useCallback, useMemo } from 'react';
 
 type ToastType = 'success' | 'error' | 'info';
 
@@ -27,8 +27,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3000);
   }, []);
 
+  // Bolt: Memoize context value to prevent unnecessary re-renders in consumers when toasts state changes internally
+  const contextValue = useMemo(() => ({ toast }), [toast]);
+
   return (
-    <ToastContext.Provider value={{ toast }}>
+    <ToastContext.Provider value={contextValue}>
       {children}
       <div style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
         <AnimatePresence>
