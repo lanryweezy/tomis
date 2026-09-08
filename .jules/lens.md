@@ -31,3 +31,11 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+
+## 2026-09-08 — State Regression: Tailwind v4 arbitrary variables fail in complex selectors (Verified)
+
+**Regression:** Focus ring (outline) failed to render on `WhatsAppChat` floating button.
+**Root cause:** Using arbitrary values with CSS variables like `outline-[var(--whatsapp-green,#25D366)]` in Tailwind v4 alongside `focus-visible:` pseudo-class can break specificity or simply not compile correctly depending on configuration. Verified this regression and formally reported it via `lens-report.md`.
+**Detection gap:** It was visually removed by a PR trying to make it accessible without proper Playwright tests.
+**Prevention:** Always verify focus rings manually or via Playwright by simulating tab interactions. Recommend standard tailwind utilities like `ring-2` with standard theme colors over arbitrary `outline-color` using variables.
+**Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes in focus or hover states might be failing similarly.
