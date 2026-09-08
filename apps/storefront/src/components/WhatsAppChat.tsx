@@ -1,9 +1,22 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function WhatsAppChat() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
   return (
     <>
       <motion.button
@@ -11,7 +24,7 @@ export default function WhatsAppChat() {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         style={{ position: 'fixed', bottom: '2rem', left: '2rem', width: '3.5rem', height: '3.5rem', backgroundColor: 'var(--whatsapp-green, #25D366)', color: 'white', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, boxShadow: '0 4px 12px rgba(37,211,102,0.4)' }}
-        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green,#25D366)]"
+        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500"
         aria-label={isOpen ? "Close WhatsApp Chat" : "Open WhatsApp Chat"}
         aria-expanded={isOpen}
         aria-controls="whatsapp-chat-panel"

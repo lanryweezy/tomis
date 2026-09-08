@@ -1,0 +1,3 @@
+## 2024-09-08 - Escape Listeners and Tailwind Focus Rings
+**Learning:** Custom floating elements (like chat panels or custom overlays) need explicit document-level `Escape` key listeners for accessibility, as they don't inherit native dialog behaviors. Also, in Tailwind v4 setups, arbitrary CSS variables used in focus utility classes (e.g., `focus-visible:ring-[var(--color)]`) often fail due to specificity conflicts; standard tokens should be used instead.
+**Action:** Always add an explicit Escape listener in a `useEffect` when creating non-native custom floating components, and stick to defined Tailwind tokens for focus rings to avoid specificity issues.
