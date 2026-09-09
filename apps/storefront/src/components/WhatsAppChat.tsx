@@ -1,9 +1,16 @@
 'use client';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function WhatsAppChat() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  if (pathname === '/checkout') {
+    return null;
+  }
+
   return (
     <>
       <motion.button

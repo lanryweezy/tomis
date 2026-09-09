@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function BackToTop() {
   const [show, setShow] = useState(false);
+  const pathname = usePathname();
   useEffect(() => {
     const handleScroll = () => setShow(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -16,6 +18,10 @@ export default function BackToTop() {
       mainContent.focus({ preventScroll: true });
     }
   };
+
+  if (pathname === '/checkout') {
+    return null;
+  }
 
   return (
     <AnimatePresence>

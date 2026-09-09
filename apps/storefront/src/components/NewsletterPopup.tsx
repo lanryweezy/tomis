@@ -1,10 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/components/ui/Toast';
 
 export default function NewsletterPopup() {
   const [show, setShow] = useState(false);
+  const pathname = usePathname();
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,6 +59,10 @@ export default function NewsletterPopup() {
     setShow(false);
     localStorage.setItem('tomis-newsletter-dismissed', 'true');
   };
+
+  if (pathname === '/checkout') {
+    return null;
+  }
 
   return (
     <AnimatePresence>
