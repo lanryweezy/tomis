@@ -4,15 +4,15 @@
 What was scanned this session:
 - Components reviewed: `TomisFooter`, `WhatsAppChat`
 - Viewports tested: 1280px (Desktop)
-- Browsers tested: Chromium (Playwright headless)
-- States tested: default, focus
-- Infrastructure available: Temporary Playwright scripts
+- Browsers tested: Chrome (via Playwright headless)
+- States tested: Default static layout
+- Infrastructure available: Temporary Playwright python script (`scripts/visual_test.py`)
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
 - Exists: no (only temporary Playwright scripts used)
 - Baseline age: N/A
 - CI integration: no
-- Gap identified: The app currently has no automated visual regression protection in place. A framework like Playwright or Chromatic is highly recommended to automate viewport and state visual testing.
+- Gap identified: No automated visual regression testing in place. Requires setup with Playwright or Chromatic.
 
 ## PRIMARY FINDING
 
@@ -20,34 +20,34 @@ What was scanned this session:
 Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
 
 What changed:
-The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text/background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling.
+The "SUBSCRIBE" button in the footer newsletter form is rendering with incorrect dark styling against a dark inverted background, making it nearly invisible and unreadable. The "Stay in the loop" text is also rendering with insufficient contrast. The button has completely lost its intended inverted design system styling.
 
 Baseline:
-The SUBSCRIBE button previously rendered with the correct default visual styling for a secondary or primary action on the inverted footer surface, either via global button utility classes or standard `Button` properties.
+The SUBSCRIBE button and surrounding text should render with appropriate contrast (e.g., light text, or dark text on a light button background) on the inverted footer surface (`var(--inverted)`). The button previously rendered with the correct visual styling for a secondary or primary action on the inverted surface, either via global button utility classes or standard local `Button` properties.
 
 Current state:
-The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. Confirmed via screenshot on Desktop Chrome.
+The "SUBSCRIBE" button is barely visible against the dark `#101114` (inverted) background. It has dark text and a dark background with no border, contradicting the rest of the light text on the dark footer. The "Stay in the loop" text above the form is also too dark. Confirmed via screenshot on Desktop Chrome at 1280x800.
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g. 1280x800).
+1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g., 1280x800).
 2. Scroll to the bottom of the page to view the footer.
 3. Observe the newsletter signup form on the right side.
-4. The "SUBSCRIBE" button next to the email input is nearly invisible.
+4. The "SUBSCRIBE" button next to the email input, and the "Stay in the loop" text, are nearly invisible.
 
 Root cause (if identified):
-The component imports `Button` directly from the core design system package (`import { Button } from '@astryxdesign/core/Button';`). However, this core component lacks the necessary inverted surface styling default, or it was intended to use the local app wrapper (`@tomis/ui/button` or `@/components/ui/button.tsx`). Because it does not receive the inverted context, it renders using default dark tokens on a dark background.
+The `TomisFooter.tsx` was likely refactored (e.g., for form accessibility), and the `Button` component import was changed: it uses `import { Button } from '@astryxdesign/core/Button';` instead of the local app wrapper (`@/components/ui/button`). The raw core `Button` uses StyleX with design tokens that default to light-mode values (or transparent backgrounds with dark text) unless configured specifically for an inverted surface. Additionally, the "Stay in the loop" text might be missing the `color: 'var(--inverted-text)'` style applied to other text in the footer.
 
 Fix required:
-Switch the import back to the internal `packages/ui/src/button.tsx` or `@tomis/ui/button` (which relies on tailwind and standard overrides), or pass the correct variant/className to `@astryxdesign/core/Button` to ensure the button is visible on the inverted footer surface. Needs design confirmation on the correct inverted button style.
+Switch the import back to the internal wrapper `import { Button } from '@/components/ui/button';` which relies on standard Tailwind overrides, or manually apply the inverted style props (e.g. `style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg)' }}`) to ensure the button is visible on the inverted footer surface. Ensure the "Stay in the loop" text is styled with `var(--inverted-text)`.
 
-## SECONDARY FINDINGS (if any)
-None.
+## SECONDARY FINDINGS
+None documented in this session.
 
 ## CLEAN AREAS
-The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
+N/A
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Check the consistency of interactive states (hover and focus rings) on checkout and cart drawer components to ensure similar state regressions haven't occurred across other bespoke components.
+Check the consistency of other interactive elements (buttons, inputs) on inverted surfaces across the application to ensure local wrappers are being used instead of base design system imports.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot testing specifically for interaction states (focus-visible, hover) to automatically prevent critical keyboard accessibility regressions.
+Implement Playwright visual snapshot testing or integrate Chromatic into the CI pipeline to automatically prevent visual regressions caused by token cascades or component import mismatches.

@@ -31,3 +31,10 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+
+## 2026-08-31 — Component Appearance Change: Design System Import Conflicts
+**Regression:** The "SUBSCRIBE" button in the `TomisFooter` component rendered virtually invisible against a dark background, completely losing its intended appearance on an inverted surface.
+**Root cause:** A recent change to the footer mistakenly updated the component import from the internal library wrapper (`@/components/ui/button`) to the upstream design system dependency (`@astryxdesign/core/Button`). The upstream component uses strict token resolution which defaults to light-theme values unless explicitly placed within a corresponding theme context, whereas the application code expected custom CSS-variable utility classes and standard fallback styling on an inverted surface.
+**Detection gap:** Visual regressions from import changes are rarely caught by standard unit tests because the code still compiles and renders valid HTML elements. Automated visual testing (e.g., Playwright, Chromatic) is entirely absent.
+**Prevention:** Developers and agents modifying interactive primitives must ensure they import components from the local wrapper (e.g., `@tomis/ui` or `@/components/ui`) rather than importing raw components directly from the base design system (`@astryxdesign/core`) unless they fully comprehend the required styling contexts (e.g., passing explicit variants or theme tokens).
+**Cascade risk:** High. Any refactor that touches imports across standard UI elements risks replacing locally customized components with unstyled base components, leading to broken appearances on inverted surfaces across the application.
