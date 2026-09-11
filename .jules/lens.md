@@ -31,3 +31,16 @@
 **Prevention:** Ensure that all components on inverted surfaces (like the footer) use the correct local wrapped components rather than raw design system core components, which might require explicit theme passing.
 
 **Cascade risk:** Any other component that bypasses the local UI wrappers and directly imports from the core design system risks losing local contextual styling (such as dark mode overrides, custom border radiuses, or inverted surface colors).
+## 2026-08-31 — State Regression: WhatsAppChat focus state lost
+**Regression:** The WhatsApp floating action button lacks a focus-visible outline, breaking keyboard navigation feedback.
+**Root cause:** Custom `focus-visible:outline-[var(--whatsapp-green,#25D366)]` classes fail to render in Tailwind v4 due to specificity conflicts with the global `*:focus-visible` reset or improper variable scoping without the `theme()` function.
+**Detection gap:** The regression was missed because automated tests were not checking the focus state on bespoke components that override global focus styles.
+**Prevention:** Always verify focus rings manually or via Playwright on newly added bespoke interactive elements, especially those using arbitrary variable syntax in Tailwind.
+**Cascade risk:** Any other custom component attempting to override global focus rings with arbitrary `outline` colors may also be broken.
+
+## 2026-08-31 — Component Appearance Change: TomisFooter Subscribe Button unstyled
+**Regression:** The "SUBSCRIBE" button in the footer form renders unstyled (dark on dark), making it invisible.
+**Root cause:** During a form wrapper refactor, the `Button` import was set to `@astryxdesign/core/Button` instead of the local `@/components/ui/button`. The core component does not automatically receive inverted surface overrides unless explicitly configured, resulting in a fallback to default dark tokens on a dark background.
+**Detection gap:** The regression was not caught because the refactor was focused on accessibility (adding a `<form>`) and the visual impact on the inverted footer surface was not manually re-tested.
+**Prevention:** Whenever a foundational component import is changed (especially switching between local UI wrappers and core design system components), visually verify all usage contexts, particularly on non-default surfaces (like inverted or dark modes).
+**Cascade risk:** Other instances where standard UI wrappers were replaced with core design system imports without passing proper overrides may also exhibit token mismatch regressions.
