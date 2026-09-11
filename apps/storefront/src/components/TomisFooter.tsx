@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Text } from '@astryxdesign/core/Text';
 import { Stack } from '@astryxdesign/core/Stack';
 import { Grid } from '@astryxdesign/core/Grid';
-import { Button } from '@astryxdesign/core/Button';
+import { Button } from '@/components/ui/button';
 
 const shopLinks = [
   { label: 'Half-Collar Shirts', href: '/shop' },
@@ -101,7 +101,7 @@ export default function TomisFooter() {
           <form onSubmit={handleNewsletterSubmit} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <label htmlFor="footer-email" style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Email address</label>
             <input id="footer-email" name="email" aria-label="Email address" type="email" placeholder="Your email" required style={{ flex: 1, minWidth: '200px', padding: '0.75rem 1rem', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: 'white', fontSize: '0.875rem', outline: 'none' }} />
-            <Button type="submit" label="SUBSCRIBE" />
+            <Button type="submit" style={{ backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none' }}>SUBSCRIBE</Button>
             {newsletterStatus && <Text type="supporting" role="status" aria-live="polite" style={{ color: 'var(--inverted-text-muted)', flexBasis: '100%' }}>{newsletterStatus}</Text>}
           </form>
         </Stack>
