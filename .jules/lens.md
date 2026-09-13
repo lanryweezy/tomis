@@ -44,3 +44,11 @@
 **Detection gap:** The regression was not caught because the refactor was focused on accessibility (adding a `<form>`) and the visual impact on the inverted footer surface was not manually re-tested.
 **Prevention:** Whenever a foundational component import is changed (especially switching between local UI wrappers and core design system components), visually verify all usage contexts, particularly on non-default surfaces (like inverted or dark modes).
 **Cascade risk:** Other instances where standard UI wrappers were replaced with core design system imports without passing proper overrides may also exhibit token mismatch regressions.
+
+## 2026-09-13 — Component Appearance Change: Unstyled Buttons on Inverted Surfaces (Global Tokens Override)
+
+**Regression:** The "SUBSCRIBE" button in the `TomisFooter` component rendered practically invisible (dark on dark background).
+**Root cause:** A recent refactor (which introduced form wrapping for accessibility) explicitly set inline styles `backgroundColor: 'var(--text-primary)'` and `color: 'var(--bg)'` on the `<Button>`. On an inverted surface like the footer (which uses `--inverted` for its background), global tokens like `--text-primary` (black in light mode) clash with the dark footer, resulting in a dark-on-dark render. This is distinct from import conflicts (noted in 2026-08-22); it demonstrates the danger of hardcoding inline global tokens in contextually inverted components.
+**Detection gap:** The refactor modified the form layout structure without considering the specific visual context of the inverted surface. Manual testing was likely not performed on the footer after changes were made, and automated cross-surface visual testing is not currently implemented.
+**Prevention:** When applying custom color styles to foundational elements like buttons on inverted surfaces, developers must use inverted tokens (e.g., `--inverted-text` and `--inverted`) instead of global base tokens.
+**Cascade risk:** High. Any bespoke application component embedded in inverted surfaces (e.g., footers, dark mode modals) that overrides styles with standard text/bg global tokens is at risk of rendering invisibly or with poor contrast.

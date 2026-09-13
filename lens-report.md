@@ -2,8 +2,8 @@
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `TomisFooter`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop)
+- Components reviewed: `TomisFooter`, `WhatsAppChat`, `TomisNav`
+- Viewports tested: 1280px (Desktop), 375px (Mobile portrait)
 - Browsers tested: Chromium (Playwright headless)
 - States tested: default, focus
 - Infrastructure available: Temporary Playwright scripts
@@ -40,7 +40,9 @@ Fix required:
 Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class works by adopting standard tailwind `ring` utilities like `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green)]` instead of arbitrary `outline` colors that fail in the current CSS cascade.
 
 ## SECONDARY FINDINGS (if any)
-None.
+[HIGH 🟠] Type: Component Appearance Change
+Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+The "SUBSCRIBE" button in the footer newsletter form is rendering almost completely unstyled (dark text and dark background on a dark footer background), making it virtually invisible and unreadable. The button completely lost its design system styling due to hardcoded inline global tokens (`var(--text-primary)`) that fail on the inverted surface.
 
 ## CLEAN AREAS
 The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
