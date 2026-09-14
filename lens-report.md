@@ -1,52 +1,57 @@
-🔍 Lens: State Regression — CRITICAL — WhatsApp floating action button focus ring
+🔍 Lens: Colour Drift — HIGH — TomisFooter Typography
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `TomisFooter`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop)
+- Components reviewed: `Hero`, `FeaturedProducts`, `TomisFooter`, `TomisNav`, `WhatsAppChat`
+- Viewports tested: 1280px (Desktop), 375px (Mobile portrait)
 - Browsers tested: Chromium (Playwright headless)
-- States tested: default, focus
-- Infrastructure available: Temporary Playwright scripts
+- States tested: Default rendering, WhatsApp focus state, Mobile menu toggle focus state
+- Infrastructure available: Temporary Python Playwright script
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
-- Exists: no (only temporary Playwright scripts used)
+- Exists: No (temporary Python Playwright script used)
 - Baseline age: N/A
-- CI integration: no
-- Gap identified: The app currently has no automated visual regression protection in place. A framework like Playwright or Chromatic is highly recommended to automate viewport and state visual testing.
+- CI integration: No
+- Gap identified: The application lacks automated visual regression testing infrastructure (e.g., Playwright, Chromatic) to catch styling and token regressions before deployment.
 
 ## PRIMARY FINDING
 
-[CRITICAL 🔴] Type: State Regression
-Component: WhatsAppChat (apps/storefront/src/components/WhatsAppChat.tsx)
+[HIGH 🟠] Type: Colour Drift
+Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
 
 What changed:
-The WhatsApp floating action button lacks a `focus-visible` outline. Keyboard users tabbing through the interface see no visual indicator when this interactive element is focused.
+The "Stay in the loop" typography in the footer newsletter section is rendering as nearly black (`#101114`) on the dark inverted footer background, making it almost completely illegible due to an extreme contrast failure.
 
 Baseline:
-A visible focus ring should appear on all interactive elements when focused via keyboard navigation, in line with global focus state handling.
+The "Stay in the loop" header should be rendered in a light color (e.g., `var(--inverted-text)` or similar) on the inverted surface of the footer, ensuring sufficient contrast and readability against the dark background.
 
 Current state:
-The `WhatsAppChat` widget has a custom floating action button that visually removes standard focus indicators (or they fail to render due to specificity issues). The outline fails to render, leaving keyboard navigation without visual feedback. Confirmed via Playwright on desktop viewport.
+The "Stay in the loop" text is rendering in the default dark body text color (`var(--text-primary)` which resolves to `#101114` in light mode), resulting in black text on a nearly black background (`var(--inverted)`). Confirmed via screenshot on Desktop (1280x800).
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at a desktop viewport (e.g. 1280x800).
-2. Tab through the page content using only the keyboard until reaching the floating WhatsApp button at the bottom left.
-3. Observe: The floating button shows no visual focus indicator when active.
+1. Open the storefront application at http://localhost:3000 at any viewport size.
+2. Scroll to the bottom of the page to view the `TomisFooter` component.
+3. Observe the "Stay in the loop" heading text positioned above the newsletter signup form on the left side of that row.
+4. Notice that the text is extremely dark and illegible against the footer's dark background.
 
 Root cause (if identified):
-The component was updated with custom `focus-visible:outline-[var(--whatsapp-green,#25D366)]` classes. However, due to CSS specificity issues and potential conflicts with the global `*:focus-visible` reset, or because it relies on Tailwind classes that might not be correctly processed for arbitrary variables without the `theme()` function or proper variable scoping in Tailwind v4, the outline fails to render.
+The `Text` component from `@astryxdesign/core/Text` is being used for the "Stay in the loop" heading:
+`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem' }}>Stay in the loop</Text>`
+Since it doesn't have an explicit color override like the accompanying subtext (`<Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>...`), the `Text` component falls back to its default design token for body text color, which is likely resolving to the global `var(--text-primary)`. In the current light mode default, `var(--text-primary)` is dark (`#101114`), causing it to fail on the inverted footer surface.
 
 Fix required:
-Update the `className` on the `motion.button` in `apps/storefront/src/components/WhatsAppChat.tsx` to use the standard global focus rings or ensure the bespoke class works by adopting standard tailwind `ring` utilities like `focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--whatsapp-green)]` instead of arbitrary `outline` colors that fail in the current CSS cascade.
+Update the `Text` component for the "Stay in the loop" heading in `apps/storefront/src/components/TomisFooter.tsx` to explicitly use the inverted text color token. Add `color: 'var(--inverted-text)'` to its style prop:
+`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem', color: 'var(--inverted-text)' }}>Stay in the loop</Text>`
+This matches the pattern used for other text elements within the inverted footer surface.
 
 ## SECONDARY FINDINGS (if any)
 None.
 
 ## CLEAN AREAS
-The newly implemented standard dividers and global CSS classes (`.section-spacing`, `.container`) are rendering consistently with no visual regressions.
+The `WhatsAppChat` floating button focus state has been reviewed, and the visual test run successfully targeted the components in question. The navigation layout (`TomisNav`) remains consistent across desktop and mobile.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Check the consistency of interactive states (hover and focus rings) on checkout and cart drawer components to ensure similar state regressions haven't occurred across other bespoke components.
+Investigate all usages of global text components (`Text`, `Heading`) inside inverted surfaces (like `TomisFooter` or dark overlay sections) to ensure none are missing explicit inverted color overrides, as the design system doesn't appear to automatically invert text tokens contextually.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot testing specifically for interaction states (focus-visible, hover) to automatically prevent critical keyboard accessibility regressions.
+Implement automated visual snapshot testing using Playwright with a baseline comparison, specifically focusing on cross-surface component rendering (default vs inverted surfaces) to catch contrast failures automatically.
