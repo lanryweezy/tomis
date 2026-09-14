@@ -139,9 +139,9 @@ export default function CheckoutPage() {
 
           {/* Progress Steps */}
           {step !== 'confirmation' && (
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
+            <ol aria-label="Checkout Progress" style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
               {steps.map((s) => (
-                <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <li key={s.id} aria-current={step === s.id ? 'step' : undefined} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <div style={{
                     width: '2rem', height: '2rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     backgroundColor: step === s.id || steps.findIndex(x => x.id === step) > steps.findIndex(x => x.id === s.id) ? 'var(--text-primary)' : 'var(--bg-elevated)',
@@ -151,9 +151,9 @@ export default function CheckoutPage() {
                     {steps.findIndex(x => x.id === step) > steps.findIndex(x => x.id === s.id) ? '✓' : s.number}
                   </div>
                   <Text type="label" color={step === s.id ? 'primary' : 'secondary'}>{s.label}</Text>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           )}
 
           <Grid columns={step === 'confirmation' ? 1 : 2} gap={10} className="checkout-layout">
