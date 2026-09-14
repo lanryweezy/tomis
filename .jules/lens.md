@@ -44,3 +44,9 @@
 **Detection gap:** The regression was not caught because the refactor was focused on accessibility (adding a `<form>`) and the visual impact on the inverted footer surface was not manually re-tested.
 **Prevention:** Whenever a foundational component import is changed (especially switching between local UI wrappers and core design system components), visually verify all usage contexts, particularly on non-default surfaces (like inverted or dark modes).
 **Cascade risk:** Other instances where standard UI wrappers were replaced with core design system imports without passing proper overrides may also exhibit token mismatch regressions.
+## 2026-09-14 — Colour Drift: Inverted Surface Text Fallbacks
+**Regression:** The "Stay in the loop" typography in the footer rendered as black on a nearly black inverted background, failing contrast checks completely.
+**Root cause:** Global text components (like `@astryxdesign/core/Text`) fall back to default light-mode tokens (e.g., `var(--text-primary)`) rather than contextually inverting when placed inside an inverted surface container, unless an explicit color override (`color: 'var(--inverted-text)'`) is applied.
+**Detection gap:** Automated a11y tests often miss color contrast failures caused by dynamic CSS variable resolution on distinct dark surfaces within an otherwise light-themed app.
+**Prevention:** Watch for missing `color` props or global text token usage inside `style={{ backgroundColor: 'var(--inverted)' }}` containers across the codebase.
+**Cascade risk:** High for any new components or global text usage added to `TomisFooter` or dark overlay sections without explicit dark-mode/inverted tokens.
