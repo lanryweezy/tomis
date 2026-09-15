@@ -50,3 +50,9 @@
 **Detection gap:** Automated a11y tests often miss color contrast failures caused by dynamic CSS variable resolution on distinct dark surfaces within an otherwise light-themed app.
 **Prevention:** Watch for missing `color` props or global text token usage inside `style={{ backgroundColor: 'var(--inverted)' }}` containers across the codebase.
 **Cascade risk:** High for any new components or global text usage added to `TomisFooter` or dark overlay sections without explicit dark-mode/inverted tokens.
+## 2024-09-15 — Colour Drift: Inverted Surface Text Fallback
+**Regression:** Text components placed inside inverted surfaces (like footers or dark sections) render as nearly black (default `var(--text-primary)`) against a dark background (`var(--inverted)`), causing severe contrast failures.
+**Root cause:** The Astryx design system `Text` component defaults to `var(--text-primary)` (which resolves to dark in light mode). The design system does not automatically invert text tokens contextually when placed inside an inverted container.
+**Detection gap:** This was missed because automated contrast testing was likely not running on the full assembled page, or because the text component defaults were changed globally without verifying their impact on inverted surface variants.
+**Prevention:** Always verify typography rendering explicitly on inverted surfaces (`var(--inverted)`, dark variants of sections) across both light and dark modes whenever global typography or color tokens are modified.
+**Cascade risk:** Any usage of `Text` or `Heading` inside `TomisFooter`, dark `Hero` variants, or `Philosophy` sections that omits explicit color overrides (like `color: 'var(--inverted-text)'`) is at risk of being illegible.
