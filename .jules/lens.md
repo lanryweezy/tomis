@@ -50,3 +50,10 @@
 **Detection gap:** Automated a11y tests often miss color contrast failures caused by dynamic CSS variable resolution on distinct dark surfaces within an otherwise light-themed app.
 **Prevention:** Watch for missing `color` props or global text token usage inside `style={{ backgroundColor: 'var(--inverted)' }}` containers across the codebase.
 **Cascade risk:** High for any new components or global text usage added to `TomisFooter` or dark overlay sections without explicit dark-mode/inverted tokens.
+
+## 2026-09-16 — State Regression: Overlay Close Button Focus State Missing
+**Regression:** The 'Close menu' button on the mobile navigation overlay has no visual focus ring when navigating via keyboard, rendering it invisible to keyboard-only users.
+**Root cause:** While the main navigation buttons apply global utility classes for focus visibility (`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]`), the close button inside the `AnimatePresence` overlay completely omitted these classes, relying solely on inline styles for layout.
+**Detection gap:** Automated tools (and manual testing) frequently test default viewport rendering but miss dynamic overlay states and keyboard-specific interactions (like `.focus()`).
+**Prevention:** In future sessions, explicitly test focus states within all dynamically rendered overlays (modals, mobile menus, dialogs), as their close buttons are frequently implemented separately from main structural UI components and are prone to missing standard utility classes.
+**Cascade risk:** High risk for other custom overlays (e.g., ImageUpload preview modal, Newsletter popup, custom dialogs) which might also omit focus utility classes on their respective close/dismiss triggers.
