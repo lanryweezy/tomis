@@ -1,57 +1,57 @@
-🔍 Lens: Colour Drift — HIGH — TomisFooter Typography
+🔍 Lens: State Regression — CRITICAL — Mobile Navigation Close Button
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `Hero`, `FeaturedProducts`, `TomisFooter`, `TomisNav`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop), 375px (Mobile portrait)
-- Browsers tested: Chromium (Playwright headless)
-- States tested: Default rendering, WhatsApp focus state, Mobile menu toggle focus state
-- Infrastructure available: Temporary Python Playwright script
+- Components reviewed: `TomisNav`, `TomisFooter`, `Hero`
+- Viewports tested: 375px (Mobile portrait), 1280px (Desktop)
+- Browsers tested: Chromium (via Playwright)
+- States tested: Default, Focus states, Hover states, Mobile Menu Open
+- Infrastructure available: Temporary Python Playwright script (automated infrastructure missing)
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
-- Exists: No (temporary Python Playwright script used)
+- Exists: No
 - Baseline age: N/A
 - CI integration: No
-- Gap identified: The application lacks automated visual regression testing infrastructure (e.g., Playwright, Chromatic) to catch styling and token regressions before deployment.
+- Gap identified: The repository currently lacks automated visual snapshot testing (e.g., Playwright, Chromatic) integrated into CI, requiring manual Python scripts for viewport testing.
 
 ## PRIMARY FINDING
 
-[HIGH 🟠] Type: Colour Drift
-Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+[CRITICAL 🔴] Type: State Regression
+Component: TomisNav Mobile Menu (apps/storefront/src/components/TomisNav.tsx)
 
 What changed:
-The "Stay in the loop" typography in the footer newsletter section is rendering as nearly black (`#101114`) on the dark inverted footer background, making it almost completely illegible due to an extreme contrast failure.
+The focus state on the mobile menu's "Close menu" button is completely missing. When a user navigates to the close button using a keyboard (`Tab` key), there is no visual indication that the button is focused, making it extremely difficult for keyboard-only or screen reader users to know they can close the navigation drawer.
 
 Baseline:
-The "Stay in the loop" header should be rendered in a light color (e.g., `var(--inverted-text)` or similar) on the inverted surface of the footer, ensuring sufficient contrast and readability against the dark background.
+All interactive elements, including icon buttons (like the menu open button, theme toggle, cart icon), must display a clear focus ring when focused via keyboard. In this app, the baseline focus style is an accent-colored outline (e.g., `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]`).
 
 Current state:
-The "Stay in the loop" text is rendering in the default dark body text color (`var(--text-primary)` which resolves to `#101114` in light mode), resulting in black text on a nearly black background (`var(--inverted)`). Confirmed via screenshot on Desktop (1280x800).
+The mobile menu "Close menu" button has no `focus-visible` outline classes applied to it. Consequently, it shows no focus ring when tabbed into. Confirmed via source code review and manual testing.
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at any viewport size.
-2. Scroll to the bottom of the page to view the `TomisFooter` component.
-3. Observe the "Stay in the loop" heading text positioned above the newsletter signup form on the left side of that row.
-4. Notice that the text is extremely dark and illegible against the footer's dark background.
+1. Open the storefront application on a mobile viewport (e.g., 375px wide).
+2. Click or tab to the hamburger menu icon and press Enter to open the mobile navigation.
+3. Once the mobile navigation panel is open, press the `Tab` key to cycle focus through the interactive elements.
+4. Observe that when focus should be on the "Close menu" button (the 'X' icon at the top right), there is no visual focus ring displayed.
 
 Root cause (if identified):
-The `Text` component from `@astryxdesign/core/Text` is being used for the "Stay in the loop" heading:
-`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem' }}>Stay in the loop</Text>`
-Since it doesn't have an explicit color override like the accompanying subtext (`<Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>...`), the `Text` component falls back to its default design token for body text color, which is likely resolving to the global `var(--text-primary)`. In the current light mode default, `var(--text-primary)` is dark (`#101114`), causing it to fail on the inverted footer surface.
+In `apps/storefront/src/components/TomisNav.tsx`, the primary header buttons (like the menu toggle, theme toggle, and cart link) correctly use Tailwind classes for focus visibility: `className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm"`.
+However, the "Close menu" button (line 113) inside the `AnimatePresence` mobile menu overlay completely omits these classes, using only inline styles for layout:
+`<button aria-label="Close menu" onClick={() => setIsMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)' }}>`
 
 Fix required:
-Update the `Text` component for the "Stay in the loop" heading in `apps/storefront/src/components/TomisFooter.tsx` to explicitly use the inverted text color token. Add `color: 'var(--inverted-text)'` to its style prop:
-`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem', color: 'var(--inverted-text)' }}>Stay in the loop</Text>`
-This matches the pattern used for other text elements within the inverted footer surface.
+Add the missing `className` string to the "Close menu" button in `apps/storefront/src/components/TomisNav.tsx` to match the other interactive icons:
+`className="focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm"`
+This ensures keyboard focus is clearly visible and restores accessibility.
 
 ## SECONDARY FINDINGS (if any)
-None.
+- The "Stay in the loop" header in `TomisFooter` continues to render dark text on a dark background (Colour Drift, previously reported).
 
 ## CLEAN AREAS
-The `WhatsAppChat` floating button focus state has been reviewed, and the visual test run successfully targeted the components in question. The navigation layout (`TomisNav`) remains consistent across desktop and mobile.
+The `TomisNav` desktop navigation links and utility icons (theme toggle, account, cart) properly implement focus states. The mobile menu open button correctly shows the focus ring.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Investigate all usages of global text components (`Text`, `Heading`) inside inverted surfaces (like `TomisFooter` or dark overlay sections) to ensure none are missing explicit inverted color overrides, as the design system doesn't appear to automatically invert text tokens contextually.
+Review all overlay components (modals, dialogs, custom dropdowns) for missing focus states on their respective close buttons or dismiss triggers, as they are frequently implemented separately from main structural UI and often miss global focus utility classes.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement automated visual snapshot testing using Playwright with a baseline comparison, specifically focusing on cross-surface component rendering (default vs inverted surfaces) to catch contrast failures automatically.
+Implement Playwright visual regression testing directly in the repository using `@playwright/test`. Specifically, configure tests to capture `.focus()` states on key interactive elements to prevent accessibility regressions automatically.
