@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useMemo } from 'react';
+import { Suspense, useState, useMemo, memo } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -27,7 +27,9 @@ const collectionColorSlugs: Record<string, string[]> = {
   bold: ['pink', 'lavender', 'burgundy', 'sky'],
 };
 
-function ProductCard({ product }: { product: typeof products[0] }) {
+// ⚡ Bolt Optimization: Wrap ProductCard in memo
+// Impact: Prevents O(N) re-renders across all cards when the parent filter states change.
+const ProductCard = memo(function ProductCard({ product }: { product: typeof products[0] }) {
   const [isHovered, setIsHovered] = useState(false);
   const variant = product.variants[0];
   const productImage = variant.images.find(i => i.type === 'product');
@@ -71,7 +73,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
       </ClickableCard>
     </Link>
   );
-}
+});
 
 function ShopPageContent() {
   const searchParams = useSearchParams();
