@@ -154,6 +154,13 @@
 
   @media (max-width: 640px) {
     .container { width: min(100% - 2rem, 1240px); }
+    .hero-section { min-height: calc(100svh - 4rem) !important; align-items: flex-end !important; padding-bottom: 4.5rem !important; }
+    .hero-section .hero-image { width: 100% !important; height: 56% !important; opacity: 0.72; }
+    .hero-section .hero-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, var(--bg) 95%); }
+    .hero-section > div:nth-of-type(2) { padding-inline: 1.25rem !important; }
+    .hero-section h1 { font-size: clamp(3.25rem, 16vw, 5.25rem) !important; max-width: 100% !important; }
+    .hero-section .btn-primary, .hero-section .btn-secondary { width: 100%; }
+    .hero-section .btn-secondary { background: color-mix(in srgb, var(--bg) 76%, transparent); }
   }
 
   .reveal {

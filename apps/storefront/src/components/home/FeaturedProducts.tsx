@@ -17,7 +17,7 @@ export default function FeaturedProducts() {
         <motion.div {...fadeIn}>
           <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem', flexWrap: 'wrap' }}>
             <Stack gap={2}>
-              <span className="section-eyebrow">The edit · ₦28,000 each</span>
+              <span className="section-eyebrow">The signature edit</span>
               <h2 className="section-title">ONE SHIRT.<br /><span style={{ color: 'var(--accent)' }}>FIVE MOODS.</span></h2>
               <Text type="supporting" color="secondary" style={{ maxWidth: '390px', lineHeight: 1.6 }}>The same signature half-collar silhouette, designed to be styled your way.</Text>
             </Stack>

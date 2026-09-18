@@ -9,7 +9,7 @@ import { Badge } from '@astryxdesign/core/Badge';
 
 export default function Hero() {
   return (
-    <Section className="hero-section" style={{ minHeight: 'calc(100vh - 5rem)', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', padding: 'clamp(2rem, 5vw, 5rem) 0' }}>
+    <Section className="hero-section" style={{ minHeight: 'calc(100svh - 5rem)', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', padding: 'clamp(2rem, 5vw, 5rem) 0' }}>
       <div className="hero-image" style={{ position: 'absolute', right: 0, top: 0, width: '57%', height: '100%', overflow: 'hidden' }}>
         <motion.div
           initial={{ scale: 1.06, opacity: 0 }}
