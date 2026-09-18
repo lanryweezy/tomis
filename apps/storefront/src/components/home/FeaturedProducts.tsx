@@ -41,7 +41,7 @@ export default function FeaturedProducts() {
                       <Text type="body" weight="medium">{product.name}</Text>
                       <Text type="body" weight="medium">{formatPrice(variant.price)}</Text>
                     </Stack>
-                    <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>View details →</Text>
+                    <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>Choose colour →</Text>
                   </Stack>
                 </Link>
               </motion.div>
