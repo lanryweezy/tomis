@@ -40,8 +40,10 @@ export default function CartPage() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div>
-                          <Text type="body" weight="medium">{item.name}</Text>
-                          <Text type="supporting" color="secondary">{item.color} / {item.size}</Text>
+                          <Text type="body" weight="medium" style={{ fontSize: '1.05rem' }}>{item.name}</Text>
+                          <Text type="label" color="secondary" style={{ display: 'block', marginTop: '0.2rem' }}>{item.color} · SIGNATURE EDIT</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>Size {item.size}</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>{formatPrice(item.price)} each</Text>
                         </div>
                         <button onClick={() => removeItem(item.id)} aria-label={`Remove ${item.color} ${item.name} from bag`} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>✕</button>
                       </div>

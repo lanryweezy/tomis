@@ -36,11 +36,9 @@ export default function FeaturedProducts() {
                     <Image src={img?.src || variant.images[0]?.src} alt={`Tomis ${variant.color} half-collar shirt flat lay product photo`} fill sizes="(max-width: 768px) 50vw, 25vw" style={{ objectFit: 'cover' }} />
                   </div>
                   <Stack gap={1}>
+                    <Text type="body" weight="medium" style={{ fontSize: '1.05rem' }}>{product.name}</Text>
                     <Text type="label" color="secondary">{variant.color} · SIGNATURE EDIT</Text>
-                    <Stack direction="horizontal" gap={2} style={{ justifyContent: 'space-between', alignItems: 'baseline' }}>
-                      <Text type="body" weight="medium">{product.name}</Text>
-                      <Text type="body" weight="medium">{formatPrice(variant.price)}</Text>
-                    </Stack>
+                    <Text type="body" weight="medium" style={{ fontSize: '1.05rem', marginTop: '0.2rem' }}>{formatPrice(variant.price)}</Text>
                     <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>Choose colour →</Text>
                   </Stack>
                 </Link>

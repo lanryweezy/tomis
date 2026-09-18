@@ -388,9 +388,11 @@ export default function CheckoutPage() {
 
                         </div>
                         <div style={{ flex: 1 }}>
-                          <Text type="body" weight="medium">{item.name}</Text>
-                          <Text type="supporting" color="secondary">{item.color} / {item.size}</Text>
-                          <Text type="body">₦{item.price.toLocaleString('en-NG')}</Text>
+                          <Text type="body" weight="medium" style={{ fontSize: '1.05rem' }}>{item.name}</Text>
+                          <Text type="label" color="secondary" style={{ display: 'block', marginTop: '0.2rem' }}>{item.color} · SIGNATURE EDIT</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>Size {item.size} · {item.quantity} {item.quantity === 1 ? 'shirt' : 'shirts'}</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>Unit price: ₦{item.price.toLocaleString('en-NG')}</Text>
+                          <Text type="body" weight="medium" style={{ display: 'block', marginTop: '0.35rem' }}>Line total: ₦{(item.price * item.quantity).toLocaleString('en-NG')}</Text>
                         </div>
                       </div>
                     ))}

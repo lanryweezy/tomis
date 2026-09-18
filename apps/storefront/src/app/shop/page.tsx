@@ -63,10 +63,10 @@ function ProductCard({ product }: { product: typeof products[0] }) {
           )}
         </Stack>
         <Stack gap={1} style={{ marginTop: '0.75rem' }}>
-          <Text type="label" color="secondary">{variant.color}</Text>
-          <Text type="body" weight="medium">{product.name}</Text>
-          <Text type="body">{formatPrice(variant.price)}</Text>
-          <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>View details →</Text>
+          <Text type="body" weight="medium" style={{ fontSize: '1.05rem' }}>{product.name}</Text>
+          <Text type="label" color="secondary">{variant.color} · SIGNATURE EDIT</Text>
+          <Text type="body" weight="medium" style={{ fontSize: '1.05rem', marginTop: '0.2rem' }}>{formatPrice(variant.price)}</Text>
+          <Text type="supporting" color="accent" style={{ marginTop: '0.25rem' }}>Choose colour →</Text>
         </Stack>
       </ClickableCard>
     </Link>
