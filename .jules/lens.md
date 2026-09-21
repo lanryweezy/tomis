@@ -64,6 +64,12 @@
 **Detection gap:** Automated tests did not check overlapping bounds or clickability of floating widgets across different routes. Manual verification focused only on desktop or only on the new component in isolation.
 **Prevention:** Whenever a fixed layout container (like a sticky bar or nav) is added or its `z-index` is modified, automatically review all existing fixed elements (toast containers, chat widgets, popups) for overlap on the minimum mobile viewport (375px).
 **Cascade risk:** Any route using global floating UI elements (like `Toast` or `NewsletterPopup`) is at risk of being obscured by the `.mobile-buy-bar` on mobile screens.
+## 2026-10-15 — Responsive Regression: WhatsAppChat overlapped by mobile buy bar
+**Regression:** The WhatsApp floating button is obscured by the recently added sticky mobile buy bar on product pages.
+**Root cause:** The `.mobile-buy-bar` was added with fixed positioning at the bottom of the screen (`globals.css`), but the `WhatsAppChat` component was already fixed at `bottom: 2rem`. The new layout was not tested with the global floating chat widget present.
+**Detection gap:** No automated visual testing exists to verify global floating elements across all pages, especially on mobile viewports where space is limited.
+**Prevention:** Whenever adding sticky or fixed positioned elements to the bottom or top of the viewport, test on all core surfaces (like product pages) to ensure no overlaps with existing global widgets (like chat buttons or cookie banners).
+**Cascade risk:** High for any other floating elements like toast notifications, which might also be obscured by the new sticky buy bar.
 ## 2026-10-01 — Colour Drift: TomisFooter Typography High Contrast Failure
 
 **Regression:** The "Stay in the loop" typography and column labels in the `TomisFooter` component rendered as nearly black against the dark inverted background, completely failing contrast checks.
