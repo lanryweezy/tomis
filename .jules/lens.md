@@ -64,3 +64,10 @@
 **Detection gap:** Automated tests did not check overlapping bounds or clickability of floating widgets across different routes. Manual verification focused only on desktop or only on the new component in isolation.
 **Prevention:** Whenever a fixed layout container (like a sticky bar or nav) is added or its `z-index` is modified, automatically review all existing fixed elements (toast containers, chat widgets, popups) for overlap on the minimum mobile viewport (375px).
 **Cascade risk:** Any route using global floating UI elements (like `Toast` or `NewsletterPopup`) is at risk of being obscured by the `.mobile-buy-bar` on mobile screens.
+## 2026-10-01 — Colour Drift: TomisFooter Typography High Contrast Failure
+
+**Regression:** The "Stay in the loop" typography and column labels in the `TomisFooter` component rendered as nearly black against the dark inverted background, completely failing contrast checks.
+**Root cause:** Global text components (`Text` from `@astryxdesign/core`) do not automatically inherit the correct color when placed inside an inverted surface. They fall back to the global `var(--text-primary)`, which defaults to dark text for light mode.
+**Detection gap:** The visual regressions resulting from text component usage inside inverted surfaces were missed because automated visual checks specifically testing text color contrast on inverted backgrounds were lacking.
+**Prevention:** Always verify typography colors when using base design system text components within customized surfaces like `TomisFooter` and ensure `color: 'var(--inverted-text)'` is explicitly passed where appropriate.
+**Cascade risk:** High for any other text components used in footers, overlays, or modals configured as inverted surfaces.
