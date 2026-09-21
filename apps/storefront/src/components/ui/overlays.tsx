@@ -64,7 +64,9 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
                       <div className="flex justify-between">
                         <div>
                           <h3 className="text-sm font-medium">{item.name}</h3>
-                          <p className="text-xs text-[var(--color-neutral-gray-500)]">{item.color} / {item.size}</p>
+                          <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-neutral-gray-500)]">{item.color} · Signature edit</p>
+                          <p className="mt-1 text-xs text-[var(--color-neutral-gray-500)]">Size {item.size}</p>
+                          <p className="mt-1 text-xs text-[var(--color-neutral-gray-500)]">{`₦${item.price.toLocaleString('en-NG')}`} each</p>
                         </div>
                         <button aria-label="Remove item" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
                           <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

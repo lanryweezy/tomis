@@ -113,7 +113,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                   </Stack>
                 )}
               </div>
-              <Stack gap={6}>
+              <Stack gap={6} id="purchase-panel">
                 <div>
                   <Badge label="Signature half-collar" />
                   <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.25rem, 5vw, 3.5rem)', lineHeight: 1.05, marginTop: '0.75rem' }}>
@@ -130,7 +130,7 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                       {variant.color}
                     </motion.p>
                   </AnimatePresence>
-                  <p style={{ fontSize: '1.5rem', fontWeight: 500, color: 'var(--color-text-primary)', marginTop: '1rem' }}>
+                  <p style={{ fontSize: '1.75rem', fontWeight: 600, color: 'var(--color-text-primary)', marginTop: '1rem', letterSpacing: '-0.02em' }}>
                     {formatPrice(variant.price)}
                   </p>
                   <Text type="body" color="secondary" style={{ marginTop: '1rem', lineHeight: 1.6 }}>
@@ -174,7 +174,10 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                 </div>
                 <div role="group" aria-labelledby="product-size-label">
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                    <Text id="product-size-label" type="label" color="secondary">Size</Text>
+                    <Stack gap={1}>
+                      <Text id="product-size-label" type="label" color="secondary">Size</Text>
+                      <Text type="supporting" color="secondary">Relaxed fit · true to size</Text>
+                    </Stack>
                     <Link href="/size-guide" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ fontSize: '0.75rem', color: 'var(--color-text-accent)', textDecoration: 'underline' }}>
                       Size Guide
                     </Link>
@@ -209,11 +212,23 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
                     ))}
                   </Stack>
                 </div>
+                <div className="selection-summary" aria-live="polite">
+                  <Text type="label" color="secondary">Your selection</Text>
+                  <Text type="supporting" color="secondary">{product.name} · {variant.color} · {selectedSize ? `Size ${selectedSize}` : 'Choose size'}</Text>
+                </div>
                 <Stack direction="horizontal" gap={3} className="pdp-actions">
-                  <button type="button" onClick={addCurrentItem} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 1, minHeight: '3.25rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG</button>
-                  <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 1, minHeight: '3.25rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
+                  <button type="button" onClick={addCurrentItem} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 1.35, minHeight: '3.5rem', border: 'none', backgroundColor: 'var(--color-brand-blue)', color: 'white', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>ADD TO BAG — {formatPrice(variant.price)}</button>
+                  <button type="button" onClick={() => { if (addCurrentItem()) window.location.href = '/checkout'; }} className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2" style={{ flex: 0.65, minHeight: '3.5rem', border: '1px solid var(--color-border)', backgroundColor: 'transparent', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: '0.75rem', letterSpacing: '0.15em', fontWeight: 600 }}>BUY NOW</button>
                 </Stack>
                 <p aria-live="polite" style={{ minHeight: '1.5rem', fontSize: '0.875rem', color: cartMessage?.includes('added') ? 'var(--color-brand-blue)' : 'var(--color-text-secondary)' }}>{cartMessage}</p>
+                <div className="purchase-reassurance" aria-label="Purchase reassurance">
+                  <Text type="supporting" color="secondary"><strong>Made for real life.</strong> Premium cotton, relaxed fit, and easy returns.</Text>
+                  <Stack direction="horizontal" gap={3} style={{ flexWrap: 'wrap', marginTop: '0.65rem' }}>
+                    <Text type="supporting" color="secondary">Lagos 1–2 days</Text>
+                    <Text type="supporting" color="secondary">Nationwide 2–5 days</Text>
+                    <Text type="supporting" color="secondary">14-day returns</Text>
+                  </Stack>
+                </div>
                 <div style={{ backgroundColor: 'var(--color-background-muted)', padding: '1rem' }}>
                   <Stack gap={2}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}>
@@ -269,6 +284,15 @@ function ProductPageContent({ product }: { product: NonNullable<ReturnType<typeo
             </Grid>
           </div>
         </Section>
+        <div className="mobile-buy-bar" aria-label="Quick purchase">
+          <Stack gap={1}>
+            <Text type="label" color="secondary">{variant.color} · {formatPrice(variant.price)}</Text>
+            <Text type="supporting" color="secondary">{selectedSize ? `Size ${selectedSize} selected` : 'Choose a size to continue'}</Text>
+          </Stack>
+          <button type="button" onClick={() => { if (selectedSize) addCurrentItem(); else document.getElementById('purchase-panel')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} className="btn-primary mobile-buy-button">
+            {selectedSize ? 'ADD TO BAG →' : 'CHOOSE SIZE →'}
+          </button>
+        </div>
         <Section style={{ padding: '3rem 0', backgroundColor: 'var(--color-background-muted)' }}>
           <div style={{ maxWidth: '52rem', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
             <Text type="label" color="secondary" style={{ display: 'block', marginBottom: '1rem', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.625rem' }}>STYLE NOTES</Text>

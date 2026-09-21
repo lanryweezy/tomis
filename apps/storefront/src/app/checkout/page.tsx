@@ -271,7 +271,6 @@ export default function CheckoutPage() {
 
                         <Stack direction="horizontal" gap={4}>
                           <Button label="← BACK" variant="secondary" onClick={() => setStep('address')} type="button" />
-                          <Button type="button" label="← BACK" variant="secondary" onClick={() => setStep('address')} />
                           <Button label="CONTINUE TO PAYMENT →" width="100%" type="submit" />
                         </Stack>
                       </Stack>
@@ -317,7 +316,6 @@ export default function CheckoutPage() {
                       </div>
 
                       <Button label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} type="button" />
-                      <Button type="button" label="← BACK TO DELIVERY" variant="secondary" onClick={() => setStep('delivery')} />
 
                       <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
                         {paymentError && <p role="alert" style={{ color: 'var(--color-error, #b91c1c)', fontSize: '0.875rem', marginBottom: '1rem' }}>{paymentError}</p>}
@@ -388,9 +386,11 @@ export default function CheckoutPage() {
 
                         </div>
                         <div style={{ flex: 1 }}>
-                          <Text type="body" weight="medium">{item.name}</Text>
-                          <Text type="supporting" color="secondary">{item.color} / {item.size}</Text>
-                          <Text type="body">₦{item.price.toLocaleString('en-NG')}</Text>
+                          <Text type="body" weight="medium" style={{ fontSize: '1.05rem' }}>{item.name}</Text>
+                          <Text type="label" color="secondary" style={{ display: 'block', marginTop: '0.2rem' }}>{item.color} · SIGNATURE EDIT</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>Size {item.size} · {item.quantity} {item.quantity === 1 ? 'shirt' : 'shirts'}</Text>
+                          <Text type="supporting" color="secondary" style={{ display: 'block', marginTop: '0.15rem' }}>Unit price: ₦{item.price.toLocaleString('en-NG')}</Text>
+                          <Text type="body" weight="medium" style={{ display: 'block', marginTop: '0.35rem' }}>Line total: ₦{(item.price * item.quantity).toLocaleString('en-NG')}</Text>
                         </div>
                       </div>
                     ))}

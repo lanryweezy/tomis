@@ -81,7 +81,7 @@ export default function TomisFooter() {
             { title: 'Support', items: supportLinks },
           ].map(col => (
             <Stack key={col.title} gap={4}>
-              <Text type="label" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.6rem', color: 'var(--inverted-text)' }}>{col.title}</Text>
+              <Text type="label" style={{ letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '0.6rem' }}>{col.title}</Text>
               <Stack gap={2}>
                 {col.items.map(item => (
                   <Link key={item.label} href={item.href} className="focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-2" style={{ fontSize: '0.875rem', color: 'var(--inverted-text-muted)', textDecoration: 'none' }}>{item.label}</Link>
@@ -95,7 +95,7 @@ export default function TomisFooter() {
 
         <Stack direction="horizontal" gap={4} style={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           <div>
-            <Text type="body" weight="medium" style={{ marginBottom: '0.25rem', color: 'var(--inverted-text)' }}>Stay in the loop</Text>
+            <Text type="body" weight="medium" style={{ marginBottom: '0.25rem' }}>Stay in the loop</Text>
             <Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>New drops, stories, and the Tomis way of dressing.</Text>
           </div>
           <form onSubmit={handleNewsletterSubmit} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
