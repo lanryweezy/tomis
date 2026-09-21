@@ -1,57 +1,125 @@
-🔍 Lens: Colour Drift — HIGH — TomisFooter Typography
+🔍 Lens: Responsive Regression — HIGH — Mobile Buy Bar Overlap
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `Hero`, `FeaturedProducts`, `TomisFooter`, `TomisNav`, `WhatsAppChat`
-- Viewports tested: 1280px (Desktop), 375px (Mobile portrait)
-- Browsers tested: Chromium (Playwright headless)
-- States tested: Default rendering, WhatsApp focus state, Mobile menu toggle focus state
-- Infrastructure available: Temporary Python Playwright script
+- Components reviewed: `WhatsAppChat`, `mobile-buy-bar` on Product Pages, `FeaturedProducts`, `TomisFooter`
+- Viewports tested: 390px (Mobile portrait), 1280px (Desktop)
+- Browsers tested: Chromium (Playwright headless simulation analysis)
+- States tested: Default rendering on mobile product page
+- Infrastructure available: Temporary Python Playwright script / CSS cascade analysis
+🔍 Lens: Responsive Regression — HIGH — Product Page Mobile Buy Bar
+
+## SCAN COVERAGE
+What was scanned this session:
+- Components reviewed: Product Page, Global CSS
+- Viewports tested: 375px (Mobile Portrait), 1280px (Desktop)
+- Browsers tested: Chromium
+- States tested: Initial load
+- Infrastructure available: Playwright (Custom script)
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
-- Exists: No (temporary Python Playwright script used)
+- Exists: no — manually ran Playwright script
 - Baseline age: N/A
 - CI integration: No
-- Gap identified: The application lacks automated visual regression testing infrastructure (e.g., Playwright, Chromatic) to catch styling and token regressions before deployment.
+- Gap identified: The application lacks automated visual regression testing infrastructure (e.g., Playwright, Chromatic) to catch layout shifts and responsive regressions before deployment.
+- CI integration: no
+- Gap identified: No automated visual testing infrastructure currently exists in the repository.
 
 ## PRIMARY FINDING
+┌──────────────────────────────────────────────┐
+│ [HIGH 🟠] Type: Responsive Regression         │
+│ Component: mobile-buy-bar on /products/[slug]│
+│                                              │
+│ What changed:                                │
+│ The mobile buy bar on the product page       │
+│ overlaps with the WhatsApp floating button   │
+│ on mobile viewports.                         │
+│                                              │
+│ Baseline:                                    │
+│ The WhatsApp button was floating in the      │
+│ bottom left and did not overlap with a       │
+│ sticky footer, because the mobile buy bar    │
+│ was recently introduced.                     │
+│                                              │
+│ Current state:                               │
+│ The newly introduced `.mobile-buy-bar`       │
+│ overlays on the bottom of the screen with a  │
+│ z-index of 1300. The WhatsAppChat button     │
+│ is fixed at `bottom: 2rem` with a z-index    │
+│ of 1100. The mobile buy bar obscures the     │
+│ WhatsApp button, making it unusable and      │
+│ visually broken.                             │
+│                                              │
+│ Reproduction steps:                          │
+│ 1. Open the application on mobile viewport   │
+│    (e.g., 375x812)                           │
+│ 2. Navigate to a product page, e.g.,         │
+│    /products/half-collar-shirt-black         │
+│ 3. Observe the bottom of the screen where    │
+│    the WhatsApp button and buy bar overlap   │
+│                                              │
+│ Root cause (if identified):                  │
+│ In `apps/storefront/src/app/globals.css`,    │
+│ `.mobile-buy-bar` was added with fixed       │
+│ positioning at the bottom. However, the      │
+│ `WhatsAppChat` component in                  │
+│ `apps/storefront/src/components/WhatsAppChat.tsx`│
+│ also has fixed positioning at `bottom: 2rem`.│
+│ Nobody tested the product page mobile layout │
+│ with the WhatsApp button present.            │
+│                                              │
+│ Fix required:                                │
+│ Update `WhatsAppChat` to be positioned higher│
+│ or be conditionally hidden when the          │
+│ `.mobile-buy-bar` is present (e.g. adjust    │
+│ bottom property via CSS when `.mobile-buy-bar`│
+│ is rendered, or just adjust its `bottom`     │
+│ globally to be above the bar on mobile).     │
+└──────────────────────────────────────────────┘
 
-[HIGH 🟠] Type: Colour Drift
-Component: TomisFooter (apps/storefront/src/components/TomisFooter.tsx)
+[HIGH 🟠] Type: Responsive Regression
+Component: `WhatsAppChat` widget / Product Page (`apps/storefront/src/app/products/[slug]/page.tsx`)
 
 What changed:
-The "Stay in the loop" typography in the footer newsletter section is rendering as nearly black (`#101114`) on the dark inverted footer background, making it almost completely illegible due to an extreme contrast failure.
+The `WhatsAppChat` floating button on the bottom left of the screen is now visually covered and overlapped by the new fixed `.mobile-buy-bar` on mobile viewports on the product pages, making the chat widget inaccessible.
 
 Baseline:
-The "Stay in the loop" header should be rendered in a light color (e.g., `var(--inverted-text)` or similar) on the inverted surface of the footer, ensuring sufficient contrast and readability against the dark background.
+Prior to the addition of the `.mobile-buy-bar`, the `WhatsAppChat` floating button was perfectly accessible at `bottom: 2rem` and `left: 2rem` on all viewports.
 
 Current state:
-The "Stay in the loop" text is rendering in the default dark body text color (`var(--text-primary)` which resolves to `#101114` in light mode), resulting in black text on a nearly black background (`var(--inverted)`). Confirmed via screenshot on Desktop (1280x800).
+The `.mobile-buy-bar` was added with `position: fixed`, `bottom: 0`, `left: 0`, `right: 0`, and a `z-index: 1300`. This bar covers the entire bottom area of the mobile screen. The `WhatsAppChat` button is positioned at `bottom: 2rem` and `left: 2rem` with a `z-index: 1100`. Because the buy bar's `z-index` (1300) is higher than the chat widget's (1100), the chat widget is visually overlapped on mobile.
 
 Reproduction steps:
-1. Open the storefront application at http://localhost:3000 at any viewport size.
-2. Scroll to the bottom of the page to view the `TomisFooter` component.
-3. Observe the "Stay in the loop" heading text positioned above the newsletter signup form on the left side of that row.
-4. Notice that the text is extremely dark and illegible against the footer's dark background.
+1. Open any product page (e.g. `/products/signature-half-collar-white`) at a mobile viewport (e.g., 375px or 390px).
+2. Look at the bottom of the screen.
+3. Observe the full-width mobile buy bar spanning the bottom of the viewport.
+4. Note that the WhatsApp chat floating button (which should be at `bottom: 2rem`, `left: 2rem`) is partially or completely obscured by the buy bar and cannot be clicked easily.
 
 Root cause (if identified):
-The `Text` component from `@astryxdesign/core/Text` is being used for the "Stay in the loop" heading:
-`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem' }}>Stay in the loop</Text>`
-Since it doesn't have an explicit color override like the accompanying subtext (`<Text type="supporting" style={{ color: 'var(--inverted-text-muted)' }}>...`), the `Text` component falls back to its default design token for body text color, which is likely resolving to the global `var(--text-primary)`. In the current light mode default, `var(--text-primary)` is dark (`#101114`), causing it to fail on the inverted footer surface.
+Commit 8c295d9 introduced the `.mobile-buy-bar` in `apps/storefront/src/app/globals.css` with a high `z-index` (1300) and fixed positioning at the bottom for viewports under 768px. The `WhatsAppChat` component (`apps/storefront/src/components/WhatsAppChat.tsx`) remains fixed at the bottom with a lower `z-index` (1100), resulting in an overlap.
 
 Fix required:
-Update the `Text` component for the "Stay in the loop" heading in `apps/storefront/src/components/TomisFooter.tsx` to explicitly use the inverted text color token. Add `color: 'var(--inverted-text)'` to its style prop:
-`<Text type="body" weight="medium" style={{ marginBottom: '0.25rem', color: 'var(--inverted-text)' }}>Stay in the loop</Text>`
-This matches the pattern used for other text elements within the inverted footer surface.
+Either conditionally hide the `WhatsAppChat` button when the `.mobile-buy-bar` is present (similar to how it's hidden on the `/checkout` route), or apply conditional CSS/positioning to push the chat widget above the buy bar on mobile viewports.
 
 ## SECONDARY FINDINGS (if any)
 None.
 
 ## CLEAN AREAS
-The `WhatsAppChat` floating button focus state has been reviewed, and the visual test run successfully targeted the components in question. The navigation layout (`TomisNav`) remains consistent across desktop and mobile.
+Desktop viewports correctly hide the `.mobile-buy-bar`, keeping the `WhatsAppChat` accessible.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Investigate all usages of global text components (`Text`, `Heading`) inside inverted surfaces (like `TomisFooter` or dark overlay sections) to ensure none are missing explicit inverted color overrides, as the design system doesn't appear to automatically invert text tokens contextually.
+Review all other floating or fixed widgets (`Toast`, `NewsletterPopup`) on mobile to ensure they aren't also overlapped by the new `.mobile-buy-bar`.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement automated visual snapshot testing using Playwright with a baseline comparison, specifically focusing on cross-surface component rendering (default vs inverted surfaces) to catch contrast failures automatically.
+Implement automated visual snapshot testing using Playwright with a specific focus on mobile viewports (`375px`, `390px`) to automatically catch overlapping fixed elements when new sticky navs or bars are added.
+## SECONDARY FINDINGS
+None identified in this session.
+
+## CLEAN AREAS
+Desktop product page and mobile navigation render without regression.
+
+## RECOMMENDED NEXT SESSION FOCUS
+Review all fixed elements across all viewports to ensure no overlaps.
+
+## INFRASTRUCTURE RECOMMENDATION
+Implement Playwright visual snapshot tests in CI/CD, especially for responsive layouts and fixed elements.

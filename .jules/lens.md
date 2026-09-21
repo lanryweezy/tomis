@@ -50,3 +50,30 @@
 **Detection gap:** Automated a11y tests often miss color contrast failures caused by dynamic CSS variable resolution on distinct dark surfaces within an otherwise light-themed app.
 **Prevention:** Watch for missing `color` props or global text token usage inside `style={{ backgroundColor: 'var(--inverted)' }}` containers across the codebase.
 **Cascade risk:** High for any new components or global text usage added to `TomisFooter` or dark overlay sections without explicit dark-mode/inverted tokens.
+## 2026-10-01 — Colour Drift: TomisFooter Typography High Contrast Failure
+
+**Regression:** The "Stay in the loop" typography and column labels in the `TomisFooter` component rendered as nearly black against the dark inverted background, completely failing contrast checks.
+**Root cause:** Global text components (`Text` from `@astryxdesign/core`) do not automatically inherit the correct color when placed inside an inverted surface. They fall back to the global `var(--text-primary)`, which defaults to dark text for light mode.
+**Detection gap:** The visual regressions resulting from text component usage inside inverted surfaces were missed because automated visual checks specifically testing text color contrast on inverted backgrounds were lacking.
+**Prevention:** Always verify typography colors when using base design system text components within customized surfaces like `TomisFooter` and ensure `color: 'var(--inverted-text)'` is explicitly passed where appropriate.
+**Cascade risk:** High for any other text components used in footers, overlays, or modals configured as inverted surfaces.
+
+## 2026-11-10 — Responsive Regression: High z-index overlays breaking fixed widget accessibility
+**Regression:** The `WhatsAppChat` floating action button is covered by the newly added `.mobile-buy-bar` on mobile viewports on product pages.
+**Root cause:** A new feature (mobile buy bar) was added with a fixed position at the bottom and a higher `z-index` (1300) than the existing chat widget (1100), without testing for collisions with global floating widgets on mobile screens.
+**Detection gap:** Automated tests did not check overlapping bounds or clickability of floating widgets across different routes. Manual verification focused only on desktop or only on the new component in isolation.
+**Prevention:** Whenever a fixed layout container (like a sticky bar or nav) is added or its `z-index` is modified, automatically review all existing fixed elements (toast containers, chat widgets, popups) for overlap on the minimum mobile viewport (375px).
+**Cascade risk:** Any route using global floating UI elements (like `Toast` or `NewsletterPopup`) is at risk of being obscured by the `.mobile-buy-bar` on mobile screens.
+## 2026-10-15 — Responsive Regression: WhatsAppChat overlapped by mobile buy bar
+**Regression:** The WhatsApp floating button is obscured by the recently added sticky mobile buy bar on product pages.
+**Root cause:** The `.mobile-buy-bar` was added with fixed positioning at the bottom of the screen (`globals.css`), but the `WhatsAppChat` component was already fixed at `bottom: 2rem`. The new layout was not tested with the global floating chat widget present.
+**Detection gap:** No automated visual testing exists to verify global floating elements across all pages, especially on mobile viewports where space is limited.
+**Prevention:** Whenever adding sticky or fixed positioned elements to the bottom or top of the viewport, test on all core surfaces (like product pages) to ensure no overlaps with existing global widgets (like chat buttons or cookie banners).
+**Cascade risk:** High for any other floating elements like toast notifications, which might also be obscured by the new sticky buy bar.
+## 2026-10-01 — Colour Drift: TomisFooter Typography High Contrast Failure
+
+**Regression:** The "Stay in the loop" typography and column labels in the `TomisFooter` component rendered as nearly black against the dark inverted background, completely failing contrast checks.
+**Root cause:** Global text components (`Text` from `@astryxdesign/core`) do not automatically inherit the correct color when placed inside an inverted surface. They fall back to the global `var(--text-primary)`, which defaults to dark text for light mode.
+**Detection gap:** The visual regressions resulting from text component usage inside inverted surfaces were missed because automated visual checks specifically testing text color contrast on inverted backgrounds were lacking.
+**Prevention:** Always verify typography colors when using base design system text components within customized surfaces like `TomisFooter` and ensure `color: 'var(--inverted-text)'` is explicitly passed where appropriate.
+**Cascade risk:** High for any other text components used in footers, overlays, or modals configured as inverted surfaces.

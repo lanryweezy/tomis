@@ -35,7 +35,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div role="region" aria-live="polite" style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}>
+      <div
+        role="region"
+        aria-live="polite"
+        aria-label="Notifications"
+        style={{ position: 'fixed', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'center' }}
+      >
         <AnimatePresence>
           {toasts.map(t => (
             <motion.div
