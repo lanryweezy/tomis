@@ -77,3 +77,9 @@
 **Detection gap:** The visual regressions resulting from text component usage inside inverted surfaces were missed because automated visual checks specifically testing text color contrast on inverted backgrounds were lacking.
 **Prevention:** Always verify typography colors when using base design system text components within customized surfaces like `TomisFooter` and ensure `color: 'var(--inverted-text)'` is explicitly passed where appropriate.
 **Cascade risk:** High for any other text components used in footers, overlays, or modals configured as inverted surfaces.
+## 2026-09-22 — Responsive Regression: Floating Widget Mobile Overlap
+**Regression:** Fixed mobile UI elements (like the WhatsApp chat widget) are visually covered by new full-width fixed elements (like `.mobile-buy-bar`) on mobile viewports.
+**Root cause:** A new fixed element was introduced (`.mobile-buy-bar`) with a higher z-index (1300) and bottom positioning that overlapped existing floating widgets (`WhatsAppChat`) positioned at `bottom: 2rem` with a lower z-index (1100). The mobile product page was not tested with the chat widget present.
+**Detection gap:** No automated visual snapshot testing for mobile viewports exists in the repository. Manual testing missed the combination of these two elements on a mobile screen.
+**Prevention:** Always test new fixed or floating elements on all key pages and viewports (especially 375px) against existing global floating elements.
+**Cascade risk:** High for any other floating elements like `Toast` notifications or `NewsletterPopup` which might also be overlapped by the new `.mobile-buy-bar`.
