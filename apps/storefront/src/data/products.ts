@@ -757,7 +757,13 @@ export function formatPrice(price: number): string {
   return `₦${price.toLocaleString('en-NG')}`;
 }
 
+// ⚡ Bolt Optimization: Cache the unique colors result
+// Impact: Prevents O(N*M) redundant calculation of unique colors across products and variants on every function call.
+let cachedColors: Array<{ name: string; code: string; slug: string }> | null = null;
+
 export function getUniqueColors(): Array<{ name: string; code: string; slug: string }> {
+  if (cachedColors) return cachedColors;
+
   const colorMap = new Map<string, { name: string; code: string; slug: string }>();
   products.forEach(p => {
     p.variants.forEach(v => {
@@ -766,5 +772,7 @@ export function getUniqueColors(): Array<{ name: string; code: string; slug: str
       }
     });
   });
-  return Array.from(colorMap.values());
+
+  cachedColors = Array.from(colorMap.values());
+  return cachedColors;
 }
