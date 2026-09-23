@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -17,7 +18,10 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // ⚡ Bolt Optimization: Memoize the subtotal calculation
+  // Impact: Prevents O(N) array reduction recalculation on every render
+  // of the CartDrawer component, especially when animating or when parent updates.
+  const subtotal = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
 
   if (!isOpen) return null;
 
