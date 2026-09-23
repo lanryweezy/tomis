@@ -25,9 +25,15 @@ export default function CartPage() {
           <h1 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '2rem', marginBottom: '2rem' }}>Your Bag</h1>
 
           {items.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '4rem 0' }}>
-              <Text type="body" color="secondary" style={{ marginBottom: '1.5rem' }}>Your bag is empty</Text>
-              <Link href="/shop"><Button label="CONTINUE SHOPPING" /></Link>
+            <div style={{ textAlign: 'center', padding: '5rem 1rem', backgroundColor: 'var(--bg-elevated)', borderRadius: '8px', border: '1px dashed var(--border-strong)' }}>
+              <div style={{ width: '4rem', height: '4rem', backgroundColor: 'var(--bg)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+              </div>
+              <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginBottom: '0.5rem' }}>Your bag is empty</h2>
+              <div style={{ marginBottom: '2rem' }}>
+                <Text type="body" color="secondary" style={{ maxWidth: '400px', margin: '0 auto' }}>Looks like you haven&apos;t added anything yet. Discover our signature pieces.</Text>
+              </div>
+              <Link href="/shop" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"><Button label="DISCOVER COLLECTION" /></Link>
             </div>
           ) : (
             <Grid columns={2} gap={10} className="cart-layout">

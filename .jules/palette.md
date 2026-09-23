@@ -10,3 +10,6 @@
 ## 2024-09-21 - Keyboard Accessibility and Form Submissions
 **Learning:** In state-driven UIs, if custom primary action components explicitly pass `type="submit"`, any secondary or custom interactive buttons within the form must explicitly add `type="button"` to prevent premature submissions.
 **Action:** Set the default `type` of the global `Button` component to `"button"` so it behaves as an ordinary button by default inside forms instead of submitting them.
+## 2024-09-23 - Enhanced Empty States and Calls to Action
+**Learning:** Generic, text-only empty states (e.g. "Your bag is empty") create a dead end for users. A visually engaging empty state with an icon, supportive text, and a clear call to action (like "Discover Collection") transforms a dead end into a continuation path, encouraging users to keep exploring.
+**Action:** Always include a visual anchor (like an SVG icon inside an elevated circular container), supportive explanatory text, and a primary CTA button in all empty state components (like empty carts, empty wishlists, or empty search results).
