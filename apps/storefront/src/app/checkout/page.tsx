@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -56,10 +56,20 @@ export default function CheckoutPage() {
   const [orderNumber, setOrderNumber] = useState('');
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const { items: cartItems, subtotal } = useCart();
-  const deliveryCost = deliveryOptions.find(d => d.id === selectedDelivery)?.price || 0;
-  const freeShipping = subtotal >= 50000;
-  const actualShipping = freeShipping ? 0 : deliveryCost;
-  const total = subtotal + actualShipping - promoDiscount;
+
+  // ⚡ Bolt Optimization: Memoize checkout totals
+  // Impact: Prevents recalculating totals on every keystroke during address/promo input
+  const { deliveryCost, freeShipping, actualShipping, total } = useMemo(() => {
+    const cost = deliveryOptions.find(d => d.id === selectedDelivery)?.price || 0;
+    const isFree = subtotal >= 50000;
+    const actual = isFree ? 0 : cost;
+    return {
+      deliveryCost: cost,
+      freeShipping: isFree,
+      actualShipping: actual,
+      total: subtotal + actual - promoDiscount
+    };
+  }, [selectedDelivery, subtotal, promoDiscount]);
 
   const handleAddressSubmit = () => {
     if (address.firstName && address.lastName && address.email && address.phone && address.address1 && address.city && address.state) {
