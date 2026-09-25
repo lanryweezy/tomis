@@ -77,7 +77,8 @@
 **Detection gap:** The visual regressions resulting from text component usage inside inverted surfaces were missed because automated visual checks specifically testing text color contrast on inverted backgrounds were lacking.
 **Prevention:** Always verify typography colors when using base design system text components within customized surfaces like `TomisFooter` and ensure `color: 'var(--inverted-text)'` is explicitly passed where appropriate.
 **Cascade risk:** High for any other text components used in footers, overlays, or modals configured as inverted surfaces.
-## $(date +%Y-%m-%d) — Responsive Regression: WhatsAppChat overlapped by mobile buy bar
+
+## 2023-10-24 — Responsive Regression: WhatsAppChat overlapped by mobile buy bar
 **Regression:** The WhatsApp floating button is obscured by the recently added sticky mobile buy bar on product pages.
 **Root cause:** The `.mobile-buy-bar` was added with fixed positioning at the bottom of the screen (`globals.css`), but the `WhatsAppChat` component was already fixed at `bottom: 2rem`. The new layout was not tested with the global floating chat widget present.
 **Detection gap:** No automated visual testing exists to verify global floating elements across all pages, especially on mobile viewports where space is limited.
