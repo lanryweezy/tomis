@@ -10,3 +10,6 @@
 ## 2024-09-21 - Keyboard Accessibility and Form Submissions
 **Learning:** In state-driven UIs, if custom primary action components explicitly pass `type="submit"`, any secondary or custom interactive buttons within the form must explicitly add `type="button"` to prevent premature submissions.
 **Action:** Set the default `type` of the global `Button` component to `"button"` so it behaves as an ordinary button by default inside forms instead of submitting them.
+## 2024-10-24 - Tooltips for Global Action Buttons
+**Learning:** Global floating action buttons (like chat widgets) that use icons only can leave users guessing their purpose before clicking, leading to hesitation. Adding a visually hidden, hover-revealed tooltip specifically for desktop users (`hidden md:block`) bridges this gap without cluttering mobile interfaces or redundant screen reader announcements (when `aria-label` is already present).
+**Action:** Always add an explicit inline text tooltip to icon-only global buttons, ensuring it is accessible to sighted keyboard users via `focus-visible` states and hidden on touch devices.
