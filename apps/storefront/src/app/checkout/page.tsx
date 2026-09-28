@@ -147,24 +147,27 @@ export default function CheckoutPage() {
 
           </nav>
 
+          {/* ⚡ Bolt Optimization: Memoize the current step index to prevent O(N^2) recalculations in the map loop */}
           {/* Progress Steps */}
-          {step !== 'confirmation' && (
+          {step !== 'confirmation' && (() => {
+            const currentStepIndex = steps.findIndex(x => x.id === step);
+            return (
             <ol aria-label="Checkout Progress" style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
-              {steps.map((s) => (
+              {steps.map((s, idx) => (
                 <li key={s.id} aria-current={step === s.id ? 'step' : undefined} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <div style={{
                     width: '2rem', height: '2rem', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    backgroundColor: step === s.id || steps.findIndex(x => x.id === step) > steps.findIndex(x => x.id === s.id) ? 'var(--text-primary)' : 'var(--bg-elevated)',
-                    color: step === s.id || steps.findIndex(x => x.id === step) > steps.findIndex(x => x.id === s.id) ? 'var(--bg)' : 'var(--text-muted)',
+                    backgroundColor: step === s.id || currentStepIndex > idx ? 'var(--text-primary)' : 'var(--bg-elevated)',
+                    color: step === s.id || currentStepIndex > idx ? 'var(--bg)' : 'var(--text-muted)',
                     fontSize: '0.75rem', fontWeight: 600, transition: 'all 0.3s',
                   }}>
-                    {steps.findIndex(x => x.id === step) > steps.findIndex(x => x.id === s.id) ? '✓' : s.number}
+                    {currentStepIndex > idx ? '✓' : s.number}
                   </div>
                   <Text type="label" color={step === s.id ? 'primary' : 'secondary'}>{s.label}</Text>
                 </li>
               ))}
             </ol>
-          )}
+          )})()}
 
           <Grid columns={step === 'confirmation' ? 1 : 2} gap={10} className="checkout-layout">
             {/* Left: Form */}
