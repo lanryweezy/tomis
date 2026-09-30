@@ -83,3 +83,10 @@
 **Detection gap:** No automated visual testing exists to verify global floating elements across all pages, especially on mobile viewports where space is limited.
 **Prevention:** Whenever adding sticky or fixed positioned elements to the bottom or top of the viewport, test on all core surfaces (like product pages) to ensure no overlaps with existing global widgets (like chat buttons or cookie banners).
 **Cascade risk:** High for any other floating elements like toast notifications, which might also be obscured by the new sticky buy bar.
+
+## 2026-11-10 — Component Appearance Change: Unstyled tooltip from arbitrary CSS variables in Tailwind v4
+**Regression:** The newly added tooltip for the WhatsApp floating chat widget renders unstyled (transparent background, default text color, missing border), making it unreadable.
+**Root cause:** Arbitrary CSS variable syntax inside Tailwind utility classes (e.g., `bg-[var(--bg-elevated)]`, `text-[var(--text-primary)]`, `border-[var(--border)]`) fail to resolve correctly in Tailwind v4 due to specificity conflicts or parsing issues.
+**Detection gap:** The regression was not caught because visual testing infrastructure is missing, and manual testing likely only checked functionality, missing the broken styling resulting from utility class failures.
+**Prevention:** Avoid using arbitrary CSS variable syntax in utility classes for bespoke components. Use standard Tailwind tokens, or apply explicit inline styles (`style={{ backgroundColor: 'var(--bg-elevated)' }}`) instead.
+**Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes for background, text, or border properties might be failing similarly.
