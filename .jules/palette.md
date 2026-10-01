@@ -4,6 +4,9 @@
 ## 2024-09-13 - Enhance Multi-step Accessibility
 **Learning:** Visual-only sequential step indicators (like the checkout progress bar using divs) omit semantic context for screen readers traversing steps.
 **Action:** Replaced generic layout `<div>` containers with semantic ordered lists (`<ol>`, `<li>`) and added `aria-current="step"` and `aria-label="Checkout Progress"` to semantically convey sequential flows and the active step.
+## 2024-09-17 - Accessible Custom Toast Notifications
+**Learning:** Custom toast notification containers implemented via dynamically appended UI elements (like Framer Motion AnimatePresence divs) are not announced by screen readers by default.
+**Action:** Always add `role="region"` and `aria-live="polite"` to the container wrapping dynamically appended toast elements to ensure screen readers announce the notifications gracefully.
 ## 2024-09-18 - Ensure Dynamic Notifications Are Accessible
 **Learning:** Custom toast notification components (like dynamically rendered `div` elements) are not automatically announced by screen readers when appended to the DOM, leaving visually impaired users unaware of important system feedback (e.g., success or error messages).
 **Action:** Always add live region attributes (such as `role="region"` and `aria-live="polite"`) and a descriptive label (like `aria-label="Notifications"`) to the parent container of dynamic toast elements to ensure proper assistive technology support.
