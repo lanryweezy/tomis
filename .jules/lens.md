@@ -83,3 +83,10 @@
 **Detection gap:** No automated visual testing exists to verify global floating elements across all pages, especially on mobile viewports where space is limited.
 **Prevention:** Whenever adding sticky or fixed positioned elements to the bottom or top of the viewport, test on all core surfaces (like product pages) to ensure no overlaps with existing global widgets (like chat buttons or cookie banners).
 **Cascade risk:** High for any other floating elements like toast notifications, which might also be obscured by the new sticky buy bar.
+
+## 2026-10-24 — State Regression: WhatsAppChat focus state lost after tooltip feature
+**Regression:** The WhatsApp floating action button lost its focus-visible outline, breaking keyboard navigation feedback for sighted users.
+**Root cause:** A recent feature PR ("UX: Add tooltip to WhatsApp chat button") updated the classes on the chat widget to group hover/focus utilities (`group focus-visible:outline-[var(--accent)]`). This arbitrary Tailwind v4 outline class failed to resolve properly against global specificity resets, causing the focus ring to disappear entirely.
+**Detection gap:** The regression was missed because automated tests generally pass when classes are valid strings, and manual verification of the new tooltip likely focused only on the mouse hover state rather than re-testing keyboard accessibility (`:focus-visible`).
+**Prevention:** Whenever adding features (like tooltips) to existing interactive elements, manually verify both hover AND keyboard focus states. Avoid arbitrary CSS variables in Tailwind v4 utility classes (`outline-[var(--color)]`); use standard global utilities or defined tokens instead.
+**Cascade risk:** Any other bespoke component where standard focus utilities were refactored into arbitrary `outline-[var(--var)]` classes may also have lost focus accessibility.
