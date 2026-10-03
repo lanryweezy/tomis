@@ -13,3 +13,6 @@
 ## 2024-10-24 - Tooltips for Global Action Buttons
 **Learning:** Global floating action buttons (like chat widgets) that use icons only can leave users guessing their purpose before clicking, leading to hesitation. Adding a visually hidden, hover-revealed tooltip specifically for desktop users (`hidden md:block`) bridges this gap without cluttering mobile interfaces or redundant screen reader announcements (when `aria-label` is already present).
 **Action:** Always add an explicit inline text tooltip to icon-only global buttons, ensuring it is accessible to sighted keyboard users via `focus-visible` states and hidden on touch devices.
+## 2023-10-24 - Escape Key Support for Custom Overlays
+**Learning:** Custom floating UI elements (like CartDrawer, SearchOverlay, MobileMenu) without built-in accessibility primitives create keyboard traps for screen reader and keyboard-only users, preventing them from dismissing the overlay smoothly.
+**Action:** Always attach a document-level `keydown` listener for the `Escape` key when building or identifying custom UI overlays without native dialog behavior, ensuring users can close them.
