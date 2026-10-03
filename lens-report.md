@@ -1,66 +1,77 @@
-🔍 Lens: Responsive Regression — HIGH — Mobile Buy Bar Overlap
+🔍 Lens: Component Appearance Change — HIGH — WhatsAppChat Tooltip
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `WhatsAppChat`, `Toast`, `BackToTop`, `NewsletterPopup`, `mobile-buy-bar` on Product Pages
+- Components reviewed: `WhatsAppChat`, `mobile-buy-bar`, `Checkout`
 - Viewports tested: 375px (Mobile portrait), 768px (Tablet), 1280px (Desktop)
 - Browsers tested: Chromium (via manual review)
-- States tested: Default rendering
-- Infrastructure available: Manual CSS review
+- States tested: Default rendering, Focus state, Hover state
+- Infrastructure available: Manual CSS cascade analysis
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
 - Exists: no
 - Baseline age: N/A
 - CI integration: No
-- Gap identified: No automated visual regression testing infrastructure (e.g., Playwright, Chromatic) to catch layout shifts and responsive regressions before deployment.
+- Gap identified: No automated visual regression testing infrastructure exists to catch component styling failures (such as tooltip visibility on hover) before deployment.
 
 ## PRIMARY FINDING
 ┌──────────────────────────────────────────────┐
-│ [HIGH 🟠] Type: Responsive Regression         │
-│ Component: WhatsAppChat & mobile-buy-bar     │
+│ [HIGH 🟠] Type: Component Appearance Change   │
+│ Component: WhatsAppChat Tooltip              │
 │                                              │
 │ What changed:                                │
-│ The floating `WhatsAppChat` widget is        │
-│ overlapped by the `.mobile-buy-bar` on       │
-│ mobile viewports.                            │
+│ The hover/focus tooltip for the WhatsApp     │
+│ chat button renders unstyled (transparent    │
+│ background, default text color, missing      │
+│ border), making it illegible.                │
 │                                              │
 │ Baseline:                                    │
-│ WhatsAppChat was accessible at the bottom    │
-│ of the screen across all viewports before    │
-│ `.mobile-buy-bar` was added.                 │
+│ The tooltip was intended to have an elevated │
+│ background (`--bg-elevated`), primary text   │
+│ color (`--text-primary`), and a border      │
+│ (`--border`).                                │
 │                                              │
 │ Current state:                               │
-│ `.mobile-buy-bar` is fixed at the bottom with│
-│ `z-index: 1300`. `WhatsAppChat` is fixed at  │
-│ `bottom: 2rem` with `z-index: 1100`, making  │
-│ it completely obscured by the bar.           │
+│ The tooltip text floats transparently        │
+│ because the arbitrary CSS variable Tailwind  │
+│ classes (`bg-[var(--bg-elevated)]`,          │
+│ `text-[var(--text-primary)]`,                │
+│ `border-[var(--border)]`) fail to resolve    │
+│ correctly in Tailwind v4.                    │
 │                                              │
 │ Reproduction steps:                          │
-│ 1. Open mobile viewport (e.g. 375px).        │
-│ 2. Navigate to a product page with the       │
-│    mobile buy bar.                           │
-│ 3. Notice the chat widget is covered by      │
-│    the buy bar.                              │
+│ 1. Open the application on a desktop         │
+│    viewport (e.g., 1280px).                  │
+│ 2. Hover over or focus the WhatsApp chat     │
+│    floating button in the bottom left.       │
+│ 3. Observe the tooltip text appearing to the │
+│    right of the button without its intended  │
+│    background, border, and text styling.     │
 │                                              │
 │ Root cause (if identified):                  │
-│ Both elements use fixed positioning at the   │
-│ bottom. The new buy bar's higher z-index     │
-│ and height cover the chat widget.            │
+│ Commit `9bc799b` added the tooltip using     │
+│ arbitrary CSS variable syntax in utility     │
+│ classes. In Tailwind v4, arbitrary           │
+│ properties referencing CSS variables without │
+│ standard tokens often fail due to            │
+│ specificity conflicts or parsing issues.     │
 │                                              │
 │ Fix required:                                │
-│ Implement conditional styles so              │
-│ `WhatsAppChat` clears the `.mobile-buy-bar`  │
-│ when present.                                │
+│ Refactor the tooltip's Tailwind utility      │
+│ classes to use standard theme tokens or      │
+│ explicit inline styles for the custom CSS    │
+│ variables instead of arbitrary utility       │
+│ classes.                                     │
 └──────────────────────────────────────────────┘
 
 ## SECONDARY FINDINGS
 None identified in this session.
 
 ## CLEAN AREAS
-Desktop viewports correctly hide the `.mobile-buy-bar`, keeping widgets accessible.
+The checkout progress step tracking renders correctly without regression.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Review all fixed elements across all viewports to ensure no overlaps.
+Review all components that use arbitrary Tailwind classes containing CSS variables to ensure they are rendering correctly.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot tests in CI/CD, especially for responsive layouts and fixed elements.
+Implement Playwright visual snapshot tests in CI/CD that explicitly verify interactive states like hover and focus, as static snapshots miss these regressions.
