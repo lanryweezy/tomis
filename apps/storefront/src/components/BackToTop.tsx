@@ -26,9 +26,11 @@ export default function BackToTop() {
           exit={{ opacity: 0, scale: 0.8 }}
           onClick={handleClick}
           style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '3rem', height: '3rem', backgroundColor: 'var(--text-primary)', color: 'var(--bg)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, boxShadow: 'var(--shadow-lg)', transition: 'background-color 0.3s, color 0.3s' }}
+          className="group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           aria-label="Back to top"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 15l-6-6-6 6"/></svg>
+          <span className="absolute right-full mr-4 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block">Back to top</span>
         </motion.button>
       )}
     </AnimatePresence>
