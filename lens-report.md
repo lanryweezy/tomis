@@ -1,8 +1,8 @@
-🔍 Lens: Component Appearance Change — HIGH — WhatsAppChat Tooltip
+🔍 Lens: Component Appearance Change — HIGH — BackToTop Tooltip
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `WhatsAppChat`, `mobile-buy-bar`, `Checkout`
+- Components reviewed: `BackToTop`, `WhatsAppChat`, `mobile-buy-bar`, `Checkout`
 - Viewports tested: 375px (Mobile portrait), 768px (Tablet), 1280px (Desktop)
 - Browsers tested: Chromium (via manual review)
 - States tested: Default rendering, Focus state, Hover state
@@ -17,18 +17,18 @@ What was scanned this session:
 ## PRIMARY FINDING
 ┌──────────────────────────────────────────────┐
 │ [HIGH 🟠] Type: Component Appearance Change   │
-│ Component: WhatsAppChat Tooltip              │
+│ Component: BackToTop Tooltip                 │
 │                                              │
 │ What changed:                                │
-│ The hover/focus tooltip for the WhatsApp     │
-│ chat button renders unstyled (transparent    │
+│ The hover/focus tooltip for the BackToTop    │
+│ floating button renders unstyled (transparent│
 │ background, default text color, missing      │
 │ border), making it illegible.                │
 │                                              │
 │ Baseline:                                    │
 │ The tooltip was intended to have an elevated │
 │ background (`--bg-elevated`), primary text   │
-│ color (`--text-primary`), and a border      │
+│ color (`--text-primary`), and a border       │
 │ (`--border`).                                │
 │                                              │
 │ Current state:                               │
@@ -42,14 +42,16 @@ What was scanned this session:
 │ Reproduction steps:                          │
 │ 1. Open the application on a desktop         │
 │    viewport (e.g., 1280px).                  │
-│ 2. Hover over or focus the WhatsApp chat     │
-│    floating button in the bottom left.       │
-│ 3. Observe the tooltip text appearing to the │
-│    right of the button without its intended  │
+│ 2. Scroll down until the BackToTop button    │
+│    appears in the bottom right.              │
+│ 3. Hover over or focus the BackToTop         │
+│    floating button.                          │
+│ 4. Observe the tooltip text appearing to the │
+│    left of the button without its intended   │
 │    background, border, and text styling.     │
 │                                              │
 │ Root cause (if identified):                  │
-│ Commit `9bc799b` added the tooltip using     │
+│ Commit `938a930` added the tooltip using     │
 │ arbitrary CSS variable syntax in utility     │
 │ classes. In Tailwind v4, arbitrary           │
 │ properties referencing CSS variables without │
