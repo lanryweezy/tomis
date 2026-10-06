@@ -33,6 +33,16 @@ export default function TomisNav() {
     return () => { document.body.style.overflow = ''; };
   }, [isMobileOpen]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isMobileOpen) {
+        setIsMobileOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMobileOpen]);
+
   return (
     <>
       {/* Marquee announcement */}
@@ -81,21 +91,24 @@ export default function TomisNav() {
 
           {/* Right icons */}
           <Stack direction="horizontal" gap={2}>
-            <button onClick={toggle} className="magnetic-btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+            <button onClick={toggle} className="magnetic-btn group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-primary)', transition: 'color 0.3s', position: 'relative' }} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
               {theme === 'light' ? (
                 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
               ) : (
                 <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="5" /><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" /></svg>
               )}
+              <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Theme</span>
             </button>
-            <Link href="/account" className="magnetic-btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label="Account">
+            <Link href="/account" className="magnetic-btn group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s', position: 'relative' }} aria-label="Account">
               <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+              <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Account</span>
             </Link>
-            <Link href="/cart" className="magnetic-btn focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ position: 'relative', display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label="Cart">
+            <Link href="/cart" className="magnetic-btn group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] rounded-sm" style={{ position: 'relative', display: 'flex', width: '2.5rem', height: '2.5rem', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', transition: 'color 0.3s' }} aria-label="Cart">
               <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
               {cartCount > 0 && (
                 <span style={{ position: 'absolute', top: '-2px', right: '-2px', width: '16px', height: '16px', backgroundColor: 'var(--accent)', color: 'white', fontSize: '0.55rem', fontWeight: 700, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{cartCount}</span>
               )}
+              <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Cart</span>
             </Link>
           </Stack>
         </Stack>
