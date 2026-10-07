@@ -12,3 +12,7 @@
 ## 2024-10-24 - Memoize backend cart summary calculations
 **Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/cart/route.ts`), repeated iterative operations on the same data array (like calling `cart.reduce` multiple times to calculate `itemCount` and `subtotal` inline) cause unnecessary CPU overhead, especially across multiple HTTP methods (GET, POST, PUT, DELETE).
 **Action:** When a route handler needs to compute a derived summary object from an array (like a shopping cart), extract the calculation logic into a single helper function that performs the calculation efficiently (e.g., using a single `for` loop) and reuse this helper across all HTTP methods. This standardizes the response, keeps the code DRY, and improves execution time.
+
+## $(date +%Y-%m-%d) - [Combine iteration in backend logic]
+**Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/orders/route.ts`), iterating over the same list consecutively multiple times, such as generating order item array via `for` loop and then iterating over it again to calculate a subtotal using `reduce`, creates redundant CPU overhead.
+**Action:** When deriving values or objects from a loop, execute the calculation synchronously within the primary initial build loop, preventing the need to iterate twice on the same data.
