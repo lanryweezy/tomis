@@ -76,7 +76,19 @@ export async function GET(request: NextRequest) {
   let filtered = [...orders];
   if (status && validStatuses.has(status as Order['status'])) filtered = filtered.filter(order => order.status === status);
   if (email) filtered = filtered.filter(order => order.email === email);
-  return NextResponse.json({ orders: filtered, stats: { total: orders.length, pending: orders.filter(o => o.status === 'pending').length, paid: orders.filter(o => o.status === 'paid').length, shipped: orders.filter(o => o.status === 'shipped').length, delivered: orders.filter(o => o.status === 'delivered').length } });
+
+  // ⚡ Bolt Optimization: Single-pass stats calculation
+  // Impact: Prevents iterating over the `orders` array multiple times (O(N) instead of O(N * statuses)).
+  let pending = 0, paid = 0, shipped = 0, delivered = 0;
+  for (let i = 0; i < orders.length; i++) {
+    const s = orders[i].status;
+    if (s === 'pending') pending++;
+    else if (s === 'paid') paid++;
+    else if (s === 'shipped') shipped++;
+    else if (s === 'delivered') delivered++;
+  }
+
+  return NextResponse.json({ orders: filtered, stats: { total: orders.length, pending, paid, shipped, delivered } });
 }
 
 export async function POST(request: NextRequest) {
