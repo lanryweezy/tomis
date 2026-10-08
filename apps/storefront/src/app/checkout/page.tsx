@@ -244,16 +244,18 @@ export default function CheckoutPage() {
                           <h2 style={{ fontFamily: 'var(--font-dm-serif), var(--font-display)', fontSize: '1.75rem', marginTop: '0.5rem' }}>Delivery Method</h2>
                         </div>
 
-                        <Stack gap={3}>
-                          {deliveryOptions.map(option => (
-                            <button
-                              type="button"
-                              key={option.id}
-                              onClick={() => setSelectedDelivery(option.id)}
-                              className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
+                        <div role="radiogroup" aria-label="Delivery Method">
+                          <Stack gap={3}>
+                            {deliveryOptions.map(option => (
+                              <button
+                                type="button"
+                                role="radio"
+                                key={option.id}
+                                onClick={() => setSelectedDelivery(option.id)}
+                                className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] focus-visible:outline-offset-2"
 
-                              aria-pressed={selectedDelivery === option.id}
-                              style={{
+                                aria-checked={selectedDelivery === option.id}
+                                style={{
                                 width: '100%', padding: '1rem', border: '1px solid',
                                 borderColor: selectedDelivery === option.id ? 'var(--text-primary)' : 'var(--border-strong)',
                                 backgroundColor: selectedDelivery === option.id ? 'var(--bg-elevated)' : 'var(--bg)',
@@ -271,10 +273,11 @@ export default function CheckoutPage() {
                                   </Text>
                                   <Text type="supporting" color="secondary">{option.estimatedDays}</Text>
                                 </Stack>
-                              </div>
-                            </button>
-                          ))}
-                        </Stack>
+                                </div>
+                              </button>
+                            ))}
+                          </Stack>
+                        </div>
 
                         {freeShipping && (
                           <div style={{ padding: '0.75rem', backgroundColor: 'var(--bg-elevated)', textAlign: 'center' }}>

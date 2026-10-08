@@ -20,3 +20,7 @@
 ## 2024-10-06 - Enhancing Accessibility on Global Overlays and Icon Buttons
 **Learning:** Custom UI overlays like mobile menus frequently miss keyboard-only dismiss support via the 'Escape' key, leading to keyboard traps for screen reader and keyboard users. Additionally, global icon-only buttons (like Theme toggle, Account, and Cart) can be unclear to sighted mouse/keyboard users despite having `aria-label`s.
 **Action:** Always implement an 'Escape' key event listener on all custom floating overlays/menus. For icon-only buttons, complement `aria-label` with visually hidden, hover-revealed textual tooltips (e.g., using `group-hover:opacity-100` and `group-focus-visible:opacity-100`) to improve usability for non-assistive technology users.
+
+## 2023-10-08 - Checkout Custom Selectors Accessibility
+**Learning:** Custom selection buttons (like Delivery or Payment methods) created with simple `<button>` elements and `aria-pressed` state do not semantically communicate to screen readers that they represent mutually exclusive options.
+**Action:** Always wrap grouped custom selectors in `<div role="radiogroup">` and add `role="radio"` with `aria-checked` to the individual buttons to provide an accessible, form-like experience.
