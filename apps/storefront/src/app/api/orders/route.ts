@@ -35,9 +35,10 @@ function generateOrderNumber(): string {
   return `TOM-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
-function buildOrderItems(input: unknown): { items: OrderItem[] } | { error: string } {
+function buildOrderItems(input: unknown): { items: OrderItem[], subtotal: number } | { error: string } {
   if (!Array.isArray(input) || input.length === 0 || input.length > 50) return { error: 'At least one valid item is required.' };
   const items: OrderItem[] = [];
+  let subtotal = 0;
 
   for (const rawItem of input) {
     if (!rawItem || typeof rawItem !== 'object') return { error: 'Invalid order item.' };
@@ -51,6 +52,9 @@ function buildOrderItems(input: unknown): { items: OrderItem[] } | { error: stri
     const sizeOption = product?.sizes.find(candidate => candidate.value === size && candidate.inStock);
     if (!product || !variant || !sizeOption || !variant.inStock) return { error: 'One or more selected items are unavailable.' };
 
+    const itemTotal = variant.price * Number(quantity);
+    subtotal += itemTotal;
+
     items.push({
       variantId,
       productName: product.name,
@@ -58,11 +62,11 @@ function buildOrderItems(input: unknown): { items: OrderItem[] } | { error: stri
       size,
       quantity: Number(quantity),
       price: variant.price,
-      total: variant.price * Number(quantity),
+      total: itemTotal,
     });
   }
 
-  return { items };
+  return { items, subtotal };
 }
 
 export async function GET(request: NextRequest) {
@@ -85,7 +89,7 @@ export async function POST(request: NextRequest) {
 
     const built = buildOrderItems(inputItems);
     if ('error' in built) return NextResponse.json({ error: built.error }, { status: 400 });
-    const subtotal = built.items.reduce((sum, item) => sum + item.total, 0);
+    const { subtotal, items } = built;
     const normalizedDiscount = typeof discount === 'number' && Number.isFinite(discount) && discount >= 0 ? Math.min(Math.round(discount), subtotal) : 0;
     const shippingCost = subtotal >= 50000 ? 0 : 2500;
     const total = subtotal + shippingCost - normalizedDiscount;
@@ -96,7 +100,7 @@ export async function POST(request: NextRequest) {
       email,
       phone: typeof phone === 'string' ? phone : undefined,
       status: 'pending',
-      items: built.items,
+      items,
       subtotal,
       shippingCost,
       discount: normalizedDiscount,
