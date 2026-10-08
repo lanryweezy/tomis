@@ -90,3 +90,9 @@
 **Detection gap:** The regression was not caught because visual testing infrastructure is missing, and manual testing likely only checked functionality, missing the broken styling resulting from utility class failures.
 **Prevention:** Avoid using arbitrary CSS variable syntax in utility classes for bespoke components. Use standard Tailwind tokens, or apply explicit inline styles (`style={{ backgroundColor: 'var(--bg-elevated)' }}`) instead.
 **Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes for background, text, or border properties might be failing similarly.
+## 2026-11-12 — Component Appearance Change: Unstyled tooltips from arbitrary CSS variables in Tailwind v4
+**Regression:** The newly added tooltips for the Theme, Account, and Cart icons in the navigation bar render unstyled (transparent background, default text color, missing border), making them unreadable.
+**Root cause:** Arbitrary CSS variable syntax inside Tailwind utility classes (e.g., `bg-[var(--bg-elevated)]`, `text-[var(--text-primary)]`, `border-[var(--border)]`) fail to resolve correctly in Tailwind v4 due to specificity conflicts or parsing issues.
+**Detection gap:** The regression was not caught because visual testing infrastructure is missing, and manual testing likely only checked functionality, missing the broken styling resulting from utility class failures.
+**Prevention:** Avoid using arbitrary CSS variable syntax in utility classes for bespoke components. Use standard Tailwind tokens, or apply explicit inline styles (`style={{ backgroundColor: 'var(--bg-elevated)' }}`) instead.
+**Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes for background, text, or border properties might be failing similarly.

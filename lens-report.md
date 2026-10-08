@@ -1,59 +1,68 @@
-🔍 Lens: Responsive Regression — HIGH — BackToTop Overlapped by Mobile Buy Bar
+🔍 Lens: Component Appearance Change — HIGH — TomisNav Tooltips
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `BackToTop`, `mobile-buy-bar` on Product Pages, `Toast`, `NewsletterPopup`
-- Viewports tested: 375px (Mobile portrait), 768px (Tablet), 1280px (Desktop)
+- Components reviewed: `TomisNav`, `BackToTop`, `WhatsAppChat`, `mobile-buy-bar`
+- Viewports tested: 1280px (Desktop)
 - Browsers tested: Chromium (via manual review)
-- States tested: Default rendering on mobile product page
+- States tested: Hover and Focus states on navigation icons
 - Infrastructure available: Manual CSS cascade analysis
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
 - Exists: no
 - Baseline age: N/A
 - CI integration: No
-- Gap identified: No automated visual regression testing infrastructure (e.g., Playwright, Chromatic) exists to catch overlapping elements and responsive layout regressions before deployment.
+- Gap identified: No automated visual regression testing infrastructure exists to catch component styling failures (such as tooltip visibility on hover) before deployment.
 
 ## PRIMARY FINDING
 ┌──────────────────────────────────────────────┐
-│ [HIGH 🟠] Type: Responsive Regression         │
-│ Component: BackToTop & mobile-buy-bar        │
+│ [HIGH 🟠] Type: Component Appearance Change   │
+│ Component: TomisNav Tooltips                 │
 │                                              │
 │ What changed:                                │
-│ The floating `BackToTop` button is           │
-│ partially or completely overlapped by the    │
-│ new `.mobile-buy-bar` on mobile viewports.   │
+│ The hover/focus tooltips for the Theme,      │
+│ Account, and Cart buttons in the desktop     │
+│ navigation render unstyled (transparent      │
+│ background, default text color, missing      │
+│ border), making them illegible.              │
 │                                              │
 │ Baseline:                                    │
-│ `BackToTop` was accessible at the bottom     │
-│ right of the screen across all viewports     │
-│ before the `.mobile-buy-bar` was introduced. │
+│ The tooltips were intended to have an        │
+│ elevated background (`--bg-elevated`),     │
+│ primary text color (`--text-primary`), and │
+│ a border (`--border`).                     │
 │                                              │
 │ Current state:                               │
-│ `.mobile-buy-bar` is fixed at the bottom with│
-│ `z-index: 1300`. `BackToTop` is fixed at     │
-│ `bottom: 2rem` with `z-index: 1100`. Because │
-│ the buy bar occupies the bottom area and has │
-│ a higher z-index, it obscures the button.    │
+│ The tooltip text floats transparently        │
+│ because the arbitrary CSS variable Tailwind  │
+│ classes (`bg-[var(--bg-elevated)]`,          │
+│ `text-[var(--text-primary)]`,                │
+│ `border-[var(--border)]`) fail to resolve    │
+│ correctly in Tailwind v4.                    │
 │                                              │
 │ Reproduction steps:                          │
-│ 1. Open mobile viewport (e.g. 375px).        │
-│ 2. Navigate to a product page with the       │
-│    mobile buy bar.                           │
-│ 3. Scroll down until the `BackToTop` button  │
-│    appears.                                  │
-│ 4. Notice the button is covered by the       │
-│    buy bar.                                  │
+│ 1. Open the application on a desktop         │
+│    viewport (e.g., 1280px).                  │
+│ 2. Hover over or focus the Theme, Account,   │
+│    or Cart icons in the top right.           │
+│ 3. Observe the tooltip text appearing below  │
+│    the icon without its intended background, │
+│    border, and text styling.                 │
 │                                              │
 │ Root cause (if identified):                  │
-│ Both elements use fixed positioning near the │
-│ bottom. The new buy bar's higher z-index     │
-│ and height cover the scroll button.          │
+│ Commit `0e5975f` added the tooltips using    │
+│ arbitrary CSS variable syntax in utility     │
+│ classes. In Tailwind v4, arbitrary           │
+│ properties referencing CSS variables without │
+│ standard tokens often fail due to            │
+│ specificity conflicts or parsing issues.     │
 │                                              │
 │ Fix required:                                │
-│ Implement conditional styles so              │
-│ `BackToTop` clears the `.mobile-buy-bar`     │
-│ when present on mobile viewports.            │
+│ Refactor the tooltips' Tailwind utility      │
+│ classes to use standard theme tokens or      │
+│ explicit inline styles for the custom CSS    │
+│ variables instead of arbitrary utility       │
+│ classes.                                     │
 └──────────────────────────────────────────────┘
 
 ## SECONDARY FINDINGS
@@ -63,7 +72,7 @@ None identified in this session.
 The checkout progress step tracking renders correctly without regression.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Review all remaining fixed elements (e.g. Toast, NewsletterPopup) across all viewports to ensure no overlaps.
+Review all components that use arbitrary Tailwind classes containing CSS variables to ensure they are rendering correctly.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot tests in CI/CD, especially for responsive layouts and fixed elements, targeting critical viewports (375px, 768px, 1280px).
+Implement Playwright visual snapshot tests in CI/CD that explicitly verify interactive states like hover and focus, as static snapshots miss these regressions.
