@@ -11,10 +11,11 @@ interface ColorSwatchProps {
 export default function ColorSwatch({ colors, selected, onSelect, size = 'md' }: ColorSwatchProps) {
   const sizes = { sm: '1.5rem', md: '2rem', lg: '2.5rem' };
   return (
-    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }} role="radiogroup" aria-label="Available colors">
       {colors.map(c => (
         <motion.button
           key={c.slug}
+          role="radio"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelect(c.slug)}
@@ -24,7 +25,7 @@ export default function ColorSwatch({ colors, selected, onSelect, size = 'md' }:
             cursor: 'pointer', transition: 'border-color 0.2s',
           }}
           aria-label={c.name}
-          aria-pressed={selected === c.slug}
+          aria-checked={selected === c.slug}
         />
       ))}
     </div>
