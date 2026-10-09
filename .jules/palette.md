@@ -24,3 +24,6 @@
 ## 2023-10-08 - Checkout Custom Selectors Accessibility
 **Learning:** Custom selection buttons (like Delivery or Payment methods) created with simple `<button>` elements and `aria-pressed` state do not semantically communicate to screen readers that they represent mutually exclusive options.
 **Action:** Always wrap grouped custom selectors in `<div role="radiogroup">` and add `role="radio"` with `aria-checked` to the individual buttons to provide an accessible, form-like experience.
+## 2024-10-09 - Improve Accessibility of Selection Components
+**Learning:** Mutually exclusive selection components (like size or color selectors) that use generic buttons with `aria-pressed` do not communicate accurate selection semantics to screen readers.
+**Action:** Wrap the options in a container with `role="radiogroup"` and assign `role="radio"` and `aria-checked` to the individual elements to improve accessibility.
