@@ -16,3 +16,7 @@
 ## $(date +%Y-%m-%d) - [Combine iteration in backend logic]
 **Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/orders/route.ts`), iterating over the same list consecutively multiple times, such as generating order item array via `for` loop and then iterating over it again to calculate a subtotal using `reduce`, creates redundant CPU overhead.
 **Action:** When deriving values or objects from a loop, execute the calculation synchronously within the primary initial build loop, preventing the need to iterate twice on the same data.
+
+## $(date +%Y-%m-%d) - Combine iteration in backend logic
+**Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/orders/route.ts`), iterating over the same list consecutively multiple times to extract independent statistics (such as using multiple `.filter()` methods to count occurrences of different statuses) creates redundant CPU overhead and runs in O(N * M) time where M is the number of filters.
+**Action:** When extracting multiple counts or derived values from an array, execute the calculation synchronously within a single primary loop (e.g., a basic `for` loop) to traverse the array only once, dropping the complexity to O(N).
