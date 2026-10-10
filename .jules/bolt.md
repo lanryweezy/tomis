@@ -20,3 +20,7 @@
 ## $(date +%Y-%m-%d) - Combine iteration in backend logic
 **Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/orders/route.ts`), iterating over the same list consecutively multiple times to extract independent statistics (such as using multiple `.filter()` methods to count occurrences of different statuses) creates redundant CPU overhead and runs in O(N * M) time where M is the number of filters.
 **Action:** When extracting multiple counts or derived values from an array, execute the calculation synchronously within a single primary loop (e.g., a basic `for` loop) to traverse the array only once, dropping the complexity to O(N).
+
+## $(date +%Y-%m-%d) - Combine iterations on static lists for UI stats
+**Learning:** In frontend React components (like `apps/storefront/src/app/admin/inventory/page.tsx`), iterating over the same static array multiple times sequentially (e.g., calling `.reduce()` to sum totals, and then multiple `.filter().length` calls for distinct counts) creates unnecessary O(N) operations. While V8 is fast, this scales poorly as the array size increases and generates redundant CPU overhead.
+**Action:** When calculating multiple distinct aggregates or counts from a single array, use a single `for` loop pass to compute all metrics simultaneously, dropping the operation from O(N * M) to strictly O(N).
