@@ -96,3 +96,9 @@
 **Detection gap:** The regression was not caught because visual testing infrastructure is missing, and manual testing likely only checked functionality, missing the broken styling resulting from utility class failures.
 **Prevention:** Avoid using arbitrary CSS variable syntax in utility classes for bespoke components. Use standard Tailwind tokens, or apply explicit inline styles (`style={{ backgroundColor: 'var(--bg-elevated)' }}`) instead.
 **Cascade risk:** Any component using custom CSS variables with arbitrary tailwind classes for background, text, or border properties might be failing similarly.
+## 2026-11-12 — Colour Drift: Hardcoded fallback bypasses theme system
+**Regression:** The `.purchase-reassurance` box remains a stark light grey (`#f5f5f4`) when the application is switched to dark mode.
+**Root cause:** The CSS rule uses `background: var(--color-background-muted, #f5f5f4)`. Because the custom variable `--color-background-muted` is not defined in the application's `:root` or `[data-theme="dark"]` theme configuration, the browser uses the hardcoded fallback (`#f5f5f4`). This bypasses the theme system, preventing the color from adapting to dark mode.
+**Detection gap:** Visual regression tests or manual checks likely only verified the component's appearance in light mode, missing the hardcoded fallback's failure in dark mode.
+**Prevention:** Avoid using undefined CSS variables with hardcoded fallbacks for colors. Always use the application's defined theme tokens (like `var(--bg-elevated)`) which have proper dark mode overrides configured in `globals.css`.
+**Cascade risk:** Any other CSS rule in `globals.css` or component file that relies on undefined `var(--color-*)` custom properties with hardcoded hex fallbacks is at risk of failing to invert or adapt correctly across different themes.
