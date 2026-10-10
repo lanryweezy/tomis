@@ -20,3 +20,7 @@
 ## $(date +%Y-%m-%d) - Combine iteration in backend logic
 **Learning:** In the backend API (e.g. Next.js route handlers like `apps/storefront/src/app/api/orders/route.ts`), iterating over the same list consecutively multiple times to extract independent statistics (such as using multiple `.filter()` methods to count occurrences of different statuses) creates redundant CPU overhead and runs in O(N * M) time where M is the number of filters.
 **Action:** When extracting multiple counts or derived values from an array, execute the calculation synchronously within a single primary loop (e.g., a basic `for` loop) to traverse the array only once, dropping the complexity to O(N).
+
+## $(date +%Y-%m-%d) - Combine multiple filter passes into single loop in backend logic
+**Learning:** In backend API routes (e.g. Next.js route handlers like `apps/storefront/src/app/api/newsletter/route.ts`), extracting multiple independent statistical counts from an array using repeated `.filter().length` calls creates unnecessary temporary array allocations and forces multiple O(N) traversals over the same data, leading to an overall O(N * M) complexity where M is the number of filters.
+**Action:** When calculating multiple derived statistics or filtered subsets from a single dataset, use a single primary loop (e.g. a `for` loop) to traverse the array exactly once (O(N)), checking conditions and incrementing counters synchronously.

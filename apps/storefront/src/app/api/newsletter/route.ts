@@ -4,7 +4,23 @@ interface Subscriber { id: string; email: string; firstName?: string; status: st
 const subscribers: Subscriber[] = [];
 
 export async function GET() {
-  return NextResponse.json({ subscribers: subscribers.filter(s => s.status === 'active'), stats: { total: subscribers.length, active: subscribers.filter(s => s.status === 'active').length, unsubscribed: subscribers.filter(s => s.status === 'unsubscribed').length } });
+  // ⚡ Bolt Optimization: Single-pass stats calculation
+  // Impact: Prevents iterating over the `subscribers` array multiple times (O(N) instead of O(N * filters)).
+  const activeSubscribers: Subscriber[] = [];
+  let activeCount = 0;
+  let unsubscribedCount = 0;
+
+  for (let i = 0; i < subscribers.length; i++) {
+    const sub = subscribers[i];
+    if (sub.status === 'active') {
+      activeSubscribers.push(sub);
+      activeCount++;
+    } else if (sub.status === 'unsubscribed') {
+      unsubscribedCount++;
+    }
+  }
+
+  return NextResponse.json({ subscribers: activeSubscribers, stats: { total: subscribers.length, active: activeCount, unsubscribed: unsubscribedCount } });
 }
 
 export async function POST(request: NextRequest) {
