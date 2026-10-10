@@ -27,3 +27,6 @@
 ## 2024-10-09 - Improve Accessibility of Selection Components
 **Learning:** Mutually exclusive selection components (like size or color selectors) that use generic buttons with `aria-pressed` do not communicate accurate selection semantics to screen readers.
 **Action:** Wrap the options in a container with `role="radiogroup"` and assign `role="radio"` and `aria-checked` to the individual elements to improve accessibility.
+## 2024-10-25 - Improve Screen Reader Support for Custom Dialogs
+**Learning:** Custom modals, drawers, and full-screen overlays (like CartDrawer, SearchOverlay, MobileMenu) often lack proper native dialog roles. Without `role="dialog"` and `aria-modal="true"`, screen readers do not recognize them as modal windows, which can confuse users by allowing reading outside the logical overlay content.
+**Action:** Always add `role="dialog"`, `aria-modal="true"`, and a proper `aria-labelledby` attribute (pointing to a visible heading or visually hidden `<h2>`) to the root container of custom overlays.

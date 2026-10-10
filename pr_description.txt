@@ -1,0 +1,4 @@
+💡 What: Added `role="dialog"`, `aria-modal="true"`, and `aria-labelledby` attributes to the custom overlays in `overlays.tsx` (`CartDrawer`, `SearchOverlay`, and `MobileMenu`). Added visually hidden `<h2>` titles to `SearchOverlay` and `MobileMenu` for labeling.
+🎯 Why: Custom modals, drawers, and full-screen overlays often lack proper native dialog roles. Without `role="dialog"` and `aria-modal="true"`, screen readers do not recognize them as modal windows, which can confuse users by allowing reading outside the logical overlay content.
+📸 Before/After: N/A (code-only structural a11y change)
+♿ Accessibility: Screen readers now correctly identify the overlays as modal dialogs, preventing reading of the obscured background page content and providing proper naming via `aria-labelledby`.
