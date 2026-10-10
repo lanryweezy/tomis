@@ -32,7 +32,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[var(--z-modal)]">
+    <div className="fixed inset-0 z-[var(--z-modal)]" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <motion.div
         className="absolute right-0 top-0 bottom-0 w-full max-w-[var(--cart-drawer-width)] bg-white shadow-xl"
@@ -44,7 +44,7 @@ export function CartDrawer({ isOpen, onClose, items }: CartDrawerProps) {
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-neutral-gray-200)]">
-            <h2 className="text-sm font-medium tracking-[0.1em] uppercase">
+            <h2 id="cart-drawer-title" className="text-sm font-medium tracking-[0.1em] uppercase">
               YOUR BAG ({items.length})
             </h2>
             <button onClick={onClose} aria-label="Close cart" className="text-[var(--color-neutral-gray-400)] hover:text-[var(--color-neutral-ink)] focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
@@ -147,8 +147,9 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[var(--z-modal)] bg-white">
+    <div className="fixed inset-0 z-[var(--z-modal)] bg-white" role="dialog" aria-modal="true" aria-labelledby="search-overlay-title">
       <div className="max-w-2xl mx-auto px-4 pt-20">
+        <h2 id="search-overlay-title" className="sr-only">Search Tomis</h2>
         <form onSubmit={(e) => e.preventDefault()} className="flex items-center gap-4 border-b-2 border-[var(--color-neutral-ink)] pb-3">
           <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <circle cx="11" cy="11" r="8" />
@@ -202,9 +203,10 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[var(--z-modal)] lg:hidden">
+    <div className="fixed inset-0 z-[var(--z-modal)] lg:hidden" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
       <div className="absolute inset-0 bg-black/30" onClick={onClose} />
       <div className="absolute left-0 top-0 bottom-0 w-80 bg-white p-6 overflow-y-auto">
+        <h2 id="mobile-menu-title" className="sr-only">Tomis menu</h2>
         <div className="flex justify-between items-center mb-8">
           <img src="/images/brand/wordmark.svg" alt="TOMIS" className="h-5" />
           <button onClick={onClose} aria-label="Close menu" className="focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm">
