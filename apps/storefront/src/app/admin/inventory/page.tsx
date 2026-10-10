@@ -30,6 +30,18 @@ export default function AdminInventory() {
     : filter === 'low' ? inventory.filter(i => i.stock < 10 && i.stock > 0)
     : inventory.filter(i => !i.inStock);
 
+  // ⚡ Bolt Optimization: Calculate inventory stats in a single pass
+  // Impact: Reduces operations from 3 O(N) traversals to 1, avoiding redundant iteration for large arrays.
+  let totalStock = 0;
+  let lowStockCount = 0;
+  let outOfStockCount = 0;
+  for (let i = 0; i < inventory.length; i++) {
+    const item = inventory[i];
+    totalStock += item.stock;
+    if (item.stock < 10 && item.stock > 0) lowStockCount++;
+    if (!item.inStock) outOfStockCount++;
+  }
+
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -62,19 +74,19 @@ export default function AdminInventory() {
         <Card style={{ padding: '1.5rem', textAlign: 'center' }}>
           <Text type="label" color="secondary">Total Stock</Text>
           <Text type="body" weight="medium" style={{ fontSize: '1.5rem', marginTop: '0.5rem' }}>
-            {inventory.reduce((sum, i) => sum + i.stock, 0)}
+            {totalStock}
           </Text>
         </Card>
         <Card style={{ padding: '1.5rem', textAlign: 'center' }}>
           <Text type="label" color="secondary">Low Stock Items</Text>
           <Text type="body" weight="medium" style={{ fontSize: '1.5rem', marginTop: '0.5rem', color: '#D97706' }}>
-            {inventory.filter(i => i.stock < 10 && i.stock > 0).length}
+            {lowStockCount}
           </Text>
         </Card>
         <Card style={{ padding: '1.5rem', textAlign: 'center' }}>
           <Text type="label" color="secondary">Out of Stock</Text>
           <Text type="body" weight="medium" style={{ fontSize: '1.5rem', marginTop: '0.5rem', color: '#DC2626' }}>
-            {inventory.filter(i => !i.inStock).length}
+            {outOfStockCount}
           </Text>
         </Card>
       </Grid>
