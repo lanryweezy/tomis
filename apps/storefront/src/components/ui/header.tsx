@@ -58,7 +58,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
           <div className="flex items-center justify-between h-[var(--header-height-desktop)]">
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
+              className="group relative lg:hidden w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu-overlay"
@@ -71,6 +71,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   <path d="M3 8h18M3 16h18" />
                 )}
               </svg>
+              <span className="absolute left-full ml-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Menu</span>
             </button>
 
             {/* Logo */}
@@ -104,7 +105,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             {/* Right Actions */}
             <div className="flex items-center gap-4">
               <button
-                className="w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
+                className="group relative w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-expanded={isSearchOpen}
                 aria-controls="search-overlay"
@@ -114,16 +115,18 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                   <circle cx="11" cy="11" r="8" />
                   <path d="M21 21l-4.35-4.35" />
                 </svg>
+                <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Search</span>
               </button>
 
-              <Link href="/account" className="hidden md:flex w-10 h-10 items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Account">
+              <Link href="/account" className="group relative hidden md:flex w-10 h-10 items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Account">
                 <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
+                <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Account</span>
               </Link>
 
-              <Link href="/cart" className="relative w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Cart">
+              <Link href="/cart" className="group relative w-10 h-10 flex items-center justify-center focus-visible:outline-2 focus-visible:outline-[var(--color-brand-blue)] rounded-sm" aria-label="Cart">
                 <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
@@ -134,6 +137,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                     {cartCount}
                   </span>
                 )}
+                <span className="absolute top-full mt-2 whitespace-nowrap bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity pointer-events-none border border-[var(--border)] shadow-sm hidden md:block z-50">Cart</span>
               </Link>
             </div>
           </div>
