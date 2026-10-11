@@ -1,79 +1,83 @@
-🔍 Lens: Colour Drift — HIGH — Purchase Reassurance (Dark Mode)
+🔍 Lens: Layout Shift — MEDIUM — Selection Summary (PDP)
 
 ## SCAN COVERAGE
 What was scanned this session:
-- Components reviewed: `Purchase Reassurance` box on Checkout page, `TomisNav`
-- Viewports tested: Responsive viewports simulated via CSS analysis
+- Components reviewed: `Selection Summary` box on Product Detail Page (`apps/storefront/src/app/products/[slug]/page.tsx`)
+- Viewports tested: 1280px (Desktop), 768px (Tablet), 375px (Mobile portrait)
 - Browsers tested: Chromium (via manual review)
-- States tested: Light and Dark mode rendering
+- States tested: N/A
 - Infrastructure available: Manual CSS cascade analysis
 
 ## VISUAL TESTING INFRASTRUCTURE STATUS
 - Exists: no
 - Baseline age: N/A
 - CI integration: No
-- Gap identified: No automated visual regression testing infrastructure exists to catch dark mode styling failures before deployment.
+- Gap identified: No automated visual regression testing infrastructure exists to catch responsive layout shifts and alignment issues before deployment.
 
 ## PRIMARY FINDING
 ┌──────────────────────────────────────────────┐
-│ [HIGH 🟠] Type: Colour Drift                  │
-│ Component: Purchase Reassurance (Checkout)   │
+│ [MEDIUM 🟡] Type: Layout Shift                │
+│ Component: Selection Summary (PDP)           │
 │                                              │
 │ What changed:                                │
-│ The background colour of the `.purchase-     │
-│ reassurance` box fails to invert when the    │
-│ application is switched to dark mode,        │
-│ rendering as a stark light grey (`#f5f5f4`)  │
-│ against a dark background, creating a        │
-│ jarring contrast and visual inconsistency.   │
+│ The text elements inside the `.selection-    │
+│ summary` box on the Product Detail Page      │
+│ are misaligned vertically at desktop and     │
+│ tablet viewports. The supporting text on     │
+│ the right is pushed down relative to the     │
+│ label on the left, creating an awkward       │
+│ staggered appearance instead of a clean,     │
+│ centered layout.                             │
 │                                              │
 │ Baseline:                                    │
-│ In dark mode, all elevated or muted          │
-│ surface backgrounds should adapt to          │
-│ `var(--bg-elevated)` (e.g., `#1A1A1A`) to    │
-│ maintain the dark aesthetic and prevent      │
-│ glare.                                       │
+│ Information rows in summary boxes should     │
+│ typically have their contents vertically     │
+│ centered or top-aligned for a clean,         │
+│ readable presentation across the flex        │
+│ container, avoiding awkward vertical         │
+│ offsets.                                     │
 │                                              │
 │ Current state:                               │
-│ The `.purchase-reassurance` box remains      │
-│ light grey (`#f5f5f4`) in dark mode.         │
+│ At viewports above 767px, the label and      │
+│ supporting text are vertically offset from   │
+│ each other due to baseline alignment.        │
 │                                              │
 │ Reproduction steps:                          │
 │ 1. Open the application.                     │
-│ 2. Switch the application to dark mode       │
-│    using the Theme toggle in the navigation. │
-│ 3. Navigate to a product or checkout page    │
-│    where `.purchase-reassurance` is used.    │
-│ 4. Observe the light grey background on      │
-│    the reassurance box.                      │
+│ 2. Navigate to any Product Detail Page       │
+│    (e.g., `/products/black`).                │
+│ 3. Select a size to populate the "Your       │
+│    selection" box.                           │
+│ 4. Observe the vertical alignment of the     │
+│    "Your selection" label and the product    │
+│    details text at desktop width (>767px).   │
 │                                              │
 │ Root cause (if identified):                  │
-│ In `apps/storefront/src/app/globals.css`,    │
-│ the `.purchase-reassurance` class is styled  │
-│ with `background: var(--color-background-    │
-│ muted, #f5f5f4)`. However, the token         │
-│ `--color-background-muted` is not defined    │
-│ in the `:root` or `[data-theme="dark"]`      │
-│ blocks. Therefore, the browser falls back    │
-│ to the hardcoded `#f5f5f4`, bypassing the    │
-│ theme system entirely.                       │
+│ Commit `cfacdc4` introduced the `.selection- │
+│ summary` class in `globals.css` with         │
+│ `align-items: baseline`. Because the two     │
+│ child `Text` components (`label` and         │
+│ `supporting`) have different font sizes      │
+│ and line heights, aligning them to their     │
+│ typographic baseline causes their bounding   │
+│ boxes to be vertically offset.               │
 │                                              │
 │ Fix required:                                │
-│ Update `.purchase-reassurance` to use the    │
-│ standard defined theme token for muted       │
-│ backgrounds, such as `var(--bg-elevated)`    │
-│ or `var(--bg)`, which have properly defined  │
-│ dark mode overrides.                         │
+│ In `apps/storefront/src/app/globals.css`,    │
+│ update the `.selection-summary` class to     │
+│ use `align-items: center` or                 │
+│ `align-items: flex-start` instead of         │
+│ `baseline` for consistent vertical alignment.│
 └──────────────────────────────────────────────┘
 
 ## SECONDARY FINDINGS
 None identified in this session.
 
 ## CLEAN AREAS
-The newly implemented mobile buy bar overlap fixes render correctly across tested viewports.
+The newly implemented mobile buy bar overlap fixes render correctly across tested viewports, and the `.selection-summary` flex-direction correctly changes to column below 768px.
 
 ## RECOMMENDED NEXT SESSION FOCUS
-Review all CSS rules in `globals.css` that rely on undefined `var(--color-*)` tokens with hardcoded hex fallbacks to ensure they support dark mode.
+Review all instances where `align-items: baseline` is used in global utility classes or components to ensure it doesn't cause unintended layout shifts between elements with differing typography.
 
 ## INFRASTRUCTURE RECOMMENDATION
-Implement Playwright visual snapshot tests in CI/CD that explicitly verify pages in both light and dark modes to catch theme cascade failures.
+Implement Playwright visual snapshot tests in CI/CD to capture layout shifts across multiple standard viewports (375px, 768px, 1280px) during PR checks.

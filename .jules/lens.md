@@ -102,3 +102,10 @@
 **Detection gap:** Visual regression tests or manual checks likely only verified the component's appearance in light mode, missing the hardcoded fallback's failure in dark mode.
 **Prevention:** Avoid using undefined CSS variables with hardcoded fallbacks for colors. Always use the application's defined theme tokens (like `var(--bg-elevated)`) which have proper dark mode overrides configured in `globals.css`.
 **Cascade risk:** Any other CSS rule in `globals.css` or component file that relies on undefined `var(--color-*)` custom properties with hardcoded hex fallbacks is at risk of failing to invert or adapt correctly across different themes.
+
+## 2026-11-13 — Layout Shift: Baseline alignment with mixed typography
+**Regression:** The text elements inside the `.selection-summary` box on the Product Detail Page are vertically misaligned at desktop and tablet viewports, creating a staggered appearance.
+**Root cause:** The `.selection-summary` flex container was styled with `align-items: baseline`. Because the child elements (`<Text type="label">` and `<Text type="supporting">`) have different font sizes and line heights, aligning them to their typographic baseline causes their structural bounding boxes to be vertically offset.
+**Detection gap:** Automated functional tests do not verify visual alignment, and manual testing likely missed the subtle vertical offset caused by the baseline alignment, especially if the tester focused primarily on the mobile layout where the direction changes to column.
+**Prevention:** Be cautious when using `align-items: baseline` in flex containers holding text elements with mixed typography styles (sizes, line heights). Prefer `align-items: center` or `align-items: flex-start` unless specific typographic baseline alignment is strictly intended and verified.
+**Cascade risk:** Any layout container using `align-items: baseline` to align mixed text components is at risk of similar vertical offsets.
