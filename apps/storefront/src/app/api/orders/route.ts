@@ -1,147 +1,92 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { products } from '@/data/products';
-
-interface OrderItem {
-  variantId: string;
-  productName: string;
-  color: string;
-  size: string;
-  quantity: number;
-  price: number;
-  total: number;
-}
-
-interface Order {
-  id: string;
-  orderNumber: string;
-  email: string;
-  phone?: string;
-  status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
-  items: OrderItem[];
-  subtotal: number;
-  shippingCost: number;
-  discount: number;
-  total: number;
-  currency: 'NGN';
-  shippingAddress: Record<string, string>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const orders: Order[] = [];
-const validStatuses = new Set<Order['status']>(['pending', 'paid', 'shipped', 'delivered', 'cancelled']);
-
-function generateOrderNumber(): string {
-  return `TOM-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
-}
-
-function buildOrderItems(input: unknown): { items: OrderItem[], subtotal: number } | { error: string } {
-  if (!Array.isArray(input) || input.length === 0 || input.length > 50) return { error: 'At least one valid item is required.' };
-  const items: OrderItem[] = [];
-  let subtotal = 0;
-
-  for (const rawItem of input) {
-    if (!rawItem || typeof rawItem !== 'object') return { error: 'Invalid order item.' };
-    const { variantId, size, quantity } = rawItem as Record<string, unknown>;
-    if (typeof variantId !== 'string' || typeof size !== 'string' || !Number.isInteger(quantity) || Number(quantity) < 1 || Number(quantity) > 20) {
-      return { error: 'Invalid order item details.' };
-    }
-
-    const product = products.find(candidate => candidate.variants.some(variant => variant.id === variantId));
-    const variant = product?.variants.find(candidate => candidate.id === variantId);
-    const sizeOption = product?.sizes.find(candidate => candidate.value === size && candidate.inStock);
-    if (!product || !variant || !sizeOption || !variant.inStock) return { error: 'One or more selected items are unavailable.' };
-
-    const itemTotal = variant.price * Number(quantity);
-    subtotal += itemTotal;
-
-    items.push({
-      variantId,
-      productName: product.name,
-      color: variant.color,
-      size,
-      quantity: Number(quantity),
-      price: variant.price,
-      total: itemTotal,
-    });
-  }
-
-  return { items, subtotal };
-}
-
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const status = searchParams.get('status');
-  const email = searchParams.get('email');
-  let filtered = [...orders];
-  if (status && validStatuses.has(status as Order['status'])) filtered = filtered.filter(order => order.status === status);
-  if (email) filtered = filtered.filter(order => order.email === email);
-
-  // ⚡ Bolt Optimization: Single-pass stats calculation
-  // Impact: Prevents iterating over the `orders` array multiple times (O(N) instead of O(N * statuses)).
-  let pending = 0, paid = 0, shipped = 0, delivered = 0;
-  for (let i = 0; i < orders.length; i++) {
-    const s = orders[i].status;
-    if (s === 'pending') pending++;
-    else if (s === 'paid') paid++;
-    else if (s === 'shipped') shipped++;
-    else if (s === 'delivered') delivered++;
-  }
-
-  return NextResponse.json({ orders: filtered, stats: { total: orders.length, pending, paid, shipped, delivered } });
-}
+import { db, orders, orderItems, productVariants } from '@tomis/database';
+import { eq, inArray } from 'drizzle-orm';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, phone, items: inputItems, shippingAddress, discount = 0 } = body;
-    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !shippingAddress || typeof shippingAddress !== 'object') {
-      return NextResponse.json({ error: 'A valid email, items, and shipping address are required.' }, { status: 400 });
+    const { items, email, phone, shippingAddress, billingAddress, shippingCost = 0 } = body;
+
+    if (!items || !items.length || !email || !shippingAddress) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const built = buildOrderItems(inputItems);
-    if ('error' in built) return NextResponse.json({ error: built.error }, { status: 400 });
-    const { subtotal, items } = built;
-    const normalizedDiscount = typeof discount === 'number' && Number.isFinite(discount) && discount >= 0 ? Math.min(Math.round(discount), subtotal) : 0;
-    const shippingCost = subtotal >= 50000 ? 0 : 2500;
-    const total = subtotal + shippingCost - normalizedDiscount;
-    const now = new Date().toISOString();
-    const order: Order = {
-      id: `order-${Date.now()}`,
-      orderNumber: generateOrderNumber(),
+    // 1. Authoritative price calculation
+    const variantIds = items.map((item: any) => item.variantId);
+
+    const dbVariants = await db.query.productVariants.findMany({
+      where: inArray(productVariants.id, variantIds),
+      with: {
+        product: true
+      }
+    });
+
+    let calculatedSubtotal = 0;
+    const validatedItems = [];
+
+    for (const item of items) {
+      const dbVariant = dbVariants.find((v: any) => v.id === item.variantId);
+      if (!dbVariant) {
+        return NextResponse.json({ error: `Variant ${item.variantId} not found` }, { status: 404 });
+      }
+
+      if (!dbVariant.inStock || (dbVariant.stockLevel !== null && dbVariant.stockLevel < item.quantity)) {
+        return NextResponse.json({ error: `Insufficient stock for ${dbVariant.sku}` }, { status: 400 });
+      }
+
+      const activePrice = dbVariant.salePrice || dbVariant.price;
+      const totalItemPrice = activePrice * item.quantity;
+      calculatedSubtotal += totalItemPrice;
+
+      validatedItems.push({
+        variantId: dbVariant.id,
+        productName: 'Unknown Product',
+        variantColor: dbVariant.color,
+        size: item.size || 'OS',
+        quantity: item.quantity,
+        price: activePrice,
+        total: totalItemPrice,
+      });
+    }
+
+    const calculatedTotal = calculatedSubtotal + shippingCost;
+    const orderNumber = `TOM-${Date.now().toString(36).toUpperCase()}`;
+
+    // 2. Create the order
+    const [newOrder] = await db.insert(orders).values({
+      orderNumber,
       email,
-      phone: typeof phone === 'string' ? phone : undefined,
+      phone,
       status: 'pending',
-      items,
-      subtotal,
+      subtotal: calculatedSubtotal,
       shippingCost,
-      discount: normalizedDiscount,
-      total,
+      discount: 0,
+      total: calculatedTotal,
       currency: 'NGN',
-      shippingAddress: shippingAddress as Record<string, string>,
-      createdAt: now,
-      updatedAt: now,
-    };
-    orders.push(order);
-    return NextResponse.json({ message: 'Order created', order }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: 'Invalid order payload.' }, { status: 400 });
-  }
-}
+      shippingAddress,
+      billingAddress: billingAddress || shippingAddress,
+    }).returning();
 
-export async function PUT(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { orderId, status } = body;
-    if (typeof orderId !== 'string' || typeof status !== 'string' || !validStatuses.has(status as Order['status'])) {
-      return NextResponse.json({ error: 'A valid order ID and status are required.' }, { status: 400 });
-    }
-    const order = orders.find(candidate => candidate.id === orderId);
-    if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404 });
-    order.status = status as Order['status'];
-    order.updatedAt = new Date().toISOString();
-    return NextResponse.json({ message: 'Order updated', order });
-  } catch {
-    return NextResponse.json({ error: 'Invalid order update payload.' }, { status: 400 });
+    // 3. Insert order items
+    const orderItemsToInsert = validatedItems.map(vi => ({
+      orderId: newOrder.id,
+      ...vi
+    }));
+
+    await db.insert(orderItems).values(orderItemsToInsert);
+
+    // Note: Stock decrementing should ideally happen after payment verification (or reserved here and released if payment fails)
+    // For now we rely on the check above.
+
+    return NextResponse.json({
+      message: 'Order created successfully',
+      orderId: newOrder.id,
+      orderNumber: newOrder.orderNumber,
+      total: newOrder.total
+    }, { status: 201 });
+
+  } catch (err: unknown) {
+    console.error('Order Creation Error:', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
