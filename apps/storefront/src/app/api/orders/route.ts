@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 1. Authoritative price calculation
-    const variantIds = items.map((item: any) => item.variantId);
+    const variantIds = items.map((item: { variantId: string, size?: string, quantity: number }) => item.variantId);
 
     const dbVariants = await db.query.productVariants.findMany({
       where: inArray(productVariants.id, variantIds),
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     const validatedItems = [];
 
     for (const item of items) {
-      const dbVariant = dbVariants.find((v: any) => v.id === item.variantId);
+      const dbVariant = dbVariants.find((v: { id: string }) => v.id === item.variantId);
       if (!dbVariant) {
         return NextResponse.json({ error: `Variant ${item.variantId} not found` }, { status: 404 });
       }
