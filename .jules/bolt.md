@@ -24,3 +24,7 @@
 ## $(date +%Y-%m-%d) - Combine multiple filter passes into single loop in backend logic
 **Learning:** In backend API routes (e.g. Next.js route handlers like `apps/storefront/src/app/api/newsletter/route.ts`), extracting multiple independent statistical counts from an array using repeated `.filter().length` calls creates unnecessary temporary array allocations and forces multiple O(N) traversals over the same data, leading to an overall O(N * M) complexity where M is the number of filters.
 **Action:** When calculating multiple derived statistics or filtered subsets from a single dataset, use a single primary loop (e.g. a `for` loop) to traverse the array exactly once (O(N)), checking conditions and incrementing counters synchronously.
+
+## 2024-11-09 - Memoize static dataset extractions in backend APIs
+**Learning:** In Next.js route handlers serving data from static arrays (like extracting unique filters from a mock database in `apps/storefront/src/app/api/products/route.ts`), extracting sets like unique categories, collections, and colors on every `GET` request adds unnecessary O(N) overhead.
+**Action:** Declare a module-level cached variable outside of the route handler. Check if it's populated at the end of the handler before returning the response. This prevents re-allocating `Set` arrays and looping over the whole products array on every API request.
