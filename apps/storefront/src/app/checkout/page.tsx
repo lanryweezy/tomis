@@ -101,29 +101,45 @@ export default function CheckoutPage() {
     setPaymentError(null);
     setIsProcessing(true);
     try {
-      const response = await fetch('/api/paystack/initialize', {
+      // First create the order
+      const orderRes = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: address.email,
+          phone: address.phone,
           items: cartItems.map(item => ({ variantId: item.variantId, size: item.size, quantity: item.quantity })),
-          deliveryOption: selectedDelivery,
-          promoCode,
-          metadata: {
-            orderNumber: `TOM-${Date.now().toString(36).toUpperCase()}`,
-            customerName: `${address.firstName} ${address.lastName}`,
-            phone: address.phone,
-            address: `${address.address1}, ${address.city}, ${address.state}`,
-          },
+          shippingAddress: address,
+          billingAddress: address,
+          shippingCost: actualShipping,
         }),
       });
 
-      const data = await response.json();
+      const orderData = await orderRes.json();
 
-      if (!response.ok || !data.status || !data.data?.authorization_url) {
-        throw new Error(data.error || 'Payment could not be initialized. Please try again.');
+      if (!orderRes.ok || !orderData.orderId) {
+        throw new Error(orderData.error || 'Order could not be created.');
       }
-      window.location.href = data.data.authorization_url;
+
+      // Then initialize Flutterwave payment
+      const paymentRes = await fetch('/api/payments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: orderData.orderId,
+          email: address.email,
+          name: `${address.firstName} ${address.lastName}`,
+          phone: address.phone,
+        }),
+      });
+
+      const paymentData = await paymentRes.json();
+
+      if (!paymentRes.ok || !paymentData.authorizationUrl) {
+        throw new Error(paymentData.error || 'Payment could not be initialized. Please try again.');
+      }
+
+      window.location.href = paymentData.authorizationUrl;
     } catch (error) {
       setPaymentError(error instanceof Error ? error.message : 'Payment could not be initialized. Please try again.');
     } finally {
